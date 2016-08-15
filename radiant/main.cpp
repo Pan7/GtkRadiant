@@ -19,7 +19,7 @@
    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
   #include <gdk/gdkx.h>
   #include <pwd.h>
   #include <unistd.h>
@@ -118,7 +118,7 @@ static void create_splash() {
 // =============================================================================
 // Loki stuff
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 
 /* A short game name, could be used as argv[0] */
 static char game_name[100] = "";
@@ -471,7 +471,7 @@ int mainRadiant( int argc, char* argv[] ) {
 	// Use the same environment variable for resolving libGL as libgtkglext does.
 	libgl = getenv("GDK_GL_LIBGL_PATH");
 	if ( libgl == NULL ) {
-		#if defined ( _WIN32 )
+		#if defined ( _WIN32 ) || defined( __CYGWIN__ )
 			libgl = "opengl32.dll";
 		#elif defined ( __linux__ )
 			libgl = "libGL.so.1";
@@ -480,7 +480,7 @@ int mainRadiant( int argc, char* argv[] ) {
 		#endif
 	}
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	// Give away unnecessary root privileges.
 	// Important: must be done before calling gtk_init().
 	char *loginname;
@@ -578,7 +578,7 @@ int mainRadiant( int argc, char* argv[] ) {
 
 #endif
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	Str home;
 	home = g_get_home_dir();
 	AddSlash( home );
@@ -860,7 +860,7 @@ int mainRadiant( int argc, char* argv[] ) {
 		return 1;
 	}
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	if ( ( qglXQueryExtension == NULL ) || ( qglXQueryExtension( GDK_DISPLAY(),NULL,NULL ) != True ) ) {
 		Sys_FPrintf( SYS_ERR, "glXQueryExtension failed\n" );
 		_exit( 1 );
@@ -1128,7 +1128,7 @@ void SaveWithRegion( char *name ){
 	Map_SaveFile( name, region_active );
 }
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 typedef struct {
 	pid_t pid;
 	int status;
@@ -1255,7 +1255,7 @@ void RunBsp( char *command ){
 		chmod( batpath, 0744 );
 #endif
 
-#ifdef _WIN32
+#if defined( _WIN32 )  || defined( __CYGWIN__ )
 		sprintf( batpath, "%sqe3bsp.bat", temppath );
 		Sys_Printf( "Writing the compile script to '%s'\n", batpath );
 		Sys_Printf( "The build output will be saved in '%sjunk.txt'\n", temppath );
@@ -1269,7 +1269,7 @@ void RunBsp( char *command ){
 
 		Pointfile_Delete();
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 		bsp_child_process_t *process = ( bsp_child_process_t *) malloc( sizeof( bsp_child_process_t ) );
 		memset( process, 0, sizeof( *process ) );
 

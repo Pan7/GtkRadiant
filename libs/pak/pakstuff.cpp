@@ -869,7 +869,7 @@ void WINAPI InitPakFile( const char * pBasePath, const char *pName ){
 
 	if ( pName == NULL ) {
 		//++timo FIXME: use some kind of compatibility lib here!
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 		char cWork[WORK_LEN];
 		struct dirent *dirlist;
 		DIR *dir;

@@ -43,7 +43,7 @@
 
 #include <glib.h>
 #include <stdio.h>
-#if defined __linux__ || defined ( __APPLE__ )
+#if defined __linux__ || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	#include <dirent.h>
 	#include <unistd.h>
 	#define WINAPI

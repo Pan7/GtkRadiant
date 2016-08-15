@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 #include <stdint.h>
 
-#if defined( __linux__ ) || defined( __APPLE__ )
+#if defined( __linux__ ) || defined( __APPLE__ ) || defined( __CYGWIN__ )
 #include <GL/glx.h>
 
 // Necessary for proper boolean type declaration

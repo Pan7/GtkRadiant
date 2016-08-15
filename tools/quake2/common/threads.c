@@ -415,7 +415,7 @@ void RunThreadsOn( int workcnt, qboolean showpacifier, void ( *func )( int ) ){
    =======================================================================
  */
 
-#if defined( __linux__ ) || defined( __APPLE__ )
+#if defined( __linux__ ) || defined( __APPLE__ ) || defined( __CYGWIN__ )
 #define USED
 
 // Setting default Threads to 1

@@ -27,6 +27,7 @@
 
 #include "stdafx.h"
 #ifdef _WIN32
+#define toascii __toascii
 extern "C" {
 #include <gdk/gdkwin32.h>
 }
@@ -2109,7 +2110,7 @@ void Clipboard_PasteMap(){
    Platform-independent GTK clipboard support.
    \todo Using GDK_SELECTION_CLIPBOARD fails on win32, so we use the win32 API directly for now.
  */
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 
 enum
 {
@@ -3435,7 +3436,7 @@ void MainFrame::LoadCommandMap(){
 
 #if defined ( __linux__ ) || defined ( __APPLE__ )
 	strINI = g_PrefsDlg.m_rc_path->str;
-#elif defined( WIN32 )
+#elif defined( WIN32 ) || defined( __CYGWIN__ )
 	strINI = g_strGameToolsPath;
 #else
 #error "WTF are you compiling this on"
@@ -3483,7 +3484,7 @@ void MainFrame::LoadCommandMap(){
 				// based on length
 				nLen = strBuff.GetLength();
 				if ( nLen == 1 ) { // most often case.. deal with first
-					g_Commands[i].m_nKey = __toascii( strBuff.GetAt( 0 ) );
+					g_Commands[i].m_nKey = toascii( strBuff.GetAt( 0 ) );
 					iCount++;
 				}
 				else // special key

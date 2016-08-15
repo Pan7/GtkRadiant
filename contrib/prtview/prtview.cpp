@@ -56,7 +56,7 @@ static char INIfn[NAME_MAX];
 #define CLIP "Clip"
 
 void InitInstance(){
-#ifdef _WIN32
+#if defined( _WIN32 )
 	char fn[_MAX_PATH];
 	char fn_drive[_MAX_DRIVE];
 	char fn_dir[_MAX_DIR];
@@ -164,7 +164,7 @@ _QERQglTable g_QglTable;
 
 #define CONFIG_SECTION "Configuration"
 
-#if defined( __linux__ ) || defined( __APPLE__ )
+#if defined( __linux__ ) || defined( __APPLE__ ) || defined( __CYGWIN__ )
 
 static bool read_var( const char *filename, const char *section, const char *key, char *value ){
 	char line[1024], *ptr;
@@ -314,7 +314,7 @@ static bool save_var( const char *filename, const char *section, const char *key
 #endif
 
 int INIGetInt( const char *key, int def ){
-#if defined( __linux__ ) || defined( __APPLE__ )
+#if defined( __linux__ ) || defined( __APPLE__ ) || defined( __CYGWIN__ )
 	char value[1024];
 
 	if ( read_var( INIfn, CONFIG_SECTION, key, value ) ) {
@@ -337,7 +337,7 @@ void INISetInt( const char *key, int val, const char *comment /* = NULL */ ){
 	else{
 		sprintf( s, "%d", val );
 	}
-#if defined( __linux__ ) || defined( __APPLE__ )
+#if defined( __linux__ ) || defined( __APPLE__ ) || defined( __CYGWIN__ )
 	save_var( INIfn, CONFIG_SECTION, key, s );
 #else
 	WritePrivateProfileString( CONFIG_SECTION, key, s, INIfn );

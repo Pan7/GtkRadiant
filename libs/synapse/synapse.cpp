@@ -143,7 +143,7 @@ bool CSynapseServer::Initialize( const char* conf_file, PFN_SYN_PRINTF_VA pf ){
 				}
 
 				// too small to be isolated in win32/ and linux/ directories..
-#if defined( _WIN32 )
+#if defined( _WIN32 ) || defined( __CYGWIN__ )
 				const char* ext_so = ".dll";
 #elif defined ( __linux__ ) || defined ( __APPLE__ )
 				const char* ext_so = ".so";
@@ -221,7 +221,7 @@ void CSynapseClientSlot::ReleaseSO(){
 	mpDLL = NULL;
 }
 
-#elif defined( __linux__ ) || defined ( __APPLE__ )
+#elif defined( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 void CSynapseServer::EnumerateInterfaces( Str &soname ){
 	CSynapseClientSlot slot;
 	slot.mpDLL = dlopen( soname.GetBuffer(), RTLD_NOW );
@@ -857,9 +857,9 @@ bool CSynapseClient::AddAPI( const char *major, const char *minor, int size, EAP
 	}
 	APIDescriptor_t *pAPI = new APIDescriptor_t;
 	memset( pAPI, 0, sizeof( APIDescriptor_t ) );
-	strncpy( pAPI->major_name, major, MAX_APINAME );
+	Q_strncpyz( pAPI->major_name, major, sizeof( pAPI->major_name ) );
 	if ( minor ) {
-		strncpy( pAPI->minor_name, minor, MAX_APINAME );
+		Q_strncpyz( pAPI->minor_name, minor, sizeof( pAPI->minor_name ) );
 	}
 	pAPI->mType = type;
 	pAPI->mpTable = pTable;
@@ -1020,8 +1020,8 @@ void CSynapseAPIManager::SetMatchAPI( const char *major, const char *minor ){
 		Syn_Printf( "ERROR: MAX_TOKEN_STRING exceeded in CSynapseAPIManager::SetMatchAPI: '%s'\n", minor );
 		return;
 	}
-	strcpy( major_pattern, major );
-	strcpy( minor_pattern, minor );
+	Q_strncpyz( major_pattern, major, sizeof( major_pattern ) );
+	Q_strncpyz( minor_pattern, minor, sizeof( minor_pattern ) );
 	if ( strcmp( minor, "*" ) ) {
 		mType = API_LIST;
 	}
@@ -1071,15 +1071,16 @@ void CSynapseAPIManager::InitializeAPIList(){
 		return;
 	}
 
-	strncpy( minor_tok, minor_pattern, MAX_PATTERN_STRING );
+	Q_strncpyz( minor_tok, minor_pattern, sizeof( minor_tok ) );
+
 	token = strtok( minor_tok, " " );
 	while ( token )
 	{
 		/* ask the child to build from scratch */
 		APIDescriptor_t *pAPI = new APIDescriptor_t;
 		memset( pAPI, 0, sizeof( APIDescriptor_t ) );
-		strncpy( pAPI->major_name, major_pattern, MAX_APINAME );
-		strncpy( pAPI->minor_name, token, MAX_APINAME );
+		Q_strncpyz( pAPI->major_name, major_pattern, sizeof( pAPI->major_name ) );
+		Q_strncpyz( pAPI->minor_name, token, sizeof( pAPI->minor_name ) );
 		pAPI->mType = SYN_REQUIRE_ANY;
 		FillAPITable( pAPI );
 		mAPIs.push_back( pAPI );

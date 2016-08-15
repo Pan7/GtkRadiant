@@ -685,7 +685,7 @@ PrefsDlg::PrefsDlg (){
    =========================================================
  */
 
-#if defined( WIN32 )
+#if defined( WIN32 ) || defined( __CYGWIN__ )
 #define TOOLS_ATTRIBUTE "gametools_win32"
 #define EXECUTABLES_ATTRIBUTE "executables_win32"
 #define ENGINE_ATTRIBUTE "engine_win32"
@@ -790,7 +790,7 @@ CGameDescription::CGameDescription( xmlDocPtr pDoc, const Str &GameFile ){
 
 	prop = (char*)xmlGetProp( pNode, (const xmlChar*)ENGINE_ATTRIBUTE );
 	if ( prop == NULL ) {
-#ifdef _WIN32
+#if defined( _WIN32 ) || defined( __CYGWIN__ )
 		mEngine = "quake3.exe";
 #elif __linux__
 		mEngine = "quake3";
@@ -804,7 +804,7 @@ CGameDescription::CGameDescription( xmlDocPtr pDoc, const Str &GameFile ){
 
 	prop = (char*)xmlGetProp( pNode, (const xmlChar*)MP_ENGINE_ATTRIBUTE );
 	if ( prop == NULL ) {
-#ifdef _WIN32
+#if defined( _WIN32 ) || defined( __CYGWIN__ )
 		mMultiplayerEngine = "quake3.exe";
 #elif __linux__
 		mMultiplayerEngine = "quake3";
@@ -1321,7 +1321,7 @@ void CGameDialog::Init(){
 		g_qeglobals.m_strHomeGame += "/";
 		g_qeglobals.m_strHomeGame += m_pCurrentGameDescription->mUserPathPrefix.GetBuffer();
 		g_qeglobals.m_strHomeGame += "/";
-#elif defined ( _WIN32 )
+#elif defined ( _WIN32 ) || defined( __CYGWIN__ )
 		g_qeglobals.m_strHomeGame = g_get_user_special_dir( G_USER_DIRECTORY_DOCUMENTS );
 		g_qeglobals.m_strHomeGame += "\\My Games\\";
 		g_qeglobals.m_strHomeGame += m_pCurrentGameDescription->mUserPathPrefix.GetBuffer();
@@ -3659,7 +3659,7 @@ void CGameInstall::Run() {
 #if defined( __APPLE__ ) || defined( __linux__ )
 		fprintf( fg, "  " ENGINE_ATTRIBUTE "=\"quetoo\"\n" );
 		fprintf( fg, "  " PREFIX_ATTRIBUTE "=\".quetoo\"\n" );
-#elif _WIN32
+#elif defined( _WIN32 ) || defined( __CYGWIN__ )
 		fprintf( fg, "  " ENGINE_ATTRIBUTE "=\"quetoo.exe\"\n" );
 		fprintf( fg, "  " PREFIX_ATTRIBUTE "=\"Quetoo\"\n" );
 #endif
@@ -3707,7 +3707,7 @@ void CGameInstall::Run() {
 		break;
 	}
 	case GAME_ET: {
-#ifdef _WIN32
+#if defined( _WIN32 ) || defined( __CYGWIN__ )
 		fprintf( fg, "  " ENGINE_ATTRIBUTE "=\"ET.exe\"\n");
 #elif __linux__
 		fprintf( fg, "  " ENGINE_ATTRIBUTE "=\"et\"\n" );

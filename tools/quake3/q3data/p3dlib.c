@@ -30,7 +30,7 @@
 
 #define MAX_POLYSETS 64
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 #define _strcmpi Q_stricmp
 #define filelength Q_filelength
 #define strlwr strlower

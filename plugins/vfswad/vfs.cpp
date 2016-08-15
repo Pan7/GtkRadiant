@@ -44,7 +44,7 @@
 #include <glib.h>
 #include <stdio.h>
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
   #include <dirent.h>
   #include <unistd.h>
 #else
@@ -121,7 +121,7 @@ int vfsBuildShortPathName( const char* pPath, char* pBuffer, int nBufferLen ){
 	return nResult;
 #endif
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 
 	// remove /../ from directories
 	const char *scr = pPath; char *dst = pBuffer;

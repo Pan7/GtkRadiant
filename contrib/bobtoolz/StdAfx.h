@@ -35,7 +35,7 @@
 
 #include "time.h"
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 
 // Necessary for proper boolean type declaration
 #include "qertypes.h"

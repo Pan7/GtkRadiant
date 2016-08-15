@@ -40,7 +40,7 @@ char *moddir = NULL;
 // some old defined that was in cmdlib lost during merge
 char writedir[1024];
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 #define strlwr strlower
 #endif
 

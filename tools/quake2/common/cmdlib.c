@@ -1180,7 +1180,7 @@ void Sys_Sleep( int n ){
 #ifdef WIN32
 	Sleep( n );
 #endif
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	usleep( n * 1000 );
 #endif
 }

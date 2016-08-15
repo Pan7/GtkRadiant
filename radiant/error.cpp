@@ -50,7 +50,7 @@ void Error( const char *error, ... ){
 
 	strcat( text, "\n" );
 
-#if defined ( __linux__ ) || defined ( __APPLE__ )
+#if defined ( __linux__ ) || defined ( __APPLE__ ) || defined( __CYGWIN__ )
 	if ( errno != 0 ) {
 		strcat( text, "errno: " );
 		strcat( text, strerror( errno ) );

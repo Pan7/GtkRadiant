@@ -56,8 +56,11 @@ def CheckUnresolved( source, target, env ):
 	( status, output ) = commands.getstatusoutput( 'ldd -r %s' % target[0] )
 	if ( status != 0 ):
 		print 'CheckUnresolved: ldd command failed (exit code %d)' % status
-		os.system( 'rm %s' % target[ 0 ] )
-		return 1 # fail
+		if ( platform.system().startswith( 'CYGWIN' ) ):
+			print 'Warning: cygwin does not support ldd -r'
+		else:
+			os.system( 'rm %s' % target[ 0 ] )
+			return 1 # fail
 	lines = string.split( output, '\n' )
 	have_undef = 0
 	for i_line in lines:
