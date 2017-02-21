@@ -991,7 +991,7 @@ static void* safe_dlsym( void *handle, char *symbol ){
 	const char *err = dlerror();
 	if ( err ) {
 		init_error = 1;
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__CYGWIN__)
 		printf( "Error loading OpenGL libraries: %s\n", err );
 #else
 		printf( "Error loading OpenGL libraries: %s %s\n", err, symbol );

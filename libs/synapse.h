@@ -57,7 +57,7 @@
   #include <windows.h>
 #endif
 
-#if defined( _WIN32 )
+#if defined( _WIN32 ) &&  !defined( __CYGWIN__ )
   #define SYNAPSE_DLL_EXPORT WINAPI
 #elif defined( __linux__ ) || defined( __APPLE__ )  || defined( __CYGWIN__ ) /* ydnar */
   #define SYNAPSE_DLL_EXPORT

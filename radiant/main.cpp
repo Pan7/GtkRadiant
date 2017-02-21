@@ -471,8 +471,10 @@ int mainRadiant( int argc, char* argv[] ) {
 	// Use the same environment variable for resolving libGL as libgtkglext does.
 	libgl = getenv("GDK_GL_LIBGL_PATH");
 	if ( libgl == NULL ) {
-		#if defined ( _WIN32 ) || defined( __CYGWIN__ )
+		#if defined ( _WIN32 ) 
 			libgl = "opengl32.dll";
+		#elif defined ( __CYGWIN__ )
+			libgl = "cygGL-1.dll";
 		#elif defined ( __linux__ )
 			libgl = "libGL.so.1";
 		#elif defined ( __APPLE__ )
