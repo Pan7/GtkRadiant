@@ -521,7 +521,7 @@ void QGL_Shutdown(){
 	Sys_Printf( "Shutting down GL ..." );
 
 	if ( g_hGLDLL ) {
-#ifdef _WIN32
+#if defined( _WIN32 ) && !defined( __CYGWIN__ )
 		FreeLibrary( g_hGLDLL );
 #endif
 
@@ -982,7 +982,7 @@ void QGL_Shutdown(){
 static int init_error;
 
 static void* safe_dlsym( void *handle, char *symbol ){
-#ifdef _WIN32
+#if defined( _WIN32 ) && !defined( __CYGWIN__ )
 	return GetProcAddress( handle, symbol );
 #endif
 
@@ -1170,7 +1170,7 @@ void APIENTRY qglPolygonMode_ATIHack( GLenum face, GLenum mode ){
 #endif
 
 int QGL_Init( const char *dllname, const char* gluname ){
-#ifdef _WIN32
+#if defined( _WIN32 ) && !defined( __CYGWIN__ )
 	g_hGLDLL = LoadLibrary( dllname );
 #endif
 
