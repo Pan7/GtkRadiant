@@ -1676,6 +1676,19 @@ void GroupDlg::Create(){
 					}
 
 				}
+
+				{
+					GtkWidget* vbox2 = gtk_vbox_new( FALSE, 0 );
+					gtk_widget_show( vbox2 );
+					gtk_box_pack_start( GTK_BOX( hbox ), vbox2, TRUE, TRUE, 0 );
+
+					{
+						GtkWidget* button = gtk_button_new_with_label( _( "Cam to angles" ) );
+						gtk_widget_show( button );
+						g_signal_connect( button, "clicked", G_CALLBACK( cam2angles ), NULL );
+						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
+					}
+				}
 			}
 		}
 

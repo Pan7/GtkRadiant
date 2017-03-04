@@ -72,7 +72,7 @@ class Config:
             build_dir = os.path.join( 'build', config_name, 'radiant' )
             VariantDir( build_dir, '.', duplicate = 0 )
             lib_objects = []
-            for project in [ 'libs/synapse/synapse.vcproj', 'libs/cmdlib/cmdlib.vcproj', 'libs/mathlib/mathlib.vcproj', 'libs/l_net/l_net.vcproj' ]:
+            for project in [ 'libs/synapse/synapse.vcxproj', 'libs/cmdlib/cmdlib.vcxproj', 'libs/mathlib/mathlib.vcxproj', 'libs/l_net/l_net.vcxproj' ]:
                 Export( 'project' )
                 lib_objects += SConscript( os.path.join( build_dir, 'SConscript.lib' ) )
             Export( 'lib_objects' )
@@ -81,7 +81,7 @@ class Config:
 
             # PIC versions of the libs for the modules
             shlib_objects_extra = {}
-            for project in [ 'libs/synapse/synapse.vcproj', 'libs/mathlib/mathlib.vcproj', 'libs/picomodel/picomodel.vcproj', 'libs/cmdlib/cmdlib.vcproj', 'libs/splines/splines.vcproj' ]:
+            for project in [ 'libs/synapse/synapse.vcxproj', 'libs/mathlib/mathlib.vcxproj', 'libs/picomodel/picomodel.vcxproj', 'libs/cmdlib/cmdlib.vcxproj', 'libs/splines/splines.vcxproj' ]:
                 ( libpath, libname ) = os.path.split( project )
                 libname = os.path.splitext( libname )[0]
                 config['shared'] = True
@@ -90,31 +90,31 @@ class Config:
                 VariantDir( build_dir, '.', duplicate = 0 )
                 shlib_objects_extra[libname] = SConscript( os.path.join( build_dir, 'SConscript.lib' ) )
 
-            for project in [ 'plugins/vfsqlpk3/vfsqlpk3.vcproj',
-                     'plugins/vfspk3/vfspk3.vcproj',
-                     'plugins/vfspak/vfspak.vcproj',
-                     'plugins/vfswad/vfswad.vcproj',
-                     'plugins/eclassfgd/fgd.vcproj',
-                     'plugins/entity/entity.vcproj',
-                     'plugins/image/image.vcproj',
-                     'plugins/model/model.vcproj',
-                     'plugins/imagepng/imagepng.vcproj',
-                     'plugins/imagewal/imagewal.vcproj',
-                     'plugins/imagehl/imagehl.vcproj',
-                     'plugins/imagem8/imagem8.vcproj',
-                     'plugins/spritemodel/spritemodel.vcproj',
-                     'plugins/textool/textool.vcproj',
-                     'plugins/map/map.vcproj',
-                     'plugins/mapxml/mapxml.vcproj',
-                     'plugins/shaders/shaders.vcproj',
-                     'plugins/surface/surface.vcproj',
-                     'plugins/surface_idtech2/surface_idtech2.vcproj',
-                     'contrib/camera/camera.vcproj',
-                     'contrib/prtview/prtview.vcproj',
-                     'contrib/hydratoolz/hydratoolz.vcproj',
-                     'contrib/bobtoolz/bobtoolz.vcproj',
-                     'contrib/gtkgensurf/gtkgensurf.vcproj',
-                     'contrib/bkgrnd2d/bkgrnd2d.vcproj'
+            for project in [ 'plugins/vfsqlpk3/vfsqlpk3.vcxproj',
+                     'plugins/vfspk3/vfspk3.vcxproj',
+                     'plugins/vfspak/vfspak.vcxproj',
+                     'plugins/vfswad/vfswad.vcxproj',
+                     'plugins/eclassfgd/fgd.vcxproj',
+                     'plugins/entity/entity.vcxproj',
+                     'plugins/image/image.vcxproj',
+                     'plugins/model/model.vcxproj',
+                     'plugins/imagepng/imagepng.vcxproj',
+                     'plugins/imagewal/imagewal.vcxproj',
+                     'plugins/imagehl/imagehl.vcxproj',
+                     'plugins/imagem8/imagem8.vcxproj',
+                     'plugins/spritemodel/spritemodel.vcxproj',
+                     'plugins/textool/textool.vcxproj',
+                     'plugins/map/map.vcxproj',
+                     'plugins/mapxml/mapxml.vcxproj',
+                     'plugins/shaders/shaders.vcxproj',
+                     'plugins/surface/surface.vcxproj',
+                     'plugins/surface_idtech2/surface_idtech2.vcxproj',
+                     'contrib/camera/camera.vcxproj',
+                     'contrib/prtview/prtview.vcxproj',
+                     'contrib/hydratoolz/hydratoolz.vcxproj',
+                     'contrib/bobtoolz/bobtoolz.vcxproj',
+                     'contrib/gtkgensurf/gtkgensurf.vcxproj',
+                     'contrib/bkgrnd2d/bkgrnd2d.vcxproj'
                  ]:
                 ( libpath, libname ) = os.path.split( project )
                 libname = os.path.splitext( libname )[0]
@@ -158,7 +158,7 @@ class Config:
             build_dir = os.path.join( 'build', config_name, compiler_name )
             VariantDir( build_dir, '.', duplicate = 0 )
             lib_objects = []
-            for project in [ 'tools/quake3/common/quake3-common.vcproj', 'libs/mathlib/mathlib.vcproj', 'libs/l_net/l_net.vcproj', 'libs/ddslib/ddslib.vcproj', 'libs/picomodel/picomodel.vcproj', 'libs/md5lib/md5lib.vcproj' ]:
+            for project in [ 'tools/quake3/common/quake3-common.vcxproj', 'libs/mathlib/mathlib.vcxproj', 'libs/l_net/l_net.vcxproj', 'libs/ddslib/ddslib.vcxproj', 'libs/picomodel/picomodel.vcxproj', 'libs/md5lib/md5lib.vcxproj' ]:
                 Export( 'project' )
                 lib_objects += SConscript( os.path.join( build_dir, 'SConscript.lib' ) )
             Export( 'lib_objects' )
@@ -176,7 +176,7 @@ class Config:
             build_dir = os.path.join( 'build', config_name, 'q3data' )
             VariantDir( build_dir, '.', duplicate = 0 )
             lib_objects = []
-            for project in [ 'libs/mathlib/mathlib.vcproj', 'libs/l_net/l_net.vcproj', 'libs/ddslib/ddslib.vcproj' ]:
+            for project in [ 'libs/mathlib/mathlib.vcxproj', 'libs/l_net/l_net.vcxproj', 'libs/ddslib/ddslib.vcxproj' ]:
                     Export( 'project' )
                     lib_objects += SConscript( os.path.join( build_dir, 'SConscript.lib' ) )
             Export( 'lib_objects' )
@@ -283,11 +283,10 @@ class Config:
         if ( self.platform == 'Windows' ):
             backup_cwd = os.getcwd()
             for lib_archive in [
-                'STLport-5.2.1-GtkRadiant.zip',
                 'gtk-bundle-2.24.10-GtkRadiant.zip',
                 'gtk-bundle-2.22.1-win64-GtkRadiant.zip',
-                'jpeg-9-GtkRadiant.zip',
-                'libxml2-2.9.1-GtkRadiant.zip',
+                'jpeg-9-MSVC2014-GtkRadiant.zip',
+                'libxml2-2.9.2-GtkRadiant-2.zip',
                 'gtkglext-1.2.0-3-win32.zip',
                 ]:
                 if ( not os.path.exists( lib_archive ) ):
@@ -367,6 +366,18 @@ class Config:
                 ]:
                 shutil.copy( os.path.join( srcdir, x64_dll ), 'install/x64' )
 
+            self.CloneBSPC()
+
+    def CloneBSPC( self ):
+        if ( os.path.exists( 'bspc' ) ):
+            cmd = [ 'git', 'pull' ]
+            print( repr( cmd ) )
+            subprocess.check_call( cmd, cwd = 'bspc' )
+        else:
+            cmd = [ 'git', 'clone', 'https://github.com/TTimo/bspc.git' ]
+            print( repr( cmd ) )
+            subprocess.check_call( cmd )
+
     def FinishBuild( self, target, source, env ):
         print( 'Lookup and bundle the PNG and JPEG libraries' )
         # radiant.bin doesn't link to jpeg lib directly, grab that from a module
@@ -384,6 +395,10 @@ class Config:
 
         jpeg_path = find_library( module_ldd, 'libjpeg' )
         print( 'JPEG library: %s' % repr( jpeg_path ) )
+
+        p = subprocess.Popen( 'ldd -r install/modules/imagepng.so', shell = True, stdout = subprocess.PIPE )
+        module_ldd = p.communicate()[0]
+        
         png_path = find_library( module_ldd, 'libpng' )
         print( 'PNG  library: %s' % repr( png_path ) )
 

@@ -726,9 +726,9 @@ void PatchDialog::GetPatchInfo(){
 		gtk_widget_set_sensitive( GTK_WIDGET( gtk_bin_get_child( GTK_BIN( m_pWidget ) ) ), TRUE );
 	}
 	else{
-		gtk_widget_set_sensitive( GTK_WIDGET( gtk_bin_get_child( GTK_BIN( m_pWidget ) ) ), FALSE );
-
 		Sys_FPrintf( SYS_WRN, "WARNING: No patch selected.\n" );
+
+		gtk_widget_set_sensitive( GTK_WIDGET( gtk_bin_get_child( GTK_BIN( m_pWidget ) ) ), FALSE );
 	}
 	// fill in our internal structs
 	m_nRow = 0; m_nCol = 0;

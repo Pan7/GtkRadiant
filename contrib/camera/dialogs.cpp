@@ -526,8 +526,8 @@ static void ci_add_target( GtkButton *button, gpointer data ){
 				}
 				else if ( gtk_toggle_button_get_active( (GtkToggleButton*)interpolated ) ) {
 					type = 1;
-				}
-				else if ( gtk_toggle_button_get_active( (GtkToggleButton*)spline ) ) {
+				} else {
+					assert( gtk_toggle_button_get_active( (GtkToggleButton*)spline ) );
 					type = 2;
 				}
 

@@ -125,6 +125,21 @@
     <ClCompile Include="convert_map.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="fixaas.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="convert_bsp.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="bsp_analyze.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="bsp_info.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="bsp_scale.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="q3map2.ico">

@@ -309,32 +309,33 @@ struct gamemode_s {
 	const char *gameFile;
 	const char *name;
 	const char *mode;
+	qboolean base; //default mode
 };
 typedef struct gamemode_s gamemode_t;
 
 gamemode_t gameModeList[] = {
-	{ "wolf.game", sWolfSPCombo, "sp" },
-	{ "wolf.game", sWolfMPCombo, "mp" },
+	{ "wolf.game", sWolfSPCombo, "sp", qtrue },
+	{ "wolf.game", sWolfMPCombo, "mp", qfalse },
 
-	{ "jk2.game", sJK2SPCombo, "sp" },
-	{ "jk2.game", sJK2MPCombo, "mp" },
+	{ "jk2.game", sJK2SPCombo, "sp", qtrue },
+	{ "jk2.game", sJK2MPCombo, "mp", qfalse },
 
-	{ "ja.game", sJASPCombo, "sp" },
-	{ "ja.game", sJAMPCombo, "mp" },
+	{ "ja.game", sJASPCombo, "sp", qtrue },
+	{ "ja.game", sJAMPCombo, "mp", qfalse },
 
-	{ "stvef.game", sSTVEFSPCombo, "sp" },
-	{ "stvef.game", sSTVEFMPCombo, "mp" },
+	{ "stvef.game", sSTVEFSPCombo, "sp", qtrue },
+	{ "stvef.game", sSTVEFMPCombo, "mp", qfalse },
 
-	{ "sof2.game", sSOF2SPCombo, "sp" },
-	{ "sof2.game", sSOF2MPCombo, "mp" },
+	{ "sof2.game", sSOF2SPCombo, "sp", qtrue },
+	{ "sof2.game", sSOF2MPCombo, "mp", qfalse },
 
 };
 
 struct game_s {
 	const char *gameFile;
 	const char *name;
-	const char *fs_game;
-	qboolean base;
+	const char *fs_game; //filesystem gamename
+	qboolean base; //default basegame, ie baseq3
 	qboolean custom; //ie Custom Quake III modification
 };
 typedef struct game_s game_t;
@@ -370,12 +371,12 @@ game_t gameList[] = {
 
 GList *newMappingModesListForGameFile( Str & mGameFile ){
 	GList *mode_list;
-	int x;
+	size_t x;
 
 	mode_list = NULL;
 	for( x = 0; x < G_N_ELEMENTS( gameModeList ); x++ )
 	{
-		if( strcmp( mGameFile.GetBuffer(), gameModeList[x].gameFile ) == 0 ){
+		if( strcmp( mGameFile.GetBuffer(), gameModeList[x].gameFile ) == 0 ) {
 			mode_list = g_list_append( mode_list, &gameModeList[x] );
 		}
 	}
@@ -384,12 +385,12 @@ GList *newMappingModesListForGameFile( Str & mGameFile ){
 
 GList *newModListForGameFile( Str & mGameFile ){
 	GList *mod_list;
-	int x;
+	size_t x;
 
 	mod_list = NULL;
 	for( x = 0; x < G_N_ELEMENTS( gameList ); x++ )
 	{
-		if( strcmp( mGameFile.GetBuffer(), gameList[x].gameFile ) == 0 ){
+		if( strcmp( mGameFile.GetBuffer(), gameList[x].gameFile ) == 0 ) {
 			mod_list = g_list_append( mod_list, &gameList[x] );
 		}
 	}
@@ -398,40 +399,32 @@ GList *newModListForGameFile( Str & mGameFile ){
 
 void OnSelchangeComboWhatgame( GtkWidget *widget, gpointer data ){
 	GtkWidget *fs_game_entry;
-	GtkWidget *fs_game_label;
-	GtkWidget *game_select;
-	int x;
+	GtkWidget* game_select;
+	size_t x;
 	const gchar *fs_game;
 
 	game_select = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "game_select" ) );
 	fs_game = gtk_combo_box_get_active_id( GTK_COMBO_BOX( GTK_COMBO_BOX_TEXT( game_select ) ) );
 
-	if( !fs_game ){
-
+	if( !fs_game ) {
 		return;
 	}
 	fs_game_entry = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "fs_game_entry" ) );
-	fs_game_label = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "fs_game_label" ) );
 
 	for( x = 0; x < G_N_ELEMENTS( gameList ); x++ )
 	{
-		if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gameList[x].gameFile ) == 0
-			&& strcmp( fs_game, gameList[x].fs_game ) == 0 ){
-			
-			if( gameList[x].custom ){
-				gtk_widget_hide( fs_game_label );
-				gtk_widget_show( fs_game_entry );
-				if( gtk_widget_is_visible( fs_game_entry ) )
-				{
-					gtk_widget_grab_focus( fs_game_entry );
-				}
-			} 
-			else
-			{
-				gtk_widget_hide( fs_game_entry );
-				gtk_label_set_text( GTK_LABEL( fs_game_label ), gameList[x].fs_game );
-				gtk_widget_show( fs_game_label );
+		if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gameList[x].gameFile ) == 0 
+			&& strcmp( fs_game, gameList[x].fs_game ) == 0 ) {
+
+			if( gameList[x].custom ) {
+				gtk_entry_set_text( GTK_ENTRY( fs_game_entry ), gameList[x].fs_game );
+				gtk_widget_set_sensitive( GTK_WIDGET( fs_game_entry ), true );
+				gtk_widget_grab_focus( GTK_WIDGET( fs_game_entry ) );
+			} else {
+				gtk_entry_set_text( GTK_ENTRY( fs_game_entry ), gameList[x].fs_game );
+				gtk_widget_set_sensitive( GTK_WIDGET( fs_game_entry ), false );
 			}
+			break;
 		}
 	}
 
@@ -483,7 +476,6 @@ static void OnDoProjectSettings_realize( GtkWidget *widget, gpointer data )
 
 	view = GTK_WIDGET( g_object_get_data( G_OBJECT( widget ), "view" ) );
 	OnProjectViewSelChanged( gtk_tree_view_get_selection( GTK_TREE_VIEW( view ) ), data );
-	OnSelchangeComboWhatgame( widget, data );
 }
 
 void DoProjectSettings(){
@@ -494,6 +486,8 @@ void DoProjectSettings(){
 	GtkWidget *gamemode_combo, *fs_game_entry;
 	GList *mod_list, *gamemode_list;
 	GList *lst;
+	const char *fs_game;
+	qboolean isBasegame;
 	GtkSizeGroup *button_group;
 	gint response_id;
 	GtkTreeSelection* selection;
@@ -546,10 +540,11 @@ void DoProjectSettings(){
 	gtk_widget_show( button );
 	g_signal_connect( button, "clicked", G_CALLBACK( ProjectSettings_dirbutton_clicked ), dialog );
 
-	const char *gamemode = ValueForKey( g_qeglobals.d_project_entity, "gamemode" );
 	gamemode_list = newMappingModesListForGameFile( g_pGameDescription->mGameFile );
-	if( gamemode_list )
-	{
+	if( gamemode_list ) {
+		const char *gamemode;
+		qboolean isBasemode;
+
 		label = gtk_label_new( _( "Mapping mode" ) );
 		gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
 		gtk_widget_set_halign( label, GTK_ALIGN_START );
@@ -559,13 +554,37 @@ void DoProjectSettings(){
 		for( lst = gamemode_list; lst != NULL; lst = g_list_next( lst ) )
 		{
 			const gamemode_t *gamemode_x = (const gamemode_t *)lst->data;
-			gtk_combo_box_text_append( GTK_COMBO_BOX_TEXT( gamemode_combo ), gamemode_x->mode, gamemode_x->name );
+			if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gamemode_x->gameFile ) == 0 ) {
+				gtk_combo_box_text_append( GTK_COMBO_BOX_TEXT( gamemode_combo ), gamemode_x->mode, gamemode_x->name );
+			}
 		}
 
-		gtk_combo_box_set_active_id( GTK_COMBO_BOX( gamemode_combo ), gamemode );
+//		gtk_combo_box_set_active_id( GTK_COMBO_BOX( gamemode_combo ), gamemode );
 		gtk_grid_attach( GTK_GRID( table ), gamemode_combo, 1, 1, 1, 1 );
 		gtk_widget_set_hexpand( gamemode_combo, TRUE );
 		gtk_widget_show( gamemode_combo );
+
+		gamemode = ValueForKey( g_qeglobals.d_project_entity, "gamemode" );
+		isBasemode = qtrue;
+		for( lst = gamemode_list; lst != NULL; lst = g_list_next( lst ) )
+		{
+			const gamemode_t *gamemode_x = (const gamemode_t *)lst->data;
+			if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gamemode_x->gameFile ) == 0 && strcmp( gamemode_x->mode, gamemode ) == 0 ) {
+				gtk_combo_box_set_active_id( GTK_COMBO_BOX( gamemode_combo ), gamemode_x->mode );
+				isBasemode = qfalse;
+				break;
+			}
+		}
+		if( isBasemode ) {
+			for( lst = gamemode_list; lst != NULL; lst = g_list_next( lst ) )
+			{
+				const gamemode_t *gamemode_x = (const gamemode_t *)lst->data;
+				if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gamemode_x->gameFile ) == 0 && gamemode_x->base ) {
+					gtk_combo_box_set_active_id( GTK_COMBO_BOX( gamemode_combo ), gamemode_x->mode );
+					break;
+				}
+			}
+		}
 	}
 
 	label = gtk_label_new( _( "Game" ) );
@@ -573,37 +592,20 @@ void DoProjectSettings(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	const char *fs_game = ValueForKey( g_qeglobals.d_project_entity, "gamename" );
+	fs_game = ValueForKey( g_qeglobals.d_project_entity, "gamename" );
 	mod_list = newModListForGameFile( g_pGameDescription->mGameFile );
 	game_select = gtk_combo_box_text_new();
-	qboolean base_mod = qtrue;
 	for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
 	{
 		const game_t *game_x = (const game_t *)lst->data;
-		gtk_combo_box_text_append( GTK_COMBO_BOX_TEXT( game_select ), game_x->fs_game, game_x->name );
-		if( fs_game && strlen( fs_game ) > 0 && strcmp( game_x->fs_game, fs_game ) == 0 )
-		{
-			gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), fs_game );
-			base_mod = qfalse;
-		}
-	}
-	if( base_mod )
-	{
-		for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
-		{
-			const game_t *game_x = (const game_t *)lst->data;
-			if( game_x->base )
-			{
-				gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), game_x->fs_game );
-				break;
-			}
+		if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 ) {
+			gtk_combo_box_text_append( GTK_COMBO_BOX_TEXT( game_select ), game_x->fs_game, game_x->name );
 		}
 	}
 	gtk_grid_attach( GTK_GRID( table ), game_select, 1, 2, 1, 1 );
 	gtk_widget_set_hexpand( game_select, TRUE );
 	gtk_widget_show( game_select );
 	g_signal_connect( GTK_COMBO_BOX( game_select ), "changed", G_CALLBACK( OnSelchangeComboWhatgame ), dialog );
-	g_signal_connect( G_OBJECT( dialog ), "realize", G_CALLBACK( OnDoProjectSettings_realize ), dialog );
 	g_object_set_data( G_OBJECT( dialog ), "game_select", game_select );
 
 
@@ -613,21 +615,50 @@ void DoProjectSettings(){
 	gtk_widget_set_tooltip_text( label, _( "Directory name of the mod" ) );
 	gtk_widget_show( label );
 
+
 	fs_game_entry = entry = gtk_entry_new();
+	gtk_widget_set_sensitive( GTK_WIDGET( fs_game_entry ), false );
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 3, 1, 1 );
-	gtk_entry_set_text( GTK_ENTRY( entry ), fs_game );
 	gtk_widget_set_hexpand( entry, TRUE );
-//	gtk_widget_show( entry );
+	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dialog ), "fs_game_entry", entry );
 
-	label = gtk_label_new( "" );
-	gtk_grid_attach( GTK_GRID( table ), label, 1, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
-	gtk_widget_set_tooltip_text( label, _( "Directory name of the mod" ) );
-//	gtk_widget_show( label );
-	g_object_set_data( G_OBJECT( dialog ), "fs_game_label", label );
+	isBasegame = qtrue;
+	if( fs_game && strlen( fs_game ) > 0 ) {
+		for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
+		{
+			const game_t *game_x = (const game_t *)lst->data;
+			if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 && strcmp( game_x->fs_game, fs_game ) == 0 ) {
+				gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), fs_game );
+				isBasegame = qfalse;
+			}
+		}
+		if( isBasegame ) {
+			for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
+			{
+				const game_t *game_x = (const game_t *)lst->data;
+				if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 && game_x->custom ) {
+					gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), game_x->fs_game );
+					gtk_widget_set_sensitive( GTK_WIDGET( fs_game_entry ), true );
+					isBasegame = qfalse;
+					break;
+				}
+			}
+		}
+	}
+	if( isBasegame ) {
+		for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
+		{
+			const game_t *game_x = (const game_t *)lst->data;
+			if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 && game_x->base ) {
+				gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), game_x->fs_game );
+				fs_game = game_x->fs_game;
+				break;
+			}
+		}
+	}
+	gtk_entry_set_text( GTK_ENTRY( fs_game_entry ), fs_game );
 
-	
 	menu_frame = gtk_frame_new( _( "Menu commands" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), menu_frame, TRUE, TRUE, 0 );
 	gtk_widget_set_hexpand( menu_frame, TRUE );
@@ -741,7 +772,6 @@ void DoProjectSettings(){
 		const char *r;
 		char *w;
 		const char *custom_fs_game, *selected_game, *new_fs_game;
-		qboolean isbasegame;
 
 		// convert path to unix format
 		for ( r = gtk_entry_get_text( GTK_ENTRY( base ) ), w = buf; *r != '\0'; r++, w++ )
@@ -757,82 +787,80 @@ void DoProjectSettings(){
 		selected_game = gtk_combo_box_get_active_id( GTK_COMBO_BOX( game_select ) );
 		custom_fs_game = gtk_entry_get_text( GTK_ENTRY( fs_game_entry ) );
 
-		isbasegame = qfalse;
+		isBasegame = qfalse;
 		new_fs_game = NULL;
 
-		if( !selected_game )
-		{
-			isbasegame = qtrue; //should never happen that none is selected
+		if( !selected_game ) {
+			isBasegame = qtrue; //should never happen that none is selected
 		} else {
 			for( lst = mod_list; lst != NULL; lst = g_list_next( lst ) )
 			{
 				const game_t *game_x = (const game_t *)lst->data;
-				 if( strcmp( game_x->fs_game, selected_game ) == 0 )
-				 {
-					if( game_x->base ) 
-					{
-						isbasegame = qtrue;
-					} else 
-					if( game_x->custom ) 
-					{
-						if( !custom_fs_game || strlen( custom_fs_game ) == 0 )
-						{
-							isbasegame = qtrue;
-						} else
-						{
+				if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 && strcmp( game_x->fs_game, selected_game ) == 0 ) {
+					if( game_x->base ) {
+						isBasegame = qtrue;
+					} else if( game_x->custom ) {
+						if( !custom_fs_game || strlen( custom_fs_game ) == 0 ) {
+							isBasegame = qtrue;
+						} else {
 							new_fs_game = custom_fs_game;
 						}
-					} else 
-					{
+					} else {
 						new_fs_game = game_x->fs_game;
 					}
 				}
 			}
 		}
 		if( new_fs_game == NULL ) {
-			isbasegame = qtrue;
+			isBasegame = qtrue;
 		}
-		if( isbasegame ) {
+		if( isBasegame ) {
 			DeleteKey( g_qeglobals.d_project_entity, "gamename" );
 		} else {
 			SetKeyValue( g_qeglobals.d_project_entity, "gamename", new_fs_game );
 		}
 
-		if( gamemode_list )
-		{
+		if( gamemode_list ) {
 			const char *selected_mode;
 			const char *new_mode;
 			
 			selected_mode = gtk_combo_box_get_active_id( GTK_COMBO_BOX( gamemode_combo ) );
 			new_mode = NULL;
 
-			if( !selected_mode )
-			{
+			if( !selected_mode ) {
 				new_mode = NULL;
 			} else {
 				for( lst = gamemode_list; lst != NULL; lst = g_list_next( lst ) )
 				{
 					const gamemode_t *gamemode_x = (const gamemode_t *)lst->data;
-					if( strcmp( gamemode_x->mode, selected_mode ) == 0 )
-					{
+					if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gamemode_x->gameFile ) == 0 && strcmp( gamemode_x->mode, selected_mode ) == 0 ) {
 						new_mode = selected_mode;
 						break;
 					}
 				}
 			}
-			if( !new_mode ) 
-			{
+			if( !new_mode ) {
 				for( lst = gamemode_list; lst != NULL; lst = g_list_next( lst ) )
 				{
 					const gamemode_t *gamemode_x = (const gamemode_t *)lst->data;
-					new_mode = gamemode_x->mode;
-					break;
+					if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), gamemode_x->gameFile ) == 0 ) {
+						new_mode = gamemode_x->mode;
+						break;
+					}
 				}
 			}
 			if( new_mode ) {
 				SetKeyValue( g_qeglobals.d_project_entity, "gamemode", new_mode );
 			}
 		}
+
+		g_qeglobals.m_strHomeMaps = g_qeglobals.m_strHomeGame;
+		const char* str = ValueForKey( g_qeglobals.d_project_entity, "gamename" );
+		if ( str[0] == '\0' ) {
+			str = g_pGameDescription->mBaseGame.GetBuffer();
+		}
+		g_qeglobals.m_strHomeMaps += str;
+		g_qeglobals.m_strHomeMaps += G_DIR_SEPARATOR;
 
 		if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON( brush ) ) ) {
 			g_qeglobals.m_bBrushPrimitMode = TRUE;

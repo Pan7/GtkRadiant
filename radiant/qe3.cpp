@@ -1321,17 +1321,8 @@ void Sys_GetCursorPos( int *x, int *y ){
 }
 
 void Sys_SetCursorPos( int x, int y ){
-	// NOTE: coordinates are in GDK space, not OS space
-#ifdef _WIN32
-	int sys_x = x - g_pParentWnd->GetGDKOffsetX();
-	int sys_y = y - g_pParentWnd->GetGDKOffsetY();
-
-	SetCursorPos( sys_x, sys_y );
-#endif
-
-#if defined ( __linux__ ) || defined ( __APPLE__ )
-	XWarpPointer( GDK_DISPLAY(), None, GDK_ROOT_WINDOW(), 0, 0, 0, 0, x, y );
-#endif
+	GdkDisplay *display = gdk_display_get_default();
+	gdk_display_warp_pointer( display, gdk_display_get_default_screen( display ), x, y );
 }
 
 void Sys_Beep( void ){

@@ -34,13 +34,13 @@
    glib for Str.h (Str class)
 
    this is a utility library, it provides typical synapse client and server
-   could be split into two independant libraries actually, the server part and the client part
+   could be split into two independent libraries actually, the server part and the client part
    (that's just a matter of reducing binary size)
  */
 
 // compile time settings
 #ifdef _DEBUG
-  #define SYNAPSE_VERBOSE // be verbosive about the loading process
+  #define SYNAPSE_VERBOSE // be verbose about the loading process
 #endif
 
 // ydnar: required for os x
@@ -87,7 +87,7 @@
 /*!
    =======================================================================
    diagnostic printing facility
-   independently from any API negociation stuff,
+   independently from any API negotiation stuff,
    we need a diagnostic facility that's available at all times
    =======================================================================
  */
@@ -162,11 +162,11 @@ typedef struct XMLConfigEntry_s {
 /*!
    \class CSynapseAPIManager
    derive from this class if you want to manage several APIs through the same object
-   (typically, loading plugins, or an unknown number of APIs that match some criterions)
+   (typically, loading plugins, or an unknown number of APIs that match some criteria)
    this class has some pure virtual members that need to be implemented by the childs
 
    we deal with two types of API managers:
-   - the 'loose' ones have a matching pattern and load everything that matches criterions
+   - the 'loose' ones have a matching pattern and load everything that matches criteria
    typically used for plugins
    - the 'list' ones have a fixed list of things they require. They are used to provide
    easy access to multiple interfaces
@@ -215,7 +215,7 @@ void SetType( EAPIManagerType type ) { mType = type; }
    set the API matching pattern
    supported syntax:
    any minor for a given major, for instance: PLUGIN_MAJOR, "*"
-   a space seperated list of minors for a given major: IMAGE_MAJOR, "tga jpg"
+   a space separated list of minors for a given major: IMAGE_MAJOR, "tga jpg"
  */
 void SetMatchAPI( const char *major, const char *minor );
 
@@ -232,8 +232,8 @@ static APIDescriptor_t* PrepareRequireAPI( APIDescriptor_t *pAPI );
 bool CheckSetActive();
 
 /*!
-   the manager answers wether it wants to load this or not
-   we provide a default implementation, but this can be completely overriden if needed
+   the manager answers whether it wants to load this or not
+   we provide a default implementation, but this can be completely overridden if needed
    see SetMatchAPI for the documentation of the default implementation
    NOTE: this should only be called on API_MATCH type of managers
  */
@@ -275,8 +275,8 @@ class CSynapseServer; // forward declare
 class CSynapseClient : public IRefCounted
 {
 /*!
-   this flag indicates wether this client is active
-   i.e. wether you can ask it for interfaces
+   this flag indicates whether this client is active
+   i.e. whether you can ask it for interfaces
    this is either a client for which all required interfaces have been filled in
    or a client we are trying to resolve (i.e. load with all it's stuff)
  */
@@ -320,7 +320,7 @@ APIDescriptor_t* GetAPIDescriptor( int ) const; ///< retrieve specific informati
    SYN_PROVIDE: means this is an API we provide if anyone needs it
    SYN_REQUIRE: means this is an API we will require for operation
    SYN_REQUIRE_ANY: means this is an API we want to load *any* minor found
-   (for instance a list of image fornats, or the plugins)
+   (for instance a list of image formats, or the plugins)
 
    \param pTable
    the function table
@@ -359,7 +359,7 @@ CSynapseAPIManager* GetManagerList( int ); ///< get corresponding API manager
 virtual bool RequestAPI( APIDescriptor_t *pAPI ) = 0;
 
 /*!
-   return the build date, can be overriden by client module
+   return the build date, can be overridden by client module
  */
 virtual const char* GetInfo();
 
@@ -401,7 +401,7 @@ virtual bool OnActivate() { return true; }
 
    \param client_name, the name of the client node to look for. If NULL, use GetName()
 
-   \return wether all APIs given were successfully found in the config
+   \return whether all APIs given were successfully found in the config
  */
 bool ConfigXML( CSynapseServer *pServer, const char *client_name, const XMLConfigEntry_t entries[] );
 
@@ -447,7 +447,7 @@ typedef enum { SYN_SO, SYN_BUILTIN } EClientType;
 
 /*!
    server side slot for a synapse client
-   is OS dependant, except for the ISynapseClient part
+   is OS dependent, except for the ISynapseClient part
  */
 class CSynapseClientSlot
 {
@@ -513,7 +513,7 @@ gchar *m_content;
 
 /*!
    push required interfaces for this client into the stack of things to be resolved
-   it is possible that several mathing interfaces be in the stack at the same time
+   it is possible that several matching interfaces be in the stack at the same time
    (for instance several modules that want to get the VFS)
    but we should never have the same APIDescriptor_t twice
    NOTE: as this function is called repeatedly during the resolve (because the list of required things is refining),
@@ -546,7 +546,7 @@ void TryPushStack( APIDescriptor_t * );
    (i.e. it was not used at all during startup, or we have properly done a 'release' already)
    we scan the mStack for the SYN_REQUIRE that this client owns, and remove them
    \param iSlot is an mClients iterator, invalid when the function returns as the item will have been removed from the list
-   \return the iterator afer erase call so that the caller iteration can continue
+   \return the iterator after erase call so that the caller iteration can continue
  */
 list<CSynapseClientSlot>::iterator ShutdownClient( list<CSynapseClientSlot>::iterator iSlot );
 
@@ -563,8 +563,8 @@ void AddSearchPath( char* ); ///< add a new directory to the module search path
 /*!
    do the big thing, scan for modules, scan their APIs, load up everything
    providing pf is optional, will set the diagnostics printing
-   \param conf_file is the XML configuration file for the intialization (see docs/runtime.txt)
-   \return false if the init failed (for instance not found/invalid conf file
+   \param conf_file is the XML configuration file for the initialization (see docs/runtime.txt)
+   \return false if the init failed (for instance not found/invalid configuration file
  */
 bool Initialize( const char* conf_file = NULL, PFN_SYN_PRINTF_VA pf = NULL );
 
@@ -583,14 +583,14 @@ void EnumerateBuiltinModule( CSynapseBuiltinClient * );
    \brief resolve the function table loading for this client
    if the client is not listed in the known slots yet, it will be added
    wraps around internal DoResolve implementation to unload the unused modules
-   \return wether the resolution has been successful
+   \return whether the resolution has been successful
  */
 bool Resolve( CSynapseClient *pClient );
 
 /*!
    \brief shutdown all the clients. Should only be called when the core is about to exit
-   this will force all clients to shutdown. it may destroy refcounted APIs and stuff
-   \todo hafta use the release/refresh code before doing actual shutdown
+   this will force all clients to shutdown. it may destroy refcounted APIs and such
+   \todo have to use the release/refresh code before doing actual shutdown
    (i.e. when that code is written later on)
    we need to 'broadcast' to all the clients .. that all the modules are going to be reloaded sorta
    should clear up as many interfaces as possible to avoid unexpected crashes in the final stages of app exit

@@ -163,6 +163,11 @@
     <ClCompile Include="bspfile_abstract.c" />
     <ClCompile Include="bspfile_ibsp.c" />
     <ClCompile Include="bspfile_rbsp.c" />
+    <ClCompile Include="bsp_analyze.c" />
+    <ClCompile Include="bsp_info.c" />
+    <ClCompile Include="bsp_scale.c" />
+    <ClCompile Include="convert_bsp.c" />
+    <ClCompile Include="fixaas.c" />
     <ClCompile Include="image.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mesh.c" />

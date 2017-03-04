@@ -20,7 +20,7 @@
  */
 
 //
-// Main Window for Q3Radiant
+// Main Window for GtkRadiant
 //
 // Leonardo Zide (leo@lokigames.com)
 //
@@ -44,7 +44,7 @@ extern "C" {
 #include "patchdialog.h"
 #include "filters.h"
 
-// use this to verbose what happens with the beyboard
+// use this to verbose what happens with the keyboard
 #ifdef _DEBUG
 //  #define DBG_KBD
 #endif
@@ -162,15 +162,25 @@ SCommandInfo g_Commands[] =
 	{"CameraStrafeRight", GDK_KEY_period, 0, ID_CAMERA_STRAFERIGHT, "menu_camera_straferight"},
 	{"CameraStrafeLeft", GDK_KEY_comma, 0, ID_CAMERA_STRAFELEFT, "menu_camera_strafeleft"},
 	{"ToggleGrid", '0', 0, ID_GRID_TOGGLE, "menu_grid_toggle"},
+	{"ToggleGrid", GDK_KEY_0, 0, ID_GRID_TOGGLE, "menu_grid_toggle"},
 	{"SetGrid1", '1', 0, ID_GRID_1, "menu_grid_1"},
+	{"SetGrid1", GDK_KEY_1, 0, ID_GRID_1, "menu_grid_1"},
 	{"SetGrid2", '2', 0, ID_GRID_2, "menu_grid_2"},
+	{"SetGrid2", GDK_KEY_2, 0, ID_GRID_2, "menu_grid_2"},
 	{"SetGrid4", '3', 0, ID_GRID_4, "menu_grid_4"},
+	{"SetGrid4", GDK_KEY_3, 0, ID_GRID_4, "menu_grid_4"},
 	{"SetGrid8", '4', 0, ID_GRID_8, "menu_grid_8"},
+	{"SetGrid8", GDK_KEY_4, 0, ID_GRID_8, "menu_grid_8"},
 	{"SetGrid16", '5', 0, ID_GRID_16, "menu_grid_16"},
+	{"SetGrid16", GDK_KEY_5, 0, ID_GRID_16, "menu_grid_16"},
 	{"SetGrid32", '6', 0, ID_GRID_32, "menu_grid_32"},
+	{"SetGrid32", GDK_KEY_6, 0, ID_GRID_32, "menu_grid_32"},
 	{"SetGrid64", '7', 0, ID_GRID_64, "menu_grid_64"},
+	{"SetGrid64", GDK_KEY_7, 0, ID_GRID_64, "menu_grid_64"},
 	{"SetGrid128", '8', 0, ID_GRID_128, "menu_grid_128"},
+	{"SetGrid128", GDK_KEY_8, 0, ID_GRID_128, "menu_grid_128"},
 	{"SetGrid256", '9', 0, ID_GRID_256, "menu_grid_256"},
+	{"SetGrid256", GDK_KEY_9, 0, ID_GRID_256, "menu_grid_256"},
 	{"DragEdges", 'E', 0, ID_SELECTION_DRAGEDGES, "menu_selection_dragedges"},
 	{"DragVertices", 'V', 0, ID_SELECTION_DRAGVERTECIES, "menu_selection_dragvertecies"},
 	{"ViewEntityInfo", 'N', 0, ID_VIEW_ENTITY, "menu_view_entity"},
@@ -258,16 +268,26 @@ SCommandInfo g_Commands[] =
 	{"Sleep", 'P', 0x05, ID_FILE_SLEEP, "menu_file_sleep"},
 	{"SimplePatchMesh", 'P', 0x01, ID_CURVE_SIMPLEPATCHMESH, "menu_simplepatchmesh"},
 	{"FilterWorldBrushes", '1', RAD_ALT, ID_FILTER_WORLD, "menu_filter_world"},
+	{"FilterWorldBrushes", GDK_KEY_1, RAD_ALT, ID_FILTER_WORLD, "menu_filter_world"},
 	{"FilterEntities", '2', RAD_ALT, ID_FILTER_ENTITIES, "menu_filter_entities"},
+	{"FilterEntities", GDK_KEY_2, RAD_ALT, ID_FILTER_ENTITIES, "menu_filter_entities"},
 	{"FilterAreaportals", '3', RAD_ALT, ID_FILTER_AREAPORTALS, "menu_filter_areaportals"},
+	{"FilterAreaportals", GDK_KEY_3, RAD_ALT, ID_FILTER_AREAPORTALS, "menu_filter_areaportals"},
 	{"FilterTranslucent", '4', RAD_ALT, ID_FILTER_TRANSLUCENT, "menu_filter_translucent"},
+	{"FilterTranslucent", GDK_KEY_4, RAD_ALT, ID_FILTER_TRANSLUCENT, "menu_filter_translucent"},
 	{"FilterLiquids", '5', RAD_ALT, ID_FILTER_LIQUIDS, "menu_filter_liquids"},
+	{"FilterLiquids", GDK_KEY_5, RAD_ALT, ID_FILTER_LIQUIDS, "menu_filter_liquids"},
 	{"FilterCaulk", '6', RAD_ALT, ID_FILTER_CAULK, "menu_filter_caulk"},
+	{"FilterCaulk", GDK_KEY_6, RAD_ALT, ID_FILTER_CAULK, "menu_filter_caulk"},
 	{"FilterClips", '7', RAD_ALT, ID_FILTER_CLIPS, "menu_filter_clips"},
+	{"FilterClips", GDK_KEY_7, RAD_ALT, ID_FILTER_CLIPS, "menu_filter_clips"},
 	{"FilterBotClips", 'M', RAD_ALT, ID_FILTER_BOTCLIPS, "menu_filter_botclips"},
 	{"FilterPaths", '8', RAD_ALT, ID_FILTER_PATHS, "menu_filter_paths"},
+	{"FilterPaths", GDK_KEY_8, RAD_ALT, ID_FILTER_PATHS, "menu_filter_paths"},
 	{"FilterClusterportals", '9', RAD_ALT, ID_FILTER_CLUSTERPORTALS, "menu_filter_clusterportals"},
+	{"FilterClusterportals", GDK_KEY_9, RAD_ALT, ID_FILTER_CLUSTERPORTALS, "menu_filter_clusterportals"},
 	{"FilterLights", '0', RAD_ALT, ID_FILTER_LIGHTS, "menu_filter_lights"},
+	{"FilterLights", GDK_KEY_0, RAD_ALT, ID_FILTER_LIGHTS, "menu_filter_lights"},
 	{"FilterPatches", 'P', RAD_CONTROL, ID_FILTER_PATCHES, "menu_filter_patches"},
 	{"FilterDetails", 'D', RAD_CONTROL, ID_FILTER_DETAILS, "menu_filter_details"},
 	{"FilterStructural", 'D', RAD_CONTROL | RAD_SHIFT, ID_FILTER_STRUCTURAL, "menu_filter_structural"},
@@ -503,7 +523,7 @@ gint HandleCommand( GtkWidget *widget, gpointer data ){
 		  case ID_SELECTION_ARBITRARYROTATION: g_pParentWnd->OnSelectionArbitraryrotation(); break;
 		  case ID_SELECT_SCALE: g_pParentWnd->OnSelectScale(); break;
 		  case ID_SELECTION_MAKEHOLLOW: g_pParentWnd->OnSelectionMakehollow(); break;
-		  case ID_SELECTION_MAKEHOLLOW_TOUCH: g_pParentWnd->OnSelectionMakehollowTouch(); break; 
+		  case ID_SELECTION_MAKEHOLLOW_TOUCH: g_pParentWnd->OnSelectionMakehollowTouch(); break;
 		  case ID_SELECTION_CSGSUBTRACT: g_pParentWnd->OnSelectionCsgsubtract(); break;
 		  case ID_SELECTION_CSGMERGE: g_pParentWnd->OnSelectionCsgmerge(); break;
 		  case ID_SELECTION_NOOUTLINE: g_pParentWnd->OnSelectionNoOutline(); break;
@@ -1799,6 +1819,10 @@ void MainFrame::create_main_toolbar( GtkWidget *window, GtkWidget *vbox ){
 								 new_image_icon("selection_makehollow.png"),
 								 G_CALLBACK( HandleCommand ), GINT_TO_POINTER( ID_SELECTION_MAKEHOLLOW ) );
 	g_object_set_data( G_OBJECT( window ), "tb_selection_makehollow", w );
+	w = toolbar_append_item( GTK_TOOLBAR( toolbar ), "", _( "Hollow Touch" ), "",
+								 new_image_icon("selection_makehollow.png"),
+								 G_CALLBACK( HandleCommand ), GINT_TO_POINTER( ID_SELECTION_MAKEHOLLOW_TOUCH ) );
+	g_object_set_data( G_OBJECT( window ), "tb_selection_makehollow_touch", w );
 
 	w = toolbar_append_item( GTK_TOOLBAR( toolbar ), "", _( "Hollow Touch" ), "",
 								 new_image_icon("selection_makehollow.png"),
@@ -2581,6 +2605,7 @@ void MainFrame::Create(){
 		gdk_offset_y = MAX( gdk_offset_y, -monitorInfo.win_monitors[monitorInfo.i_win_mon].y );
 	}
 
+	// We do not use these offsets anymore. This could all probably be trashed. I doubt the multi monitor does anything useful/works either.
 	Sys_Printf( "GDK's coordinate system is offset by %d over the x-axis and %d over the y-axis from Windows' coordinate system.\n", gdk_offset_x, gdk_offset_y );
 
 	if ( g_PrefsDlg.m_bStartOnPrimMon ) {
@@ -2630,6 +2655,7 @@ void MainFrame::Create(){
 	MRU_Load();
 	create_main_toolbar( window, vbox );
 	create_plugin_toolbar( window,vbox );
+	create_main_statusbar( window, vbox );
 
 	m_nCurrentStyle = g_PrefsDlg.m_nView;
 
@@ -2760,7 +2786,7 @@ void MainFrame::Create(){
 			}
 		}
 
-		gtk_paned_set_position( GTK_PANED( m_pSplits[0] ), g_PrefsDlg.mWindowInfo.nXYHeight + 28 );
+		gtk_paned_set_position( GTK_PANED( m_pSplits[0] ), g_PrefsDlg.mWindowInfo.nXYHeight );
 
 		if ( CurrentStyle() == eRegular ) {
 			gtk_paned_set_position( GTK_PANED( m_pSplits[2] ), g_PrefsDlg.mWindowInfo.nZWidth );
@@ -3068,8 +3094,6 @@ void MainFrame::Create(){
 	Texture_SetMode( g_qeglobals.d_savedinfo.iTexMenu );
 
 	g_pParentWnd->OnEntitiesSetViewAs( 0 );
-
-	create_main_statusbar( window, vbox );
 
 	LoadCommandMap();
 	ShowMenuItemKeyBindings( window );
@@ -7307,6 +7331,7 @@ void MainFrame::OnGridPrev(){
 		case  64: item = GTK_WIDGET( g_object_get_data( G_OBJECT( m_pWidget ), "menu_grid_64" ) ); break;
 		case 128: item = GTK_WIDGET( g_object_get_data( G_OBJECT( m_pWidget ), "menu_grid_128" ) ); break;
 		case 256: item = GTK_WIDGET( g_object_get_data( G_OBJECT( m_pWidget ), "menu_grid_256" ) ); break;
+		default: return;
 		}
 
 	}
