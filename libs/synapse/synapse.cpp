@@ -154,11 +154,7 @@ bool CSynapseServer::Initialize( const char* conf_file, PFN_SYN_PRINTF_VA pf ){
 				}
 
 				Str newModule;
-#if defined( __CYGWIN__ )
-				newModule.Format( "%s%s%s", path, "cyg", name );
-#else
 				newModule.Format( "%s%s", path, name );
-#endif
 				Syn_Printf( "Found '%s'\n", newModule.GetBuffer() );
 				EnumerateInterfaces( newModule );
 			}
