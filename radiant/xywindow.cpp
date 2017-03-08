@@ -1487,8 +1487,9 @@ static GtkWidget * create_entity_menu_item( GtkWidget *submenu, CString strName 
 	CString filepath;
 	GdkPixbuf *pixbuf;
 
-	filepath = g_strGameToolsPath;
-	filepath += "entity_icons/";
+	filepath = g_pGameDescription->mEnginePath;
+	filepath += g_pGameDescription->mBaseGame;
+	filepath += "/icons/entity_icons/";
 	filepath += strName;
 	filepath += ".png";
 
@@ -1500,8 +1501,23 @@ static GtkWidget * create_entity_menu_item( GtkWidget *submenu, CString strName 
 	gtk_widget_show( box );
 
 	pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
-	if( pixbuf ) 
-	{
+	if( !pixbuf ) {
+		filepath = g_strGameToolsPath;
+		filepath += "entity_icons/";
+		filepath += g_pGameDescription->mBaseGame;
+		filepath += "/";
+		filepath += strName;
+		filepath += ".png";
+		pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
+		if( !pixbuf ) {
+			filepath = g_strGameToolsPath;
+			filepath += "entity_icons/";
+			filepath += strName;
+			filepath += ".png";
+			pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
+		}
+	}
+	if( pixbuf ) {
 		icon = gtk_image_new_from_pixbuf( pixbuf );
 		gtk_container_add( GTK_CONTAINER( box ), icon );
 		gtk_widget_show( icon );
