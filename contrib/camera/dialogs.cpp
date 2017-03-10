@@ -1132,7 +1132,7 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 	gtk_widget_show( hbox );
 
 	g_pTimeLine = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, 30000, 100, 250, 0 ) );
-	g_signal_connect( g_pTimeLine, "value_changed", G_CALLBACK( ci_timeline_changed ), NULL );
+	g_signal_connect( g_pTimeLine, "value-changed", G_CALLBACK( ci_timeline_changed ), NULL );
 	w = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, g_pTimeLine );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, TRUE, TRUE, 0 );
 	gtk_widget_show( w );

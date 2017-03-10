@@ -326,7 +326,7 @@ void InitBackgroundDialog(){
 											  flags,
 	                                          // TODO dialog with no buttons
 											  NULL );
-	g_signal_connect( pDialogWnd, "delete_event",
+	g_signal_connect( pDialogWnd, "delete-event",
 						G_CALLBACK( close_callback ), NULL );
 	g_signal_connect( pDialogWnd, "response",
 						G_CALLBACK( response_callback ), NULL );

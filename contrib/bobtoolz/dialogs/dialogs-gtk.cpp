@@ -291,7 +291,7 @@ int DoIntersectBox( IntersectRS* rs ){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "Intersect" );
@@ -552,7 +552,7 @@ int DoBuildStairsBox( BuildStairsRS* rs ){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "Stair Builder" );
@@ -813,7 +813,7 @@ int DoDoorsBox( DoorRS* rs ){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "Door Builder" );
@@ -1036,7 +1036,7 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "Texture Reset" );
@@ -1209,7 +1209,7 @@ int DoCTFColourChangeBox(){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "CTF Colour Changer" );
@@ -1611,7 +1611,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( window, "delete_event", G_CALLBACK( dialog_delete_callback ), NULL );
+	g_signal_connect( window, "delete-event", G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( window, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), "Train Thing" );

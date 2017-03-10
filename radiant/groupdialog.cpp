@@ -1260,7 +1260,6 @@ void GroupDlg::Create(){
 	}
 
 	dialog = gtk_dialog_new_with_buttons( _( "Entities" ), NULL, flags, NULL );
-	g_signal_connect( G_OBJECT( dialog ), "delete_event", G_CALLBACK( OnDeleteHide ), NULL );
 
 	content_area = gtk_dialog_get_content_area( GTK_DIALOG( dialog ) );
 
@@ -1271,8 +1270,9 @@ void GroupDlg::Create(){
 #endif
 	load_window_pos( dialog, g_PrefsDlg.mWindowInfo.posEntityWnd );
 
+	g_signal_connect( G_OBJECT( dialog ), "delete-event", G_CALLBACK( OnDeleteHide ), NULL );
 	// catch 'Esc'
-	g_signal_connect( dialog, "key_press_event", G_CALLBACK( OnDialogKey ), NULL );
+	g_signal_connect( dialog, "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
 
 	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
 	g_qeglobals_gui.d_entity = dialog;
@@ -1327,8 +1327,8 @@ void GroupDlg::Create(){
 
 								GtkWidget* view = gtk_tree_view_new_with_model( GTK_TREE_MODEL( store ) );
 								gtk_tree_view_set_headers_visible( GTK_TREE_VIEW( view ), FALSE );
-								g_signal_connect( view, "button_press_event", G_CALLBACK( eclasslist_button_press ), NULL );
-								g_signal_connect( view, "key_press_event", G_CALLBACK( eclasslist_keypress ), this );
+								g_signal_connect( view, "button-press-event", G_CALLBACK( eclasslist_button_press ), NULL );
+								g_signal_connect( view, "key-press-event", G_CALLBACK( eclasslist_keypress ), this );
 
 								{
 									GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
@@ -1509,7 +1509,7 @@ void GroupDlg::Create(){
 					gtk_widget_set_hexpand( entry, TRUE );
 					gtk_widget_show( entry );
 					gtk_widget_set_events( entry, GDK_KEY_PRESS_MASK );
-					g_signal_connect( entry, "key_press_event",	G_CALLBACK( entityentry_keypress ), this );
+					g_signal_connect( entry, "key-press-event",	G_CALLBACK( entityentry_keypress ), this );
 					EntWidgets[EntKeyField] = entry;
 				}
 
@@ -1519,7 +1519,7 @@ void GroupDlg::Create(){
 					gtk_widget_set_hexpand( entry, TRUE );
 					gtk_widget_show( entry );
 					gtk_widget_set_events( entry, GDK_KEY_PRESS_MASK );
-					g_signal_connect( entry, "key_press_event",	G_CALLBACK( entityentry_keypress ), this );
+					g_signal_connect( entry, "key-press-event",	G_CALLBACK( entityentry_keypress ), this );
 					EntWidgets[EntValueField] = entry;
 				}
 
@@ -1676,19 +1676,6 @@ void GroupDlg::Create(){
 					}
 
 				}
-
-				{
-					GtkWidget* vbox2 = gtk_vbox_new( FALSE, 0 );
-					gtk_widget_show( vbox2 );
-					gtk_box_pack_start( GTK_BOX( hbox ), vbox2, TRUE, TRUE, 0 );
-
-					{
-						GtkWidget* button = gtk_button_new_with_label( _( "Cam to angles" ) );
-						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( cam2angles ), NULL );
-						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
-					}
-				}
 			}
 		}
 
@@ -1720,6 +1707,6 @@ void GroupDlg::Create(){
 
 		inspector_mode = W_ENTITY;
 		m_pWidget = dialog;
-		g_signal_connect( notebook, "switch_page", G_CALLBACK( switch_page ), dialog );
+		g_signal_connect( notebook, "switch-page", G_CALLBACK( switch_page ), dialog );
 	}
 }

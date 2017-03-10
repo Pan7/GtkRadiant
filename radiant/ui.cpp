@@ -75,7 +75,7 @@ static gint keypress( GtkWidget* widget, GdkEventKey* event, gpointer data ){
 	IWindowListener *pListen = static_cast<IWindowListener *>( data );
 	ret = pListen->OnKeyPressed( gdk_keyval_name( event->keyval ) );
 	if ( ret ) {
-		g_signal_stop_emission_by_name( widget, "key_press_event" );
+		g_signal_stop_emission_by_name( widget, "key-press-event" );
 	}
 	return ret;
 }
@@ -131,15 +131,15 @@ bool CGtkWindow::Show(){
 
 	// Connect signal handlers
 	g_signal_connect( m_pGLWidget, "draw", G_CALLBACK( expose ), this );
-	g_signal_connect( m_pGLWidget, "motion_notify_event",
+	g_signal_connect( m_pGLWidget, "motion-notify-event",
 						G_CALLBACK( motion ), m_pListen );
-	g_signal_connect( m_pGLWidget, "button_press_event",
+	g_signal_connect( m_pGLWidget, "button-press-event",
 						G_CALLBACK( button_press ), m_pListen );
-	g_signal_connect( m_pGLWidget, "button_release_event",
+	g_signal_connect( m_pGLWidget, "button-release-event",
 						G_CALLBACK( button_release ), m_pListen );
 
-	g_signal_connect( m_pWnd, "delete_event", G_CALLBACK( close_widget ), this );
-	g_signal_connect( m_pWnd, "key_press_event",
+	g_signal_connect( m_pWnd, "delete-event", G_CALLBACK( close_widget ), this );
+	g_signal_connect( m_pWnd, "key-press-event",
 						G_CALLBACK( keypress ), m_pListen );
 
 	gtk_widget_show( m_pGLWidget );

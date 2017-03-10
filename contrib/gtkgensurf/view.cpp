@@ -375,7 +375,7 @@ void CreateViewWindow(){
 
 	g_pWndPreview = dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_title( GTK_WINDOW( dlg ), _( "GtkGenSurf Preview" ) );
-	g_signal_connect( dlg, "delete_event", G_CALLBACK( preview_close ), NULL );
+	g_signal_connect( dlg, "delete-event", G_CALLBACK( preview_close ), NULL );
 	g_signal_connect( dlg, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dlg ), GTK_WINDOW( g_pWnd ) );
 	gtk_window_set_default_size( GTK_WINDOW( dlg ), 300, 400 );
@@ -397,16 +397,16 @@ void CreateViewWindow(){
 	gtk_widget_show( label );
 
 	adj = gtk_adjustment_new( 30, -90, 90, 1, 10, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( preview_spin ), &elevation );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( preview_spin ), &elevation );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	g_object_set( spin, "xalign", 1.0, NULL );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_box_pack_start( GTK_BOX( hbox ), spin, FALSE, TRUE, 0 );
 	gtk_widget_show( spin );
-	g_signal_connect( spin, "focus_out_event", G_CALLBACK( doublevariable_spinfocusout ), &elevation );
+	g_signal_connect( spin, "focus-out-event", G_CALLBACK( doublevariable_spinfocusout ), &elevation );
 
 	adj = gtk_adjustment_new( 30, 0, 359, 1, 10, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( preview_spin ), &azimuth );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( preview_spin ), &azimuth );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	g_object_set( spin, "xalign", 1.0, NULL );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), TRUE );
@@ -419,7 +419,7 @@ void CreateViewWindow(){
 	gtk_widget_set_halign( label, GTK_ALIGN_END );
 	gtk_box_pack_end( GTK_BOX( hbox ), label, FALSE, TRUE, 0 );
 	gtk_widget_show( label );
-	g_signal_connect( spin, "focus_out_event", G_CALLBACK( doublevariable_spinfocusout ), &azimuth );
+	g_signal_connect( spin, "focus-out-event", G_CALLBACK( doublevariable_spinfocusout ), &azimuth );
 #endif
 
 	frame = gtk_frame_new( NULL );
@@ -431,8 +431,8 @@ void CreateViewWindow(){
 
 	gtk_widget_set_events( g_pPreviewWidget, GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK );
 	g_signal_connect( g_pPreviewWidget, "draw", G_CALLBACK( expose ), NULL );
-	g_signal_connect( g_pPreviewWidget, "motion_notify_event", G_CALLBACK( motion ), NULL );
-	g_signal_connect( g_pPreviewWidget, "button_press_event",
+	g_signal_connect( g_pPreviewWidget, "motion-notify-event", G_CALLBACK( motion ), NULL );
+	g_signal_connect( g_pPreviewWidget, "button-press-event",
 						G_CALLBACK( button_press ), NULL );
 
 	gtk_container_add( GTK_CONTAINER( frame ), g_pPreviewWidget );

@@ -42,7 +42,7 @@ void ShowInfoDialog( const char* pText ){
 		GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 		g_dlgInfo = dialog = gtk_dialog_new_with_buttons( _( "Information" ), NULL, flags, NULL );
-		g_signal_connect( G_OBJECT( dialog ), "delete_event", G_CALLBACK( gtk_widget_hide ), NULL );
+		g_signal_connect( G_OBJECT( dialog ), "delete-event", G_CALLBACK( gtk_widget_hide ), NULL );
 		gtk_window_set_default_size( GTK_WINDOW( dialog ), 300, 150 );
 
 		content_area = gtk_dialog_get_content_area( GTK_DIALOG( dialog ) );

@@ -820,7 +820,7 @@ static gint mainframe_keypress( GtkWidget* widget, GdkEventKey* event, gpointer 
 			}
 			if ( ( g_Commands[i].m_nModifiers & 0x7 ) == nState ) {
 				HandleCommand( NULL, GINT_TO_POINTER( g_Commands[i].m_nCommand ) );
-				g_signal_stop_emission_by_name( widget, "key_press_event" );
+				g_signal_stop_emission_by_name( widget, "key-press-event" );
 				return FALSE;
 			}
 		}
@@ -851,7 +851,7 @@ static gint mainframe_keyrelease( GtkWidget* widget, GdkEventKey* event, gpointe
 				case ID_CAMERA_STRAFERIGHT:
 				{
 					HandleKeyUp( NULL, GINT_TO_POINTER( g_Commands[i].m_nCommand ) );
-					g_signal_stop_emission_by_name( widget, "key_release_event" );
+					g_signal_stop_emission_by_name( widget, "key-release-event" );
 				}
 
 				}
@@ -2113,13 +2113,13 @@ static GtkWidget* create_floating( MainFrame* mainframe ){
 	if (mainframe->CurrentStyle() != MainFrame::eFloating)
 		gtk_window_set_transient_for( GTK_WINDOW( wnd ), GTK_WINDOW( mainframe->m_pWidget ) );
 	gtk_widget_set_events( wnd, GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK );
-	g_signal_connect( wnd, "delete_event", G_CALLBACK( widget_delete_hide ), NULL );
+	g_signal_connect( wnd, "delete-event", G_CALLBACK( widget_delete_hide ), NULL );
 	g_signal_connect( wnd, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
-	g_signal_connect( wnd, "key_press_event",
+	g_signal_connect( wnd, "key-press-event",
 						G_CALLBACK( mainframe_keypress ), mainframe );
-	g_signal_connect( wnd, "key_release_event",
+	g_signal_connect( wnd, "key-release-event",
 						G_CALLBACK( mainframe_keyrelease ), mainframe );
-	g_signal_connect( wnd, "map_event",
+	g_signal_connect( wnd, "map-event",
 						G_CALLBACK( mainframe_map ), mainframe );
 
 	gtk_window_set_default_size( GTK_WINDOW( wnd ), 100, 100 );
@@ -2509,8 +2509,8 @@ GtkWidget* create_framed_texwnd( TexWnd* texwnd ){
 	w = gtk_entry_new();
 	gtk_box_pack_start( GTK_BOX( texbox ), w, FALSE, FALSE, 0 );
 	texwnd->m_pFilter = w;
-	g_signal_connect( w, "focus_in_event", G_CALLBACK( entry_focus_in ), NULL );
-	g_signal_connect( w, "focus_out_event", G_CALLBACK( entry_focus_out ), NULL );
+	g_signal_connect( w, "focus-in-event", G_CALLBACK( entry_focus_in ), NULL );
+	g_signal_connect( w, "focus-out-event", G_CALLBACK( entry_focus_out ), NULL );
 
 	w = texwnd->GetWidget();
 	gtk_box_pack_start( GTK_BOX( texbox ), w, TRUE, TRUE, 0 );
@@ -2568,17 +2568,17 @@ void MainFrame::Create(){
 	GtkWidget* window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	m_pWidget = window;
 	gtk_widget_set_events( window, GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK );
-	g_signal_connect( window, "delete_event",
+	g_signal_connect( window, "delete-event",
 						G_CALLBACK( mainframe_delete ), this );
 	g_signal_connect( window, "destroy",
 						G_CALLBACK( mainframe_destroy ), this );
-	g_signal_connect( window, "key_press_event",
+	g_signal_connect( window, "key-press-event",
 						G_CALLBACK( mainframe_keypress ), this );
-	g_signal_connect( window, "key_release_event",
+	g_signal_connect( window, "key-release-event",
 						G_CALLBACK( mainframe_keyrelease ), this );
-	g_signal_connect( window, "map_event",
+	g_signal_connect( window, "map-event",
 						G_CALLBACK( mainframe_map ), this );
-	g_signal_connect( window, "unmap_event",
+	g_signal_connect( window, "unmap-event",
 						G_CALLBACK( mainframe_unmap ), this );
 
 	g_qeglobals_gui.d_main_window = window;

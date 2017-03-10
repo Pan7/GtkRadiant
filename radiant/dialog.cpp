@@ -81,7 +81,7 @@ static gint delete_event_callback( GtkWidget *widget, GdkEvent* event, gpointer 
 void Dialog::Create(){
 	if ( m_bNeedBuild ) {
 		m_pWidget = gtk_window_new( GTK_WINDOW_TOPLEVEL );
-		g_signal_connect( G_OBJECT( m_pWidget ), "delete_event",
+		g_signal_connect( G_OBJECT( m_pWidget ), "delete-event",
 							G_CALLBACK( delete_event_callback ), this );
 		g_signal_connect( G_OBJECT( m_pWidget ), "destroy",
 							G_CALLBACK( gtk_widget_destroy ), NULL );

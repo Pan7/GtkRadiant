@@ -1879,7 +1879,7 @@ void TexWnd::OnCreate(){
 	g_nTextureOffset = 0;
 
 	GtkAdjustment *vadjustment = gtk_range_get_adjustment( GTK_RANGE( g_qeglobals_gui.d_texture_scroll ) );
-	g_signal_connect( vadjustment, "value_changed", G_CALLBACK( vertical_scroll ), this );
+	g_signal_connect( vadjustment, "value-changed", G_CALLBACK( vertical_scroll ), this );
 
 	if ( g_PrefsDlg.m_bTextureScrollbar ) {
 		gtk_widget_show( g_qeglobals_gui.d_texture_scroll );

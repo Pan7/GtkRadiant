@@ -300,9 +300,9 @@ void PatchDialog::BuildDialog(){
 	load_window_pos( dlg, g_PrefsDlg.mWindowInfo.posPatchWnd );
 
 	gtk_window_set_title( GTK_WINDOW( dlg ), _( "Patch Properties" ) );
-	g_signal_connect( dlg, "delete_event", G_CALLBACK( OnDone ), NULL );
+	g_signal_connect( dlg, "delete-event", G_CALLBACK( OnDone ), NULL );
 	// catch 'Esc' and 'Enter'
-	g_signal_connect( dlg, "key_press_event", G_CALLBACK( OnDialogKey ), NULL );
+	g_signal_connect( dlg, "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dlg ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
 
 
@@ -538,7 +538,7 @@ void PatchDialog::BuildDialog(){
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), l_pPIIncrement->shift[0] );
 
 	adj = gtk_adjustment_new( 0, -8192, 8192, 1, 1, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnSpinChanged ), spin );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnSpinChanged ), spin );
 	g_object_set_data( G_OBJECT( m_pWidget ), "hshift_adj", adj );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
@@ -559,7 +559,7 @@ void PatchDialog::BuildDialog(){
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), l_pPIIncrement->shift[1] );
 
 	adj = gtk_adjustment_new( 0, -8192, 8192, 1, 1, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnSpinChanged ), spin );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnSpinChanged ), spin );
 	g_object_set_data( G_OBJECT( m_pWidget ), "vshift_adj", adj );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
@@ -580,7 +580,7 @@ void PatchDialog::BuildDialog(){
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), l_pPIIncrement->scale[0] );
 
 	adj = gtk_adjustment_new( 0, -1000, 1000, 1, 1, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnSpinChanged ), spin );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnSpinChanged ), spin );
 	g_object_set_data( G_OBJECT( m_pWidget ), "hscale_adj", adj );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
@@ -601,7 +601,7 @@ void PatchDialog::BuildDialog(){
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), l_pPIIncrement->scale[1] );
 
 	adj = gtk_adjustment_new( 0, -1000, 1000, 1, 1, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnSpinChanged ), spin );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnSpinChanged ), spin );
 	g_object_set_data( G_OBJECT( m_pWidget ), "vscale_adj", adj );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
@@ -622,7 +622,7 @@ void PatchDialog::BuildDialog(){
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ),  l_pPIIncrement->rotate );
 
 	adj = gtk_adjustment_new( 0, -1000, 1000, 1, 1, 0 ); // NOTE: Arnout - this really should be 360 but can't change it anymore as it could break existing maps
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnSpinChanged ), spin );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnSpinChanged ), spin );
 	g_object_set_data( G_OBJECT( m_pWidget ), "rotate_adj", adj );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );

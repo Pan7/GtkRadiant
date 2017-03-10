@@ -75,7 +75,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_STLP_DONT_USE_EXCEPTIONS;_STLP_NO_NAMESPACES;_STLP_NO_IOSTREAMS;_WIN32</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -83,7 +83,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/STACK:8388608 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Ws2_32.lib;glib-2.0.lib;gobject-2.0.lib;gtk-3.0.lib;gdk-3.0.lib;pango-1.0.lib;pangoft2-1.0.lib;mathlib.lib;synapse.lib;l_net.lib;cmdlib.lib;cairo.lib;gdk_pixbuf-2.0.lib;libiconv.lib;libxml2.lib;gtkglext.lib;opengl32.lib;libintl.lib;zdll.lib;stlport.5.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;glib-2.0.lib;gobject-2.0.lib;gtk-3.0.lib;gdk-3.0.lib;pango-1.0.lib;pangoft2-1.0.lib;mathlib.lib;synapse.lib;l_net.lib;cmdlib.lib;cairo.lib;gdk_pixbuf-2.0.lib;libiconv.lib;libxml2.lib;gtkglext.lib;opengl32.lib;libintl.lib;zdll.lib;stlport.5.2.lib;Dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\build\$(Configuration)\libs;$(SolutionDir)\..\GtkRadiant-libs\vs10\Win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>

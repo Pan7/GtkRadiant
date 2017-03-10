@@ -616,15 +616,15 @@ static GtkWidget* CreateOpenGLWidget(){
 
 	// Connect signal handlers
 	g_signal_connect( g_pToolWidget, "draw", G_CALLBACK( expose ), NULL );
-	g_signal_connect( g_pToolWidget, "motion_notify_event",
+	g_signal_connect( g_pToolWidget, "motion-notify-event",
 						G_CALLBACK( motion ), NULL );
-	g_signal_connect( g_pToolWidget, "button_press_event",
+	g_signal_connect( g_pToolWidget, "button-press-event",
 						G_CALLBACK( button_press ), NULL );
-	g_signal_connect( g_pToolWidget, "button_release_event",
+	g_signal_connect( g_pToolWidget, "button-release-event",
 						G_CALLBACK( button_release ), NULL );
 
-	g_signal_connect( g_pToolWnd, "delete_event", G_CALLBACK( close ), NULL );
-	g_signal_connect( g_pToolWnd, "key_press_event",
+	g_signal_connect( g_pToolWnd, "delete-event", G_CALLBACK( close ), NULL );
+	g_signal_connect( g_pToolWnd, "key-press-event",
 						G_CALLBACK( keypress ), NULL );
 
 	return g_pToolWidget;

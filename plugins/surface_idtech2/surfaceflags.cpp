@@ -271,7 +271,7 @@ void on_value_entry_insert_text( GtkEditable *editable, gchar *new_text, gint ne
 											G_CALLBACK( on_value_entry_insert_text ),
 											user_data );
 	}
-	g_signal_stop_emission_by_name( G_OBJECT( editable ), "insert_text" );
+	g_signal_stop_emission_by_name( G_OBJECT( editable ), "insert-text" );
 
 	g_free( result );
 }
@@ -367,7 +367,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	g_signal_connect( value_entry, "changed",
 						G_CALLBACK( on_value_entry_changed ),
 						NULL );
-	g_signal_connect( value_entry, "insert_text",
+	g_signal_connect( value_entry, "insert-text",
 						G_CALLBACK( on_value_entry_insert_text ),
 						NULL );
 	gtk_entry_set_max_length( (GtkEntry *)value_entry, 11 );

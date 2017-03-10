@@ -146,7 +146,7 @@ void FindTextureDialog::BuildDialog(){
 	gtk_table_attach( GTK_TABLE( table ), entry, 1, 2, 0, 1,
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	g_signal_connect( G_OBJECT( entry ), "focus_in_event",
+	g_signal_connect( G_OBJECT( entry ), "focus-in-event",
 						G_CALLBACK( find_focus_in ), NULL );
 	AddDialogData( entry, &m_strFind, DLG_ENTRY_TEXT );
 
@@ -167,7 +167,7 @@ void FindTextureDialog::BuildDialog(){
 	gtk_table_attach( GTK_TABLE( table ), entry, 1, 2, 1, 2,
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	g_signal_connect( entry, "focus_in_event", G_CALLBACK( replace_focus_in ), NULL );
+	g_signal_connect( entry, "focus-in-event", G_CALLBACK( replace_focus_in ), NULL );
 	AddDialogData( entry, &m_strReplace, DLG_ENTRY_TEXT );
 
 	button = gtk_button_new();

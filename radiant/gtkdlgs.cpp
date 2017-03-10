@@ -1220,7 +1220,7 @@ void DoEntityList(){
 		GtkTreeStore* store = gtk_tree_store_new( 2, G_TYPE_STRING, G_TYPE_POINTER );
 
 		GtkWidget* view = gtk_tree_view_new_with_model( GTK_TREE_MODEL( store ) );
-		g_signal_connect( view, "button_press_event", G_CALLBACK( entitylist_click ), dialog );
+		g_signal_connect( view, "button-press-event", G_CALLBACK( entitylist_click ), dialog );
 		gtk_tree_view_set_headers_visible( GTK_TREE_VIEW( view ), FALSE );
 
 		{
@@ -1951,9 +1951,8 @@ void DoNewPatchDlg(){
 // New Patch dialog
 
 static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer data ){
-	GtkSpinButton *spin;
 	float sx, sy, sz;
-
+	GtkWidget *x, *y, *z;
 	if ( response_id == GTK_RESPONSE_CANCEL )
     {
 		gtk_widget_destroy( GTK_WIDGET( widget ) );
@@ -1963,17 +1962,17 @@ static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer 
     {
 		return;
 	}
-	spin = GTK_SPIN_BUTTON( g_object_get_data( G_OBJECT( data ), "x" ) );
-	sx = gtk_spin_button_get_value( spin );
-	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), 1.0f );
+	x = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "x" ) );
+	y = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "y" ) );
+	z = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "z" ) );
 
-	spin = GTK_SPIN_BUTTON( g_object_get_data( G_OBJECT( data ), "y" ) );
-	sy = gtk_spin_button_get_value( spin );
-	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), 1.0f );
+	sx = gtk_spin_button_get_value( GTK_SPIN_BUTTON( x ) );
+	sy = gtk_spin_button_get_value( GTK_SPIN_BUTTON( y ) );
+	sz = gtk_spin_button_get_value( GTK_SPIN_BUTTON( z ) );
 
-	spin = GTK_SPIN_BUTTON( g_object_get_data( G_OBJECT( data ), "z" ) );
-	sz = gtk_spin_button_get_value( spin );
-	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), 1.0f );
+	gtk_spin_button_set_value( GTK_SPIN_BUTTON( x ), 1.0f );
+	gtk_spin_button_set_value( GTK_SPIN_BUTTON( y ), 1.0f );
+	gtk_spin_button_set_value( GTK_SPIN_BUTTON( z ), 1.0f );
 
 	if ( sx > 0 && sy > 0 && sz > 0 ) {
 		Select_Scale( sx, sy, sz );
@@ -2980,7 +2979,7 @@ char* DoNameDlg( const char* title ){
 
 	dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_title( GTK_WINDOW( dlg ), title );
-	g_signal_connect( dlg, "delete_event",
+	g_signal_connect( dlg, "delete-event",
 						G_CALLBACK( dialog_delete_callback ), NULL );
 	g_signal_connect( dlg, "destroy",
 						G_CALLBACK( gtk_widget_destroy ), NULL );
@@ -3244,7 +3243,7 @@ static void CreateGtkTextEditor(){
 
 	dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( dlg, "delete_event",
+	g_signal_connect( dlg, "delete-event",
 						G_CALLBACK( editor_delete ), NULL );
 	gtk_window_set_default_size( GTK_WINDOW( dlg ), 600, 300 );
 

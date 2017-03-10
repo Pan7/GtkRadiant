@@ -1176,11 +1176,6 @@ void CGameDialog::BuildDialog() {
 	gtk_container_add( GTK_CONTAINER( vbox1 ), GetGlobalFrame() );
 	mTopBox = vbox1;
 
-	button = gtk_button_new_with_label( _( "Start editor on selected game" ) );
-	gtk_widget_show( button );
-	gtk_box_pack_start( GTK_BOX( vbox1 ), button, FALSE, FALSE, 0 );
-	AddModalButton( button, IDOK );
-
 	setup_button = gtk_button_new_with_label( _( "Configure editor for another game" ) );
 	gtk_box_pack_start( GTK_BOX( vbox1 ), setup_button, FALSE, FALSE, 0 );
 	gtk_widget_show( setup_button );
@@ -1195,14 +1190,14 @@ void CGameDialog::BuildDialog() {
 	gtk_box_pack_start( GTK_BOX( vbox1 ), hbox1, FALSE, FALSE, 0 );
 	gtk_widget_show( hbox1 );
 
-	button = gtk_button_new_with_label( _( "OK" ) );
+	button = gtk_button_new_with_label( _( "Start" ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), button, TRUE, TRUE, 0 );
 	gtk_widget_show( button );
 	AddModalButton( button, IDOK );
 
 	gtk_widget_grab_focus( button );
 
-	button = gtk_button_new_with_label( _( "Cancel" ) );
+	button = gtk_button_new_with_label( _( "Exit" ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), button, TRUE, TRUE, 0 );
 	gtk_widget_show( button );
 	AddModalButton( button, IDCANCEL );

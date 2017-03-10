@@ -305,7 +305,7 @@ void DoConfigDialog(){
 	lw3label = gtk_label_new( "" );
 	gtk_box_pack_start( GTK_BOX( hbox ), lw3label, FALSE, TRUE, 0 );
 	gtk_widget_show( lw3label );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnScroll3d ), lw3label );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScroll3d ), lw3label );
 
 	table = gtk_grid_new();
 	gtk_box_pack_start( GTK_BOX( vbox2 ), table, TRUE, TRUE, 0 );
@@ -378,7 +378,7 @@ void DoConfigDialog(){
 	gtk_grid_attach( GTK_GRID( table ), translabel, 1, 0, 1, 1 );
 	gtk_widget_set_halign( translabel, GTK_ALIGN_START );
 	gtk_widget_show( translabel );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnScrollTrans ), translabel );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScrollTrans ), translabel );
 
 	adj = gtk_adjustment_new( portals.clip_range, 1, 128, 1, 1, 1 );
 	clipslider = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
@@ -391,7 +391,7 @@ void DoConfigDialog(){
 	gtk_grid_attach( GTK_GRID( table ), cliplabel, 1, 1, 1, 1 );
 	gtk_widget_set_halign( cliplabel, GTK_ALIGN_START );
 	gtk_widget_show( cliplabel );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnScrollClip ), cliplabel );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScrollClip ), cliplabel );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 5 );
 	gtk_widget_show( hbox );
@@ -429,7 +429,7 @@ void DoConfigDialog(){
 	lw2label = gtk_label_new( "" );
 	gtk_widget_show( lw2label );
 	gtk_box_pack_start( GTK_BOX( hbox ), lw2label, FALSE, TRUE, 0 );
-	g_signal_connect( adj, "value_changed", G_CALLBACK( OnScroll2d ), lw2label );
+	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScroll2d ), lw2label );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 5 );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), hbox, TRUE, FALSE, 0 );
