@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <glib/gi18n.h>
 
 #include "surfacedialog.h"
 #include "surfaceflags.h"
@@ -564,7 +565,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_container_add( GTK_CONTAINER( vbox1 ), hbox1 );
 	gtk_container_set_border_width( GTK_CONTAINER( hbox1 ), 4 );
 
-	label = gtk_label_new( "Texture: " );
+	label = gtk_label_new( _( "Texture: " ) );
 	gtk_widget_show( label );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), label, FALSE, FALSE, 0 );
 	gtk_misc_set_alignment( GTK_MISC( label ), 1, 0.5 );
@@ -580,7 +581,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_show( texture_combo_entry );
 	gtk_entry_set_max_length( GTK_ENTRY( texture_combo_entry ), 1024 );
 
-	frame1 = gtk_frame_new( "Surface" );
+	frame1 = gtk_frame_new( _( "Surface" ) );
 	gtk_widget_show( frame1 );
 	gtk_container_add( GTK_CONTAINER( vbox1 ), frame1 );
 
@@ -591,44 +592,44 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_container_set_border_width( GTK_CONTAINER( table1 ), 5 );
 	gtk_container_add( GTK_CONTAINER( frame1 ), table1 );
 
-	label = gtk_label_new( "Step" );
+	label = gtk_label_new( _( "Step" ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 2, 3, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 
-	label = gtk_label_new( "Value" );
+	label = gtk_label_new( _( "Value" ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 1, 2, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0.5, 1 );
 
-	label = gtk_label_new( "Horizontal shift: " );
+	label = gtk_label_new( _( "Horizontal shift: " ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 0, 1, 1, 2,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( GTK_FILL ), 0, 0 );
 
-	label = gtk_label_new( "Vertical shift: " );
+	label = gtk_label_new( _( "Vertical shift: " ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 0, 1, 2, 3,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( GTK_FILL ), 0, 0 );
 
-	label = gtk_label_new( "Horizontal scale: " );
+	label = gtk_label_new( _( "Horizontal scale: " ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 0, 1, 3, 4,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( GTK_FILL ), 0, 0 );
 
-	label = gtk_label_new( "Vertical scale: " );
+	label = gtk_label_new( _( "Vertical scale: " ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 0, 1, 4, 5,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( GTK_FILL ), 0, 0 );
 
-	label = gtk_label_new( "Rotate: " );
+	label = gtk_label_new( _( "Rotate: " ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table1 ), label, 0, 1, 5, 6,
 					  (GtkAttachOptions) ( GTK_FILL ),
@@ -643,6 +644,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( hshift_value_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( hshift_value_spinbutton ), TRUE );
+	g_object_set( hshift_value_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -8192.0, 8192.0, 2.0, 8.0, 0.0 );
 	vshift_value_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -652,6 +654,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( vshift_value_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( vshift_value_spinbutton ), TRUE );
+	g_object_set( vshift_value_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	hscale_value_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 4 );
@@ -661,6 +664,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( hscale_value_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( hscale_value_spinbutton ), TRUE );
+	g_object_set( hscale_value_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	vscale_value_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 4 );
@@ -669,6 +673,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( vscale_value_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( vscale_value_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -360.0, 360.0, 1.0, 10.0, 0.0 );
 	rotate_value_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -678,6 +683,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( rotate_value_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( rotate_value_spinbutton ), TRUE );
+	g_object_set( rotate_value_spinbutton, "xalign", 1.0, NULL );
 
 	// Step Spins
 	adjustment = gtk_adjustment_new( 0.0, -8192.0, 8192.0, 2.0, 8.0, 0.0 );
@@ -687,6 +693,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( hshift_step_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( hshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -8192.0, 8192.0, 2.0, 8.0, 0.0 );
 	vshift_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -695,6 +702,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( vshift_step_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( vshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	hscale_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 4 );
@@ -703,6 +711,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( hscale_step_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( hscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	vscale_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 4 );
@@ -711,6 +720,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( vscale_step_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( vscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -360.0, 360.0, 1.0, 10.0, 0.0 );
 	rotate_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -719,6 +729,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( rotate_step_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( rotate_step_spinbutton, "xalign", 1.0, NULL );
 
 	match_grid_button = gtk_button_new_with_mnemonic( "Match Grid" );
 	gtk_widget_show( match_grid_button );
@@ -737,19 +748,19 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_container_set_border_width( GTK_CONTAINER( table2 ), 5 );
 	gtk_container_add( GTK_CONTAINER( frame2 ), table2 );
 
-	label = gtk_label_new( "Height" );
+	label = gtk_label_new( _( "Height" ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table2 ), label, 3, 4, 0, 1,
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 
-	label = gtk_label_new( "Width" );
+	label = gtk_label_new( _( "Width" ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table2 ), label, 2, 3, 0, 1,
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 
-	label = gtk_label_new( "Brush" );
+	label = gtk_label_new( _( "Brush" ) );
 	gtk_widget_show( label );
 	gtk_table_attach( GTK_TABLE( table2 ), label, 0, 2, 0, 1,
 					  (GtkAttachOptions) ( GTK_EXPAND | GTK_FILL ),
@@ -763,6 +774,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( fit_height_spinbutton ), TRUE );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( fit_height_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( fit_height_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 1, 1, 32, 1, 10, 0 );
 	fit_width_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 0 );
@@ -772,6 +784,7 @@ GtkWidget* create_SurfaceInspector( void ){
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( fit_width_spinbutton ), TRUE );
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( fit_width_spinbutton ), GTK_UPDATE_IF_VALID );
+	g_object_set( fit_width_spinbutton, "xalign", 1.0, NULL );
 
 	fit_button = gtk_button_new_with_mnemonic( "Fit" );
 	gtk_widget_show( fit_button );
@@ -1035,7 +1048,7 @@ static void on_hshift_step_spinbutton_value_changed( GtkSpinButton *spinbutton, 
 
 	val = gtk_spin_button_get_value( GTK_SPIN_BUTTON( hshift_step_spinbutton ) ) ;
 	adjust = gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( hshift_value_spinbutton ) );
-	adjust->step_increment = val;
+	gtk_adjustment_set_step_increment( adjust, val );
 	l_pIncrement->shift[0] = val;
 }
 
@@ -1055,7 +1068,7 @@ static void on_vshift_step_spinbutton_value_changed( GtkSpinButton *spinbutton, 
 
 	val = gtk_spin_button_get_value( GTK_SPIN_BUTTON( vshift_step_spinbutton ) ) ;
 	adjust = gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( vshift_value_spinbutton ) );
-	adjust->step_increment = val;
+	gtk_adjustment_set_step_increment( adjust, val );
 	l_pIncrement->shift[1] = val;
 }
 
@@ -1075,7 +1088,7 @@ static void on_hscale_step_spinbutton_value_changed( GtkSpinButton *spinbutton, 
 
 	val = gtk_spin_button_get_value( GTK_SPIN_BUTTON( hscale_step_spinbutton ) ) ;
 	adjust = gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( hscale_value_spinbutton ) );
-	adjust->step_increment = val;
+	gtk_adjustment_set_step_increment( adjust, val );
 	l_pIncrement->scale[0] = val;
 }
 
@@ -1095,7 +1108,7 @@ static void on_vscale_step_spinbutton_value_changed( GtkSpinButton *spinbutton, 
 
 	val = gtk_spin_button_get_value( GTK_SPIN_BUTTON( vscale_step_spinbutton ) ) ;
 	adjust = gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( vscale_value_spinbutton ) );
-	adjust->step_increment = val;
+	gtk_adjustment_set_step_increment( adjust, val );
 	l_pIncrement->scale[1] = val;
 }
 
@@ -1115,7 +1128,7 @@ static void on_rotate_step_spinbutton_value_changed( GtkSpinButton *spinbutton, 
 
 	val = gtk_spin_button_get_value( GTK_SPIN_BUTTON( rotate_step_spinbutton ) ) ;
 	adjust = gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( rotate_value_spinbutton ) );
-	adjust->step_increment = val;
+	gtk_adjustment_set_step_increment( adjust, val );
 	l_pIncrement->rotate = val;
 }
 

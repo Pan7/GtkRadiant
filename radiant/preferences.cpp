@@ -2538,7 +2538,7 @@ void PrefsDlg::BuildDialog(){
 	AddDialogData( entry, &m_strUserPath, DLG_ENTRY_TEXT );
 
 	// user ini browse button
-	button = gtk_button_new_with_label( "..." );
+	button = gtk_button_new_with_label( _( "..." ) );
 	gtk_widget_show( button );
 	gtk_signal_connect( GTK_OBJECT( button ), "clicked", GTK_SIGNAL_FUNC( OnBtnBrowseuserini ), this );
 	gtk_table_attach( GTK_TABLE( table ), button, 2, 3, 1, 2,
@@ -2762,7 +2762,7 @@ void PrefsDlg::BuildDialog(){
 	// Add the page to the notebook
 	gtk_notebook_append_page( GTK_NOTEBOOK( notebook ), pageframe, preflabel );
 
-	gtk_notebook_set_page( GTK_NOTEBOOK( notebook ), PTAB_FRONT );
+	gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), PTAB_FRONT );
 }
 
 // end new prefs dialog
