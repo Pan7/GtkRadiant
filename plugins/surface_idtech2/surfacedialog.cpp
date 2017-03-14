@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <glib/gi18n.h>
 
 #include "surfacedialog.h"
 #include "surfaceflags.h"
@@ -568,7 +569,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_container_set_border_width( GTK_CONTAINER( hbox1 ), 4 );
 	gtk_widget_show( hbox1 );
 
-	label = gtk_label_new( "Texture: " );
+	label = gtk_label_new( _( "Texture: " ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -584,7 +585,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_entry_set_max_length( GTK_ENTRY( texture_combo_entry ), 1024 );
 	gtk_widget_show( texture_combo_entry );
 
-	frame1 = gtk_frame_new( "Surface" );
+	frame1 = gtk_frame_new( _( "Surface" ) );
 	gtk_container_add( GTK_CONTAINER( vbox1 ), frame1 );
 	gtk_widget_show( frame1 );
 
@@ -606,27 +607,27 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Horizontal shift: " );
+	label = gtk_label_new( _( "Horizontal shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 1, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Vertical shift: " );
+	label = gtk_label_new( _( "Vertical shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 2, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Horizontal scale: " );
+	label = gtk_label_new( _( "Horizontal scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 3, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Vertical scale: " );
+	label = gtk_label_new( _( "Vertical scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 4, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Rotate: " );
+	label = gtk_label_new( _( "Rotate: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 5, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -667,6 +668,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( GTK_WIDGET( vscale_value_spinbutton ), TRUE );
 	gtk_widget_show( vscale_value_spinbutton );
 	g_object_set( vscale_value_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( vscale_value_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -360.0, 360.0, 1.0, 10.0, 0.0 );
 	rotate_value_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -685,6 +687,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( GTK_WIDGET( hshift_step_spinbutton ), TRUE );
 	gtk_widget_show( hshift_step_spinbutton );
 	g_object_set( hshift_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( hshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -8192.0, 8192.0, 2.0, 8.0, 0.0 );
 	vshift_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -692,6 +695,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_grid_attach( GTK_GRID( table1 ), vshift_step_spinbutton, 2, 2, 1, 1 );
 	gtk_widget_set_hexpand( GTK_WIDGET( vshift_step_spinbutton ), TRUE );
 	gtk_widget_show( vshift_step_spinbutton );
+	g_object_set( vshift_step_spinbutton, "xalign", 1.0, NULL );
 	g_object_set( vshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
@@ -701,6 +705,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( GTK_WIDGET( hscale_step_spinbutton ), TRUE );
 	gtk_widget_show( hscale_step_spinbutton );
 	g_object_set( hscale_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( hscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	vscale_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 4 );
@@ -709,6 +714,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( GTK_WIDGET( vscale_step_spinbutton ), TRUE );
 	gtk_widget_show( vscale_step_spinbutton );
 	g_object_set( vscale_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( vscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	adjustment = gtk_adjustment_new( 0.0, -360.0, 360.0, 1.0, 10.0, 0.0 );
 	rotate_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adjustment ), 1, 2 );
@@ -716,6 +722,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_grid_attach( GTK_GRID( table1 ), rotate_step_spinbutton, 2, 5, 1, 1 );
 	gtk_widget_set_hexpand( GTK_WIDGET( rotate_step_spinbutton ), TRUE );
 	gtk_widget_show( rotate_step_spinbutton );
+	g_object_set( rotate_step_spinbutton, "xalign", 1.0, NULL );
 	g_object_set( rotate_step_spinbutton, "xalign", 1.0, NULL );
 
 	match_grid_button = gtk_button_new_with_mnemonic( "Match Grid" );
@@ -746,7 +753,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( GTK_WIDGET( label ), TRUE );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Width" );
+	label = gtk_label_new( _( "Width" ) );
 	gtk_grid_attach( GTK_GRID( table2 ), label, 3, 0, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_set_hexpand( GTK_WIDGET( label ), TRUE );

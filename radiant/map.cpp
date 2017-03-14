@@ -816,11 +816,10 @@ void Map_SaveFile( const char *filename, qboolean use_region ){
 
 		time( &timer );
 
-		if( g_PrefsDlg.m_bSaveBeep )
-		{
+		if( g_PrefsDlg.m_bSaveBeep ) {
 			Sys_Beep();
 		}
-		Sys_Status( _( "Saved." ), 0 );
+		Sys_Status( "Saved.", 0 );
 	}
 }
 

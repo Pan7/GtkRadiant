@@ -168,21 +168,19 @@ void Dialog::UpdateData( bool retrieve ){
 			case DLG_COMBO_INT:
 			{
 				GList *lst = gtk_container_get_children( GTK_CONTAINER( data->object ) );
-				const gchar *label;
-				const gchar *entry;
+				const char *labeltext;
+				const char *entrytext;
 				int i;
 
 				*(int*)data->buffer = -1;
-				if( gtk_combo_box_get_has_entry( GTK_COMBO_BOX( data->object ) ) )
-				{
-				
-					entry = gtk_entry_get_text( GTK_ENTRY( gtk_bin_get_child( GTK_BIN( GTK_COMBO_BOX( data->object ) ) ) ) );
+				if( gtk_combo_box_get_has_entry( GTK_COMBO_BOX( data->object ) ) ) {		
+					entrytext = gtk_entry_get_text( GTK_ENTRY( gtk_bin_get_child( GTK_BIN( GTK_COMBO_BOX( data->object ) ) ) ) );
 
 					for ( i = 0; lst != NULL; lst = g_list_next( lst ) )
 					{
-						label = gtk_label_get_text( GTK_LABEL( lst->data ) );
+						labeltext = gtk_label_get_text( GTK_LABEL( lst->data ) );
 
-						if ( strcmp( label, entry ) == 0 ) {
+						if ( strcmp( labeltext, entrytext ) == 0 ) {
 							*(int*)data->buffer = i;
 							break;
 						}
@@ -242,19 +240,20 @@ void Dialog::UpdateData( bool retrieve ){
 				break;
 			case DLG_COMBO_INT: {
 				GList *lst = gtk_container_get_children( GTK_CONTAINER( data->object ) );
-				const char *entry = NULL;
+				const char *text = NULL;
+				GtkEntry *entry = GTK_ENTRY( gtk_bin_get_child( GTK_BIN( GTK_COMBO_BOX( data->object ) ) ) );
 
 				if ( *(int*)data->buffer != -1 ) {
 					lst = g_list_nth( lst, *(int*)data->buffer );
 					if ( lst != NULL ) {
-						entry = gtk_label_get_text( GTK_LABEL( lst->data ) );
+						text = gtk_label_get_text( GTK_LABEL( lst->data ) );
 					}
 				}
-				if ( entry ) {
-					gtk_entry_set_text( GTK_ENTRY( gtk_bin_get_child( GTK_BIN( GTK_COMBO_BOX( data->object ) ) ) ), entry );
+				if ( text ) {
+					gtk_entry_set_text( entry, text );
 				}
 				else{
-					gtk_entry_set_text( GTK_ENTRY( gtk_bin_get_child( GTK_BIN( GTK_COMBO_BOX( data->object ) ) ) ), "" );
+					gtk_entry_set_text( entry, "" );
 				}
 			}
 			break;

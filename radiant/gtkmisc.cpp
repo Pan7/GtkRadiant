@@ -584,25 +584,32 @@ void bmp_to_pixmap( const char* filename, GdkPixbuf **pixmap ){
 	GError *gerror = NULL;
 
 	*pixmap = gdk_pixbuf_new_from_file( filename, &gerror );
+	if ( *pixmap == NULL ) {
+//		Sys_FPrintf( SYS_ERR, "ERROR: Failed to load bmp %s: %s, creating default pixmap.\n", filename, gerror->message );
+		g_error_free( gerror );
+	}
 }
 
-//void load_pixmap( const char* filename, GtkWidget* widget, GdkPixmap **gdkpixmap, GdkBitmap **mask ){
-void load_pixmap( const char* filename, GtkWidget* widget, GtkWidget **gdkpixmap ){
+void load_pixmap( const char* filename, GtkWidget **widget, GdkPixbuf **pixmap ){
 	CString str;
+	GError *gerror = NULL;
 
 	str = g_strBitmapsPath;
 	str += filename;
 
-	//bmp_to_pixmap( str.GetBuffer(), gdkpixmap, mask );
-	*gdkpixmap = gtk_image_new_from_file( str.GetBuffer() );
-	if ( *gdkpixmap == NULL ) {
-		Sys_Printf( "Failed to load_pixmap %s, creating default pixmap\n", str.GetBuffer() );
-		*gdkpixmap = gtk_image_new_from_pixbuf( NULL );
+	*pixmap = gdk_pixbuf_new_from_file( str.GetBuffer(), &gerror );
+	if ( *pixmap == NULL ) {
+		Sys_FPrintf( SYS_ERR, "ERROR: Failed to load_pixmap %s: %s, creating default pixmap.\n", str.GetBuffer(), gerror->message );
+		g_error_free( gerror );
+	}
+	*widget = gtk_image_new_from_pixbuf( *pixmap );
+	gtk_widget_show( *widget );
+	if ( *pixmap ) {
+		g_object_unref( *pixmap );
 	}
 }
 
 // this is the same as above but used by the plugins
-// GdkPixmap **gdkpixmap, GdkBitmap **mask
 bool WINAPI load_plugin_bitmap( const char* filename, void **gdkpixmap, void **mask ){
 	CString str;
 
@@ -630,7 +637,8 @@ bool WINAPI load_plugin_bitmap( const char* filename, void **gdkpixmap, void **m
 			bmp_to_pixmap( str.GetBuffer(), (GdkPixbuf **)gdkpixmap );
 
 			if ( *gdkpixmap == NULL ) {
-				*gdkpixmap = gtk_image_new_from_pixbuf( NULL );
+				Sys_FPrintf( SYS_ERR, "ERROR: Failed to load bitmap %s, creating default.\n", filename );
+				*gdkpixmap = NULL;
 				return false;
 			}
 		}
@@ -638,21 +646,20 @@ bool WINAPI load_plugin_bitmap( const char* filename, void **gdkpixmap, void **m
 	return true;
 }
 
-// Load a xpm file and return a pixmap widget.
 GtkWidget* new_pixmap( GtkWidget* widget, const char* filename ){
 	return gtk_image_new_from_file( filename );
 }
 
 GtkWidget* new_image_icon( const char* filename ) {
+	CString str;
 	GdkPixbuf *pixbuf;
 	GtkWidget *icon;
-    CString str;
 	GError *gerror = NULL;
 
 	str = g_strBitmapsPath;
-    str += filename;
+	str += filename;
 
-	pixbuf = gdk_pixbuf_new_from_file( str, &gerror );
+	pixbuf = gdk_pixbuf_new_from_file( str.GetBuffer(), &gerror );
 	if( pixbuf == NULL ) {
 		Sys_FPrintf( SYS_ERR, "ERROR: Failed to load bitmap: %s, %s\n", str.GetBuffer(), gerror->message );
 		g_error_free( gerror );
@@ -662,13 +669,13 @@ GtkWidget* new_image_icon( const char* filename ) {
 	if( pixbuf ) {
 		g_object_unref( pixbuf );
 	}
-    return icon;
+	return icon;
 }
 
 GtkWidget* new_plugin_image_icon( const char* filename ) {
+	CString str;
 	GdkPixbuf *pixbuf;
 	GtkWidget *icon;
-    CString str;
 	GError *gerror = NULL;
 
 	str = g_strAppPath;
@@ -676,17 +683,24 @@ GtkWidget* new_plugin_image_icon( const char* filename ) {
 	str += "bitmaps/";
 	str += filename;
 
-	pixbuf = gdk_pixbuf_new_from_file( str, &gerror );
+	pixbuf = gdk_pixbuf_new_from_file( str.GetBuffer(), &gerror );
 	if( pixbuf == NULL ) {
 		Sys_FPrintf( SYS_ERR, "ERROR: Failed to load plugin bitmap: %s, %s\n", str.GetBuffer(), gerror->message );
 		g_error_free( gerror );
+	}
+	//manually add transparency to bmp files
+	if( strlen( filename ) > 4 && strcmp( filename + strlen( filename ) - 4, ".bmp" ) == 0 && pixbuf && !gdk_pixbuf_get_has_alpha( pixbuf ) ) {
+		GdkPixbuf *apixbuf;
+		apixbuf = gdk_pixbuf_add_alpha( pixbuf, TRUE, 255, 0, 255 );
+		g_object_unref( pixbuf );
+		pixbuf = apixbuf;
 	}
 	icon = gtk_image_new_from_pixbuf( pixbuf );
 	gtk_widget_show( icon );
 	if( pixbuf ) {
 		g_object_unref( pixbuf );
 	}
-    return icon;
+	return icon;
 }
 
 // =============================================================================

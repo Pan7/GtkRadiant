@@ -57,9 +57,8 @@ void save_window_pos( GtkWidget *wnd, window_position_t& pos );
 void load_window_pos( GtkWidget *wnd, window_position_t& pos );
 gint widget_delete_hide( GtkWidget *widget );
 
-// GdkPixmap **gdkpixmap, GdkBitmap **mask
 bool WINAPI load_plugin_bitmap( const char* filename, void **gdkpixmap, void **mask );
-void load_pixmap( const char* filename, GtkWidget* widget, GtkWidget **gdkpixmap/*, GdkBitmap **mask*/ );
+void load_pixmap( const char* filename, GtkWidget **widget, GtkWidget **gdkpixmap );
 GtkWidget* new_pixmap( GtkWidget* widget, const char* filename );
 GtkWidget* new_image_icon(const char* filename);
 GtkWidget* new_plugin_image_icon( const char* filename );

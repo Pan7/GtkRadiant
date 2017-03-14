@@ -791,6 +791,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( hshift_step_spinbutton, TRUE );
 	gtk_widget_show( hshift_step_spinbutton );
 	g_object_set( hshift_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( hshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	vshift_step_spinbutton_adj = gtk_adjustment_new( 0.0, -8192.0, 8192.0, 2.0, 8.0, 0.0 );
 	vshift_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( vshift_step_spinbutton_adj ), 1, 2 );
@@ -798,6 +799,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( vshift_step_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_widget_set_hexpand( vshift_step_spinbutton, TRUE );
 	gtk_widget_show( vshift_step_spinbutton );
+	g_object_set( vshift_step_spinbutton, "xalign", 1.0, NULL );
 	g_object_set( vshift_step_spinbutton, "xalign", 1.0, NULL );
 
 	hscale_step_spinbutton_adj = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
@@ -807,6 +809,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( hscale_step_spinbutton, TRUE );
 	gtk_widget_show( hscale_step_spinbutton );
 	g_object_set( hscale_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( hscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	vscale_step_spinbutton_adj = gtk_adjustment_new( 0.0, -1024.0, 1024.0, 1.0, 4.0, 0.0 );
 	vscale_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( vscale_step_spinbutton_adj ), 1, 4 );
@@ -815,6 +818,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_set_hexpand( vscale_step_spinbutton, TRUE );
 	gtk_widget_show( vscale_step_spinbutton );
 	g_object_set( vscale_step_spinbutton, "xalign", 1.0, NULL );
+	g_object_set( vscale_step_spinbutton, "xalign", 1.0, NULL );
 
 	rotate_step_spinbutton_adj = gtk_adjustment_new( 0.0, -360.0, 360.0, 1.0, 10.0, 0.0 );
 	rotate_step_spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( rotate_step_spinbutton_adj ), 1, 4 );
@@ -822,6 +826,7 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_spin_button_set_update_policy( GTK_SPIN_BUTTON( rotate_step_spinbutton ), GTK_UPDATE_IF_VALID );
 	gtk_widget_set_hexpand( rotate_step_spinbutton, TRUE );
 	gtk_widget_show( rotate_step_spinbutton );
+	g_object_set( rotate_step_spinbutton, "xalign", 1.0, NULL );
 	g_object_set( rotate_step_spinbutton, "xalign", 1.0, NULL );
 
 
@@ -1311,6 +1316,8 @@ static void on_axial_button_clicked( GtkButton *button, gpointer user_data ){
 		}
 	}
 
-	SetTexdef_FaceList( get_texdef_face_list(), FALSE, TRUE );
+	if ( !texdef_face_list_empty() ) {
+		SetTexdef_FaceList( get_texdef_face_list(), FALSE, TRUE );
+	}
 	Sys_UpdateWindows( W_ALL );
 }
