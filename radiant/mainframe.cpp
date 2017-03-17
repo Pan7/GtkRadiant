@@ -123,26 +123,26 @@ void Select_Ungroup();
 // - if you decide to add a menu item, check if it's not in the "hidden" menu already
 SCommandInfo g_Commands[] =
 {
-	{"CycleOutlineStyle", 'J', 0x00, ID_SELECTION_OUTLINESTYLE, "menu_selection_outlinestyle"},
-	{"CSGMerge", 'U', 0x04, ID_SELECTION_CSGMERGE, "menu_selection_csgmerge"},
-	{"CSGSubtract", 'U', 0x01, ID_SELECTION_CSGSUBTRACT, "menu_selection_csgsubstract"},
-	//  {"ViewGroups", 'G', 0x00, ID_VIEW_GROUPS, "menu_view_groups"}, (temporary disabled)
-	{"SelectFuncGroup", 'G', 0x00, ID_SELECT_FUNC_GROUP, "menu_select_func_group"},
-	{"HideSelected", 'H', 0x00, ID_VIEW_HIDESHOW_HIDESELECTED, "menu_view_hideshow_hideselected"},
-	{"ShowHidden", 'H', 0x01, ID_VIEW_HIDESHOW_SHOWHIDDEN, "menu_view_hideshow_showhidden"},
-	{"BendMode", 'B', 0x00, ID_PATCH_BEND, "menu_patch_bend"},
-	{"FitTexture", 'B', 0x01, IDC_BTN_FACEFIT, "menu_idc_btn_facefit"},
-	{"ViewTextures", 'T', 0, ID_VIEW_TEXTURE, "menu_view_texture"},
-	{"ThickenPatch", 'T', 0x04, ID_CURVE_THICKEN, "menu_curve_thicken"},
-	{"MakeOverlayPatch", 'Y', 0, ID_CURVE_OVERLAY_SET, "menu_curve_overlay_set"},
-	{"ClearPatchOverlays", 'L', 0x04, ID_CURVE_OVERLAY_CLEAR, "menu_curve_overlay_clear"},
-	{"SurfaceInspector", 'S', 0, ID_TEXTURES_INSPECTOR, "menu_textures_inspector"},
-	{"PatchInspector", 'S', 0x01, ID_PATCH_INSPECTOR, "menu_patch_inspector"},
-	{"RedisperseRows", 'E', 0x04, ID_CURVE_REDISPERSE_ROWS, "menu_curve_redisperse_rows"},
-	{"RedisperseIntermediateCols", 'E', 0x05, ID_CURVE_REDISPERSE_INTERMEDIATE_COLS, "menu_curve_redisperse_cols"},
-	{"InvertCurveTextureX", 'I', 0x05, ID_CURVE_NEGATIVETEXTUREY, "menu_curve_negativetexturey"},
-	{"InvertCurveTextureY", 'I', 0x01, ID_CURVE_NEGATIVETEXTUREX, "menu_curve_negativetexturex"},
-	{"InvertCurve", 'I', 0x04, ID_CURVE_NEGATIVE, "menu_curve_negative"},
+	{"CycleOutlineStyle", GDK_KEY_J, 0x00, ID_SELECTION_OUTLINESTYLE, "menu_selection_outlinestyle"},
+	{"CSGMerge", GDK_KEY_U, 0x04, ID_SELECTION_CSGMERGE, "menu_selection_csgmerge"},
+	{"CSGSubtract", GDK_KEY_U, 0x01, ID_SELECTION_CSGSUBTRACT, "menu_selection_csgsubstract"},
+	//  {"ViewGroups", GDK_KEY_G, 0x00, ID_VIEW_GROUPS, "menu_view_groups"}, (temporary disabled)
+	{"SelectFuncGroup", GDK_KEY_G, 0x00, ID_SELECT_FUNC_GROUP, "menu_select_func_group"},
+	{"HideSelected", GDK_KEY_H, 0x00, ID_VIEW_HIDESHOW_HIDESELECTED, "menu_view_hideshow_hideselected"},
+	{"ShowHidden", GDK_KEY_H, 0x01, ID_VIEW_HIDESHOW_SHOWHIDDEN, "menu_view_hideshow_showhidden"},
+	{"BendMode", GDK_KEY_B, 0x00, ID_PATCH_BEND, "menu_patch_bend"},
+	{"FitTexture", GDK_KEY_B, 0x01, IDC_BTN_FACEFIT, "menu_idc_btn_facefit"},
+	{"ViewTextures", GDK_KEY_T, 0, ID_VIEW_TEXTURE, "menu_view_texture"},
+	{"ThickenPatch", GDK_KEY_T, 0x04, ID_CURVE_THICKEN, "menu_curve_thicken"},
+	{"MakeOverlayPatch", GDK_KEY_Y, 0, ID_CURVE_OVERLAY_SET, "menu_curve_overlay_set"},
+	{"ClearPatchOverlays", GDK_KEY_L, 0x04, ID_CURVE_OVERLAY_CLEAR, "menu_curve_overlay_clear"},
+	{"SurfaceInspector", GDK_KEY_S, 0, ID_TEXTURES_INSPECTOR, "menu_textures_inspector"},
+	{"PatchInspector", GDK_KEY_S, 0x01, ID_PATCH_INSPECTOR, "menu_patch_inspector"},
+	{"RedisperseRows", GDK_KEY_E, 0x04, ID_CURVE_REDISPERSE_ROWS, "menu_curve_redisperse_rows"},
+	{"RedisperseIntermediateCols", GDK_KEY_E, 0x05, ID_CURVE_REDISPERSE_INTERMEDIATE_COLS, "menu_curve_redisperse_cols"},
+	{"InvertCurveTextureX", GDK_KEY_I, 0x05, ID_CURVE_NEGATIVETEXTUREY, "menu_curve_negativetexturey"},
+	{"InvertCurveTextureY", GDK_KEY_I, 0x01, ID_CURVE_NEGATIVETEXTUREX, "menu_curve_negativetexturex"},
+	{"InvertCurve", GDK_KEY_I, 0x04, ID_CURVE_NEGATIVE, "menu_curve_negative"},
 	{"IncPatchColumn", GDK_KEY_KP_Add, 0x05, ID_CURVE_INSERTCOLUMN, "menu_curve_insertcolumn"},
 	{"IncPatchRow", GDK_KEY_KP_Add, 0x04, ID_CURVE_INSERTROW, "menu_curve_insertrow"},
 	{"DecPatchColumn", GDK_KEY_KP_Subtract, 0x05, ID_CURVE_DELETECOLUMN, "menu_curve_deletecolumn"},
@@ -150,15 +150,15 @@ SCommandInfo g_Commands[] =
 	{"Patch TAB", GDK_KEY_Tab, 0x00, ID_PATCH_TAB, "menu_patch_tab"},
 	{"Patch TAB", GDK_KEY_Tab, 0x01, ID_PATCH_TAB, "menu_patch_tab"},
 	{"SelectNudgeDown", GDK_KEY_Down, 0x02, ID_SELECTION_SELECT_NUDGEDOWN, "menu_selection_select_nudgedown"},
-	{"EntityColor",'K', 0, ID_MISC_SELECTENTITYCOLOR, "menu_misc_select_entitycolor"},
+	{"EntityColor",GDK_KEY_K, 0, ID_MISC_SELECTENTITYCOLOR, "menu_misc_select_entitycolor"},
 	{"CameraForward", GDK_KEY_Up, 0, ID_CAMERA_FORWARD, "menu_camera_forward"},
 	{"CameraBack", GDK_KEY_Down, 0, ID_CAMERA_BACK, "menu_camera_back"},
 	{"CameraLeft", GDK_KEY_Left, 0, ID_CAMERA_LEFT, "menu_camera_left"},
 	{"CameraRight", GDK_KEY_Right, 0, ID_CAMERA_RIGHT, "menu_camera_right"},
-	{"CameraUp", 'D', 0, ID_CAMERA_UP, "menu_camera_up"},
-	{"CameraDown", 'C', 0, ID_CAMERA_DOWN, "menu_camera_down"},
-	{"CameraAngleUp", 'A', 0, ID_CAMERA_ANGLEUP, "menu_camera_angleup"},
-	{"CameraAngleDown", 'Z', 0, ID_CAMERA_ANGLEDOWN, "menu_camera_angledown"},
+	{"CameraUp", GDK_KEY_D, 0, ID_CAMERA_UP, "menu_camera_up"},
+	{"CameraDown", GDK_KEY_C, 0, ID_CAMERA_DOWN, "menu_camera_down"},
+	{"CameraAngleUp", GDK_KEY_A, 0, ID_CAMERA_ANGLEUP, "menu_camera_angleup"},
+	{"CameraAngleDown", GDK_KEY_Z, 0, ID_CAMERA_ANGLEDOWN, "menu_camera_angledown"},
 	{"CameraStrafeRight", GDK_KEY_period, 0, ID_CAMERA_STRAFERIGHT, "menu_camera_straferight"},
 	{"CameraStrafeLeft", GDK_KEY_comma, 0, ID_CAMERA_STRAFELEFT, "menu_camera_strafeleft"},
 	{"ToggleGrid", '0', 0, ID_GRID_TOGGLE, "menu_grid_toggle"},
@@ -181,9 +181,9 @@ SCommandInfo g_Commands[] =
 	{"SetGrid128", GDK_KEY_8, 0, ID_GRID_128, "menu_grid_128"},
 	{"SetGrid256", '9', 0, ID_GRID_256, "menu_grid_256"},
 	{"SetGrid256", GDK_KEY_9, 0, ID_GRID_256, "menu_grid_256"},
-	{"DragEdges", 'E', 0, ID_SELECTION_DRAGEDGES, "menu_selection_dragedges"},
-	{"DragVertices", 'V', 0, ID_SELECTION_DRAGVERTECIES, "menu_selection_dragvertecies"},
-	{"ViewEntityInfo", 'N', 0, ID_VIEW_ENTITY, "menu_view_entity"},
+	{"DragEdges", GDK_KEY_E, 0, ID_SELECTION_DRAGEDGES, "menu_selection_dragedges"},
+	{"DragVertices", GDK_KEY_V, 0, ID_SELECTION_DRAGVERTECIES, "menu_selection_dragvertecies"},
+	{"ViewEntityInfo", GDK_KEY_N, 0, ID_VIEW_ENTITY, "menu_view_entity"},
 	//  {"ViewConsole", 'O', 0, ID_VIEW_CONSOLE, "menu_0,"},
 	{"CloneSelection", GDK_KEY_space, 0, ID_SELECTION_CLONE, "menu_selection_clone"},
 	{"DeleteSelection", GDK_KEY_BackSpace, 0, ID_SELECTION_DELETE, "menu_selection_delete"},
@@ -193,44 +193,44 @@ SCommandInfo g_Commands[] =
 	{"ZoomIn", GDK_KEY_Delete, 0, ID_VIEW_ZOOMIN, "menu_view_zoomin"},
 	{"UpFloor", GDK_KEY_Prior, 0, ID_VIEW_UPFLOOR, "menu_view_upfloor"},
 	{"DownFloor", GDK_KEY_Next, 0, ID_VIEW_DOWNFLOOR, "menu_view_downfloor"},
-	{"ToggleClipper", 'X', 0, ID_VIEW_CLIPPER, "menu_view_clipper"},
-	{"ToggleCrosshairs", 'X', 0x01, ID_VIEW_CROSSHAIR, "menu_view_crosshair"},
-	{"TogTexLock", 'T', 0x01, ID_TOGGLE_LOCK, "menu_toggle_lock"},
-	{"TogTexRotLock", 'R', 0x01, ID_TOGGLE_ROTATELOCK, "menu_toggle_rotatelock"},
-	{"ToggleRealtime", 'R', 0x04, ID_VIEW_CAMERAUPDATE, "menu_view_cameraupdate"},
-	{"EntityList", 'L', 0, ID_EDIT_ENTITYINFO, "menu_edit_entityinfo"},
-	{"Preferences", 'P', 0, ID_PREFS, "menu_prefs"},
-	{"ToggleCamera", 'C', 0x05, ID_TOGGLECAMERA, "menu_togglecamera"},
-	{"ToggleConsole", 'O', 0, ID_TOGGLECONSOLE, "menu_toggleconsole"},
-	{"ToggleView", 'V', 0x05, ID_TOGGLEVIEW, "menu_toggleview"},
-	{"ToggleZ", 'Z', 0x05, ID_TOGGLEZ, "menu_togglez"},
-	{"ConnectSelection", 'K', 0x04, ID_SELECTION_CONNECT, "menu_selection_connect"},
-	{"Brush3Sided", '3', 0x04, ID_BRUSH_3SIDED, "menu_brush_3sided"},
-	{"Brush4Sided", '4', 0x04, ID_BRUSH_4SIDED, "menu_brush_4sided"},
-	{"Brush5Sided", '5', 0x04, ID_BRUSH_5SIDED, "menu_brush_5sided"},
-	{"Brush6Sided", '6', 0x04, ID_BRUSH_6SIDED, "menu_brush_6sided"},
-	{"Brush7Sided", '7', 0x04, ID_BRUSH_7SIDED, "menu_brush_7sided"},
-	{"Brush8Sided", '8', 0x04, ID_BRUSH_8SIDED, "menu_brush_8sided"},
-	{"Brush9Sided", '9', 0x04, ID_BRUSH_9SIDED, "menu_brush_9sided"},
-	{"MatrixTranspose", 'M', 0x05, ID_CURVE_MATRIX_TRANSPOSE, "menu_curve_matrix_transpose"},
-	{"MakeDetail", 'M', 0x04, ID_SELECTION_MAKE_DETAIL, "menu_selection_make_detail"},
-	{"MapInfo", 'M', 0, ID_EDIT_MAPINFO, "menu_edit_mapinfo"},
-	{"NextLeakSpot", 'K', 0x05, ID_MISC_NEXTLEAKSPOT, "menu_misc_nextleakspot"},
-	{"PrevLeakSpot", 'L', 0x05, ID_MISC_PREVIOUSLEAKSPOT, "menu_misc_previousleakspot"},
-	{"FileOpen", 'O', 0x04, ID_FILE_OPEN, "menu_file_open"},
-	{"FileSave", 'S', 0x04, ID_FILE_SAVE, "menu_file_save"},
-	//% {"Exit", 'X', 0x04, ID_FILE_EXIT, "menu_file_exit"}, // ydnar: Ctrl+X should be cut
+	{"ToggleClipper", GDK_KEY_X, 0, ID_VIEW_CLIPPER, "menu_view_clipper"},
+	{"ToggleCrosshairs", GDK_KEY_X, 0x01, ID_VIEW_CROSSHAIR, "menu_view_crosshair"},
+	{"TogTexLock", GDK_KEY_T, 0x01, ID_TOGGLE_LOCK, "menu_toggle_lock"},
+	{"TogTexRotLock", GDK_KEY_R, 0x01, ID_TOGGLE_ROTATELOCK, "menu_toggle_rotatelock"},
+	{"ToggleRealtime", GDK_KEY_R, 0x04, ID_VIEW_CAMERAUPDATE, "menu_view_cameraupdate"},
+	{"EntityList", GDK_KEY_L, 0, ID_EDIT_ENTITYINFO, "menu_edit_entityinfo"},
+	{"Preferences", GDK_KEY_P, 0, ID_PREFS, "menu_prefs"},
+	{"ToggleCamera", GDK_KEY_C, 0x05, ID_TOGGLECAMERA, "menu_togglecamera"},
+	{"ToggleConsole", GDK_KEY_O, 0, ID_TOGGLECONSOLE, "menu_toggleconsole"},
+	{"ToggleView", GDK_KEY_V, 0x05, ID_TOGGLEVIEW, "menu_toggleview"},
+	{"ToggleZ", GDK_KEY_Z, 0x05, ID_TOGGLEZ, "menu_togglez"},
+	{"ConnectSelection", GDK_KEY_K, 0x04, ID_SELECTION_CONNECT, "menu_selection_connect"},
+	{"Brush3Sided", GDK_KEY_3, 0x04, ID_BRUSH_3SIDED, "menu_brush_3sided"},
+	{"Brush4Sided", GDK_KEY_4, 0x04, ID_BRUSH_4SIDED, "menu_brush_4sided"},
+	{"Brush5Sided", GDK_KEY_5, 0x04, ID_BRUSH_5SIDED, "menu_brush_5sided"},
+	{"Brush6Sided", GDK_KEY_6, 0x04, ID_BRUSH_6SIDED, "menu_brush_6sided"},
+	{"Brush7Sided", GDK_KEY_7, 0x04, ID_BRUSH_7SIDED, "menu_brush_7sided"},
+	{"Brush8Sided", GDK_KEY_8, 0x04, ID_BRUSH_8SIDED, "menu_brush_8sided"},
+	{"Brush9Sided", GDK_KEY_9, 0x04, ID_BRUSH_9SIDED, "menu_brush_9sided"},
+	{"MatrixTranspose", GDK_KEY_M, 0x05, ID_CURVE_MATRIX_TRANSPOSE, "menu_curve_matrix_transpose"},
+	{"MakeDetail", GDK_KEY_M, 0x04, ID_SELECTION_MAKE_DETAIL, "menu_selection_make_detail"},
+	{"MapInfo", GDK_KEY_M, 0, ID_EDIT_MAPINFO, "menu_edit_mapinfo"},
+	{"NextLeakSpot", GDK_KEY_K, 0x05, ID_MISC_NEXTLEAKSPOT, "menu_misc_nextleakspot"},
+	{"PrevLeakSpot", GDK_KEY_L, 0x05, ID_MISC_PREVIOUSLEAKSPOT, "menu_misc_previousleakspot"},
+	{"FileOpen", GDK_KEY_O, 0x04, ID_FILE_OPEN, "menu_file_open"},
+	{"FileSave", GDK_KEY_S, 0x04, ID_FILE_SAVE, "menu_file_save"},
+	//% {"Exit", GDK_KEY_X, 0x04, ID_FILE_EXIT, "menu_file_exit"}, // ydnar: Ctrl+X should be cut
 	{"CenterXYView", GDK_KEY_Tab, 0x05, ID_VIEW_CENTERVIEW, "menu_view_centerview"},
 	{"NextView", GDK_KEY_Tab, 0x04, ID_VIEW_NEXTVIEW, "menu_view_nextview"},
 	{"ClipSelected", GDK_KEY_Return, 0x00, ID_CLIP_SELECTED, "menu_clip_selected"},
 	{"SplitSelected", GDK_KEY_Return, 0x01, ID_SPLIT_SELECTED, "menu_split_selected"},
 	{"FlipClip", GDK_KEY_Return, 0x04, ID_FLIP_CLIP, "menu_flip_clip"},
-	{"MouseRotate", 'R', 0x00, ID_SELECT_MOUSEROTATE, "menu_select_mouserotate"},
-	{"Copy", 'C', 0x04, ID_EDIT_COPYBRUSH, "menu_edit_copybrush"},
-	{"Paste", 'V', 0x04, ID_EDIT_PASTEBRUSH, "menu_edit_pastebrush"},
-	{"PasteToCamera", 'V', RAD_ALT, ID_EDIT_PASTEBRUSHTOCAMERA, "menu_edit_pastebrushtocamera"},
-	{"Undo", 'Z', 0x04, ID_EDIT_UNDO, "menu_edit_undo"},
-	{"Redo", 'Y', 0x04, ID_EDIT_REDO, "menu_edit_redo"},
+	{"MouseRotate", GDK_KEY_R, 0x00, ID_SELECT_MOUSEROTATE, "menu_select_mouserotate"},
+	{"Copy", GDK_KEY_C, 0x04, ID_EDIT_COPYBRUSH, "menu_edit_copybrush"},
+	{"Paste", GDK_KEY_V, 0x04, ID_EDIT_PASTEBRUSH, "menu_edit_pastebrush"},
+	{"PasteToCamera", GDK_KEY_V, RAD_ALT, ID_EDIT_PASTEBRUSHTOCAMERA, "menu_edit_pastebrushtocamera"},
+	{"Undo", GDK_KEY_Z, 0x04, ID_EDIT_UNDO, "menu_edit_undo"},
+	{"Redo", GDK_KEY_Y, 0x04, ID_EDIT_REDO, "menu_edit_redo"},
 	{"ZZoomOut", GDK_KEY_Insert, 0x04, ID_VIEW_ZZOOMOUT, "menu_view_zzoomout"},
 	{"ZZoomIn", GDK_KEY_Delete, 0x04, ID_VIEW_ZZOOMIN, "menu_view_zzoomin"},
 	{"TexRotateClock", GDK_KEY_Next, 0x01, ID_SELECTION_TEXTURE_ROTATECLOCK, "menu_selection_texture_rotateclock"},
@@ -241,32 +241,32 @@ SCommandInfo g_Commands[] =
 	{"TexShiftRight", GDK_KEY_Right, 0x01, ID_SELECTION_TEXTURE_SHIFTRIGHT, "menu_selection_texture_shiftright"},
 	{"TexShiftUp", GDK_KEY_Up, 0x01, ID_SELECTION_TEXTURE_SHIFTUP, "menu_selection_texture_shiftup"},
 	{"TexShiftDown", GDK_KEY_Down, 0x01, ID_SELECTION_TEXTURE_SHIFTDOWN, "menu_selection_texture_shiftdown"},
-	{"GridDown", '[', 0x00, ID_GRID_PREV, "menu_grid_prev"},
-	{"GridUp", ']', 0x00, ID_GRID_NEXT, "menu_grid_next"},
+	{"GridDown", GDK_KEY_bracketleft, 0x00, ID_GRID_PREV, "menu_grid_prev"},
+	{"GridUp", GDK_KEY_bracketright, 0x00, ID_GRID_NEXT, "menu_grid_next"},
 	{"TexScaleLeft", GDK_KEY_Left, 0x04, ID_SELECTION_TEXTURE_SCALELEFT, "menu_selection_texture_scaleleft"},
 	{"TexScaleRight", GDK_KEY_Right, 0x04, ID_SELECTION_TEXTURE_SCALERIGHT, "menu_selection_texture_scaleright"},
-	{"CubicClipZoomOut", ']', 0x04, ID_VIEW_CUBEOUT, "menu_view_cubeout"},
-	{"CubicClipZoomIn", '[', 0x04, ID_VIEW_CUBEIN, "menu_view_cubein"},
-	{"ToggleCubicClip", '\\', 0x04, ID_VIEW_CUBICCLIPPING, "menu_view_cubicclipping"},
+	{"CubicClipZoomOut", GDK_KEY_bracketright, 0x04, ID_VIEW_CUBEOUT, "menu_view_cubeout"},
+	{"CubicClipZoomIn", GDK_KEY_bracketleft, 0x04, ID_VIEW_CUBEIN, "menu_view_cubein"},
+	{"ToggleCubicClip", GDK_KEY_backslash, 0x04, ID_VIEW_CUBICCLIPPING, "menu_view_cubicclipping"},
 	{"MoveSelectionDOWN", GDK_KEY_KP_Subtract, 0x00, ID_SELECTION_MOVEDOWN, "menu_selection_movedown"},
 	{"MoveSelectionUP", GDK_KEY_KP_Add, 0x00, ID_SELECTION_MOVEUP, "menu_selection_moveup"},
-	{"DumpSelectedBrush", 'D', 0x01, ID_SELECTION_PRINT, "menu_selection_print"},
-	{"ToggleSizePaint", 'Q', 0x00, ID_SELECTION_TOGGLESIZEPAINT, "menu_selection_togglesizepaint"},
+	{"DumpSelectedBrush", GDK_KEY_D, 0x01, ID_SELECTION_PRINT, "menu_selection_print"},
+	{"ToggleSizePaint", GDK_KEY_Q, 0x00, ID_SELECTION_TOGGLESIZEPAINT, "menu_selection_togglesizepaint"},
 	{"SelectNudgeLeft", GDK_KEY_Left, 0x02, ID_SELECTION_SELECT_NUDGELEFT, "menu_selection_select_nudgeleft"},
 	{"SelectNudgeRight", GDK_KEY_Right, 0x02, ID_SELECTION_SELECT_NUDGERIGHT, "menu_selection_select_nudgeright"},
 	{"SelectNudgeUp", GDK_KEY_Up, 0x02, ID_SELECTION_SELECT_NUDGEUP, "menu_selection_select_nudgeup"},
-	{"CycleCapTexturePatch", 'N', 0x05, ID_CURVE_CYCLECAP, "menu_curve_cyclecap"},
-	{"NaturalizePatch", 'N', 0x04, ID_PATCH_NATURALIZE, "menu_patch_naturalize"},
-	{"SnapToGrid", 'G', 0x04, ID_SELECT_SNAPTOGRID, "menu_select_snaptogrid"},
-	{"ShowAllTextures", 'A', 0x04, ID_TEXTURES_SHOWALL, "menu_textures_showall"},
-	{"SelectAllOfType", 'A', 0x01, ID_SELECT_ALL, "menu_select_all"},
-	{"CapCurrentCurve", 'C', 0x01, ID_CURVE_CAP, "menu_curve_cap"},
-	{"MakeStructural", 'S', 0x05, ID_SELECTION_MAKE_STRUCTURAL, "menu_selection_make_structural"},
-	{"RegionSetSelection", 'R', 0x05, ID_REGION_SETSELECTION, "menu_region_setselection"},
-	{"ShowInUse", 'U', 0, ID_TEXTURES_SHOWINUSE, "menu_textures_showinuse"},
-	{"InvertSelection", 'I', 0, ID_SELECTION_INVERT, "menu_selection_invert"},
-	{"Sleep", 'P', 0x05, ID_FILE_SLEEP, "menu_file_sleep"},
-	{"SimplePatchMesh", 'P', 0x01, ID_CURVE_SIMPLEPATCHMESH, "menu_simplepatchmesh"},
+	{"CycleCapTexturePatch", GDK_KEY_N, 0x05, ID_CURVE_CYCLECAP, "menu_curve_cyclecap"},
+	{"NaturalizePatch", GDK_KEY_N, 0x04, ID_PATCH_NATURALIZE, "menu_patch_naturalize"},
+	{"SnapToGrid", GDK_KEY_G, 0x04, ID_SELECT_SNAPTOGRID, "menu_select_snaptogrid"},
+	{"ShowAllTextures", GDK_KEY_A, 0x04, ID_TEXTURES_SHOWALL, "menu_textures_showall"},
+	{"SelectAllOfType", GDK_KEY_A, 0x01, ID_SELECT_ALL, "menu_select_all"},
+	{"CapCurrentCurve", GDK_KEY_C, 0x01, ID_CURVE_CAP, "menu_curve_cap"},
+	{"MakeStructural", GDK_KEY_S, 0x05, ID_SELECTION_MAKE_STRUCTURAL, "menu_selection_make_structural"},
+	{"RegionSetSelection", GDK_KEY_R, 0x05, ID_REGION_SETSELECTION, "menu_region_setselection"},
+	{"ShowInUse", GDK_KEY_U, 0, ID_TEXTURES_SHOWINUSE, "menu_textures_showinuse"},
+	{"InvertSelection", GDK_KEY_I, 0, ID_SELECTION_INVERT, "menu_selection_invert"},
+	{"Sleep", GDK_KEY_P, 0x05, ID_FILE_SLEEP, "menu_file_sleep"},
+	{"SimplePatchMesh", GDK_KEY_P, 0x01, ID_CURVE_SIMPLEPATCHMESH, "menu_simplepatchmesh"},
 	{"FilterWorldBrushes", '1', RAD_ALT, ID_FILTER_WORLD, "menu_filter_world"},
 	{"FilterWorldBrushes", GDK_KEY_1, RAD_ALT, ID_FILTER_WORLD, "menu_filter_world"},
 	{"FilterEntities", '2', RAD_ALT, ID_FILTER_ENTITIES, "menu_filter_entities"},
@@ -281,20 +281,20 @@ SCommandInfo g_Commands[] =
 	{"FilterCaulk", GDK_KEY_6, RAD_ALT, ID_FILTER_CAULK, "menu_filter_caulk"},
 	{"FilterClips", '7', RAD_ALT, ID_FILTER_CLIPS, "menu_filter_clips"},
 	{"FilterClips", GDK_KEY_7, RAD_ALT, ID_FILTER_CLIPS, "menu_filter_clips"},
-	{"FilterBotClips", 'M', RAD_ALT, ID_FILTER_BOTCLIPS, "menu_filter_botclips"},
+	{"FilterBotClips", GDK_KEY_M, RAD_ALT, ID_FILTER_BOTCLIPS, "menu_filter_botclips"},
 	{"FilterPaths", '8', RAD_ALT, ID_FILTER_PATHS, "menu_filter_paths"},
 	{"FilterPaths", GDK_KEY_8, RAD_ALT, ID_FILTER_PATHS, "menu_filter_paths"},
 	{"FilterClusterportals", '9', RAD_ALT, ID_FILTER_CLUSTERPORTALS, "menu_filter_clusterportals"},
 	{"FilterClusterportals", GDK_KEY_9, RAD_ALT, ID_FILTER_CLUSTERPORTALS, "menu_filter_clusterportals"},
 	{"FilterLights", '0', RAD_ALT, ID_FILTER_LIGHTS, "menu_filter_lights"},
 	{"FilterLights", GDK_KEY_0, RAD_ALT, ID_FILTER_LIGHTS, "menu_filter_lights"},
-	{"FilterPatches", 'P', RAD_CONTROL, ID_FILTER_PATCHES, "menu_filter_patches"},
-	{"FilterDetails", 'D', RAD_CONTROL, ID_FILTER_DETAILS, "menu_filter_details"},
-	{"FilterStructural", 'D', RAD_CONTROL | RAD_SHIFT, ID_FILTER_STRUCTURAL, "menu_filter_structural"},
-	{"FilterHintsSkips", 'H', RAD_CONTROL, ID_FILTER_HINTSSKIPS, "menu_filter_hintsskips"},
-	{"FilterModels", 'M', RAD_SHIFT, ID_FILTER_MODELS, "menu_filter_models"},
-	{"FilterTriggers", 'T', RAD_CONTROL | RAD_SHIFT, ID_FILTER_TRIGGERS, "menu_filter_triggers"},
-	{"LoadPointfile", 'L', RAD_SHIFT, ID_FILE_POINTFILE, "menu_load_pointfile"},
+	{"FilterPatches", GDK_KEY_P, RAD_CONTROL, ID_FILTER_PATCHES, "menu_filter_patches"},
+	{"FilterDetails", GDK_KEY_D, RAD_CONTROL, ID_FILTER_DETAILS, "menu_filter_details"},
+	{"FilterStructural", GDK_KEY_D, RAD_CONTROL | RAD_SHIFT, ID_FILTER_STRUCTURAL, "menu_filter_structural"},
+	{"FilterHintsSkips", GDK_KEY_H, RAD_CONTROL, ID_FILTER_HINTSSKIPS, "menu_filter_hintsskips"},
+	{"FilterModels", GDK_KEY_M, RAD_SHIFT, ID_FILTER_MODELS, "menu_filter_models"},
+	{"FilterTriggers", GDK_KEY_T, RAD_CONTROL | RAD_SHIFT, ID_FILTER_TRIGGERS, "menu_filter_triggers"},
+	{"LoadPointfile", GDK_KEY_L, RAD_SHIFT, ID_FILE_POINTFILE, "menu_load_pointfile"},
 	{"TextureWindowScaledown", GDK_KEY_Insert, RAD_ALT, ID_TEXTUREWINDOW_SCALEDOWN, "menu_texturewindow_scaledown"},
 	{"TextureWindowScaleup", GDK_KEY_Delete, RAD_ALT, ID_TEXTUREWINDOW_SCALEUP, "menu_texturewindow_scaleup"},
 	{"Help", GDK_KEY_F1, 0, ID_HELP, "menu_help"},
@@ -345,9 +345,9 @@ SKeyInfo g_Keys[] =
 	{"NumPad7", GDK_KEY_KP_7},
 	{"NumPad8", GDK_KEY_KP_8},
 	{"NumPad9", GDK_KEY_KP_9},
-	{"[", 219},
-	{"]", 221},
-	{"\\", 220},
+	{"[", GDK_KEY_braceleft},
+	{"]", GDK_KEY_braceright},
+	{"\\", GDK_KEY_backslash},
 	{"Home", GDK_KEY_Home}
 };
 
@@ -821,7 +821,7 @@ static gint mainframe_keypress( GtkWidget* widget, GdkEventKey* event, gpointer 
 			}
 			if ( ( g_Commands[i].m_nModifiers & 0x7 ) == nState ) {
 				HandleCommand( NULL, GINT_TO_POINTER( g_Commands[i].m_nCommand ) );
-				g_signal_stop_emission_by_name( widget, "key-press-event" );
+				g_signal_stop_emission_by_name( G_OBJECT( widget ), "key-press-event" );
 				return FALSE;
 			}
 		}
@@ -852,7 +852,7 @@ static gint mainframe_keyrelease( GtkWidget* widget, GdkEventKey* event, gpointe
 				case ID_CAMERA_STRAFERIGHT:
 				{
 					HandleKeyUp( NULL, GINT_TO_POINTER( g_Commands[i].m_nCommand ) );
-					g_signal_stop_emission_by_name( widget, "key-release-event" );
+					g_signal_stop_emission_by_name( G_OBJECT( widget ), "key-release-event" );
 				}
 
 				}
@@ -1641,7 +1641,6 @@ void MainFrame::create_main_menu( GtkWidget *window, GtkWidget *vbox ){
 	create_menu_item_with_mnemonic( menu, "BendMode", G_CALLBACK( HandleCommand ), ID_PATCH_BEND );
 	create_menu_item_with_mnemonic( menu, "FitTexture", G_CALLBACK( HandleCommand ), IDC_BTN_FACEFIT );
 	create_menu_item_with_mnemonic( menu, "ViewTextures", G_CALLBACK( HandleCommand ), ID_VIEW_TEXTURE );
-	create_menu_item_with_mnemonic( menu, "PatchInspector", G_CALLBACK( HandleCommand ), ID_PATCH_INSPECTOR );
 	create_menu_item_with_mnemonic( menu, "InvertCurveTextureX", G_CALLBACK( HandleCommand ), ID_CURVE_NEGATIVETEXTUREY );
 	create_menu_item_with_mnemonic( menu, "InvertCurveTextureY", G_CALLBACK( HandleCommand ), ID_CURVE_NEGATIVETEXTUREX );
 	create_menu_item_with_mnemonic( menu, "IncPatchColumn", G_CALLBACK( HandleCommand ), ID_CURVE_INSERTCOLUMN );
@@ -2107,6 +2106,13 @@ static void mainframe_unmap( GtkWidget *widget ){
 		CHECK_MINIMIZE( g_pGroupDlg->m_pWidget );
 	}
 }
+static gboolean mainframe_state( GtkWidget *widget, GdkEventWindowState *e, gpointer user_data ){
+
+	if( e->changed_mask & GDK_WINDOW_STATE_ICONIFIED && !( e->new_window_state & GDK_WINDOW_STATE_ICONIFIED ) ) {
+		mainframe_map( widget );
+	}
+	return FALSE;
+}
 
 static GtkWidget* create_floating( MainFrame* mainframe ){
 	GtkWidget *wnd = gtk_window_new( GTK_WINDOW_TOPLEVEL );
@@ -2115,13 +2121,13 @@ static GtkWidget* create_floating( MainFrame* mainframe ){
 	if (mainframe->CurrentStyle() != MainFrame::eFloating)
 		gtk_window_set_transient_for( GTK_WINDOW( wnd ), GTK_WINDOW( mainframe->m_pWidget ) );
 	gtk_widget_set_events( wnd, GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK );
-	g_signal_connect( wnd, "delete-event", G_CALLBACK( widget_delete_hide ), NULL );
-	g_signal_connect( wnd, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
-	g_signal_connect( wnd, "key-press-event",
+	g_signal_connect( G_OBJECT( wnd ), "delete-event", G_CALLBACK( widget_delete_hide ), NULL );
+	g_signal_connect( G_OBJECT( wnd ), "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
+	g_signal_connect( G_OBJECT( wnd ), "key-press-event",
 						G_CALLBACK( mainframe_keypress ), mainframe );
-	g_signal_connect( wnd, "key-release-event",
+	g_signal_connect( G_OBJECT( wnd ), "key-release-event",
 						G_CALLBACK( mainframe_keyrelease ), mainframe );
-	g_signal_connect( wnd, "map-event",
+	g_signal_connect( G_OBJECT( wnd ), "map-event",
 						G_CALLBACK( mainframe_map ), mainframe );
 
 	gtk_window_set_default_size( GTK_WINDOW( wnd ), 100, 100 );
@@ -2137,7 +2143,7 @@ void console_populate_popup( GtkTextView* textview, GtkMenu* menu, gpointer user
 	menu_separator( GTK_WIDGET( menu ) );
 
 	GtkWidget* item = gtk_menu_item_new_with_label( _( "Clear" ) );
-	g_signal_connect( item, "activate", G_CALLBACK( Sys_ClearPrintf ), NULL );
+	g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( Sys_ClearPrintf ), NULL );
 	gtk_widget_show( item );
 	gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 }
@@ -2525,7 +2531,7 @@ static ZWnd *create_floating_zwnd( MainFrame *mainframe ){
 	ZWnd *pZWnd = new ZWnd();
 	GtkWidget* wnd = create_floating( mainframe );
 
-	gtk_window_set_title( GTK_WINDOW( wnd ), "Z" );
+	gtk_window_set_title( GTK_WINDOW( wnd ), _( "Z" ) );
 
 	pZWnd->m_pParent = wnd;
 
@@ -2570,18 +2576,20 @@ void MainFrame::Create(){
 	GtkWidget* window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	m_pWidget = window;
 	gtk_widget_set_events( window, GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK );
-	g_signal_connect( window, "delete-event",
+	g_signal_connect( G_OBJECT( window ), "delete-event",
 						G_CALLBACK( mainframe_delete ), this );
-	g_signal_connect( window, "destroy",
+	g_signal_connect( G_OBJECT( window ), "destroy",
 						G_CALLBACK( mainframe_destroy ), this );
-	g_signal_connect( window, "key-press-event",
+	g_signal_connect( G_OBJECT( window ), "key-press-event",
 						G_CALLBACK( mainframe_keypress ), this );
-	g_signal_connect( window, "key-release-event",
+	g_signal_connect( G_OBJECT( window ), "key-release-event",
 						G_CALLBACK( mainframe_keyrelease ), this );
-	g_signal_connect( window, "map-event",
+	g_signal_connect( G_OBJECT( window ), "map-event",
 						G_CALLBACK( mainframe_map ), this );
-	g_signal_connect( window, "unmap-event",
+	g_signal_connect( G_OBJECT( window ), "unmap-event",
 						G_CALLBACK( mainframe_unmap ), this );
+	g_signal_connect( G_OBJECT( window ), "window-state-event",
+						G_CALLBACK( mainframe_state ), this );
 
 	g_qeglobals_gui.d_main_window = window;
 
@@ -4203,7 +4211,7 @@ void MainFrame::AddPlugInMenuItem( IPlugIn* pPlugIn ){
 				else
 				{
 					item = gtk_menu_item_new_with_label( menuText );
-					g_signal_connect( item, "activate",
+					g_signal_connect( G_OBJECT( item ), "activate",
 										G_CALLBACK( HandleCommand ), GINT_TO_POINTER( m_nNextPlugInID ) );
 				}
 				gtk_widget_show( item );
@@ -4764,8 +4772,8 @@ void MainFrame::OnPrefs() {
            (g_PrefsDlg.m_nLatchedTextureQuality     != nTextureQuality  ) || 
            (g_PrefsDlg.m_bLatchedFloatingZ          != bFloatingZ       ) ||
 		   (g_PrefsDlg.m_bShowTexDirList            != bShowTexDirList)) {
-            gtk_MessageBoxNew(m_pWidget, "You must restart Radiant for the "
-                              "changes to take effect.", "Restart Radiant", 
+            gtk_MessageBoxNew(m_pWidget, _( "You must restart Radiant for the "
+                              "changes to take effect." ), _( "Restart Radiant" ), 
                               MB_OK | MB_ICONINFORMATION);
         }
 
@@ -6740,7 +6748,7 @@ void MainFrame::OnPopupSelection(){
 	for ( int i = 0; i < 4; i++ )
 	{
 		item = gtk_menu_item_new_with_label( labels[i] );
-		g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+		g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 							GINT_TO_POINTER( ids[i] ) );
 		gtk_widget_show( item );
 		gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );

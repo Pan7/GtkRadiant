@@ -126,17 +126,17 @@ int DoLoadPortalFileDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 	gtk_widget_show( hbox );
 
-	check3d = gtk_check_button_new_with_label( "Show 3D" );
+	check3d = gtk_check_button_new_with_label( _( "Show 3D" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), check3d, FALSE, FALSE, 0 );
 	gtk_widget_show( check3d );
 
-	check2d = gtk_check_button_new_with_label( "Show 2D" );
+	check2d = gtk_check_button_new_with_label( _( "Show 2D" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), check2d, FALSE, FALSE, 0 );
 	gtk_widget_show( check2d );
 
 	change_button = button = gtk_button_new_with_label( "Change" );
 	gtk_box_pack_end( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked", G_CALLBACK( change_clicked ), entry );
+	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( change_clicked ), entry );
 	gtk_widget_show( button );
 
 	size_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );

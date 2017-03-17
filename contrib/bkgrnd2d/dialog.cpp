@@ -220,14 +220,14 @@ CBackgroundDialogPage::CBackgroundDialogPage( VIEWTYPE vt ){
 
 	gtk_widget_show( m_pFileLabel );
 
-	w = gtk_button_new_with_label( "Browse..." );
+	w = gtk_button_new_with_label( _( "Browse..." ) );
 	g_signal_connect( w, "clicked", G_CALLBACK( browse_callback ),
 					  ( gpointer ) this );
 	gtk_box_pack_start( GTK_BOX( hbox ),w, FALSE, FALSE, 5 );
 	gtk_widget_set_tooltip_text( w, _( "Select a file" ) );
 	gtk_widget_show( w );
 
-	w = gtk_button_new_with_label( "Reload" );
+	w = gtk_button_new_with_label( _( "Reload" ) );
 	g_signal_connect( w, "clicked", G_CALLBACK( reload_callback ),
 					  ( gpointer ) this );
 	// TODO disable until we have file
@@ -326,9 +326,9 @@ void InitBackgroundDialog(){
 											  flags,
 	                                          // TODO dialog with no buttons
 											  NULL );
-	g_signal_connect( pDialogWnd, "delete-event",
+	g_signal_connect( G_OBJECT( pDialogWnd ), "delete-event",
 						G_CALLBACK( close_callback ), NULL );
-	g_signal_connect( pDialogWnd, "response",
+	g_signal_connect( G_OBJECT( pDialogWnd ), "response",
 						G_CALLBACK( response_callback ), NULL );
 //  g_signal_connect( GTK_OBJECT (pDialogWnd), "draw", G_CALLBACK( ci_expose ), NULL );
 

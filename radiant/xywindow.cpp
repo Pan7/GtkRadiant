@@ -386,7 +386,7 @@ void CreateEntityFromName( const char* name, const vec3_t origin ){
 	entity_t *e;
 	brush_t* b;
 	if ( stricmp( name, "worldspawn" ) == 0 ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "Can't create an entity with worldspawn.", "info", 0 );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "Can't create an entity with worldspawn." ), "info", 0 );
 		return;
 	}
 
@@ -1555,16 +1555,16 @@ void XYWnd::HandleDrop(){
 		menu_separator( menu ); nID++;
 		// NOTE: temporary commented out until we put it back in for good (that is with actual features)
 		/*
-			menu_in_menu = create_menu_in_menu_with_mnemonic (menu, "Group",);
-			create_menu_item_with_mnemonic (menu_in_menu, "Add to...",
-				G_CALLBACK (HandleCommand), ID_DROP_GROUP_ADDTO);
-			create_menu_item_with_mnemonic (menu_in_menu, "Remove",
-				G_CALLBACK (HandleCommand), ID_DROP_GROUP_REMOVE);
-			create_menu_item_with_mnemonic (menu_in_menu, "Name...",
-				G_CALLBACK (HandleCommand), ID_DROP_GROUP_NAME);
-			menu_separator (menu_in_menu); nID++;
-			create_menu_item_with_mnemonic (menu_in_menu, "New Group...",
-				G_CALLBACK (HandleCommand), ID_DROP_GROUP_NEWGROUP);
+		menu_in_menu = create_menu_in_menu_with_mnemonic (menu, "Group",);
+		create_menu_item_with_mnemonic (menu_in_menu, "Add to...",
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_ADDTO);
+		create_menu_item_with_mnemonic (menu_in_menu, "Remove",
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_REMOVE);
+		create_menu_item_with_mnemonic (menu_in_menu, "Name...",
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_NAME);
+		menu_separator (menu_in_menu); nID++;
+		create_menu_item_with_mnemonic (menu_in_menu, "New Group...",
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_NEWGROUP);
 		 */
 		create_menu_item_with_mnemonic( menu, "Ungroup Entity",
 										G_CALLBACK( HandleCommand ), ID_SELECTION_UNGROUPENTITY );
@@ -1630,8 +1630,8 @@ void XYWnd::HandleDrop(){
 					submenu_root = submenu;
 					//item = gtk_menu_item_new_with_label( strName );
 					item = create_entity_menu_item( submenu, strName );
-					g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
-//					g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
+//					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( nID++ ) );
 					gtk_widget_show( item );
 					gtk_menu_shell_append( GTK_MENU_SHELL( submenu ), item );
@@ -1654,8 +1654,8 @@ void XYWnd::HandleDrop(){
 
 				//item = gtk_menu_item_new_with_label( strName );
 				item = create_entity_menu_item( menu, strName );
-				g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
-//				g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+				g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
+//				g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 									GINT_TO_POINTER( nID++ ) );
 				gtk_widget_show( item );
 				gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );

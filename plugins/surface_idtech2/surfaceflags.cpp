@@ -242,7 +242,7 @@ void on_content_button_toggled( GtkToggleButton *togglebutton, gpointer user_dat
 // Value Entry Callback
 void on_value_entry_changed( GtkEditable *editable, gpointer user_data ){
 	if ( ( !setup_buttons ) ) { // If we're setting up the buttons, don't change value
-		working_value = atoi( gtk_entry_get_text( (GtkEntry*)editable ) );
+		working_value = atoi( gtk_entry_get_text( GTK_ENTRY( editable ) ) );
 		GetTexMods( false );
 	}
 }
@@ -264,11 +264,11 @@ void on_value_entry_insert_text( GtkEditable *editable, gchar *new_text, gint ne
 
 	if ( count > 0 ) {
 		g_signal_handlers_block_by_func( G_OBJECT( editable ),
-										  G_CALLBACK( on_value_entry_insert_text ),
+										  (gpointer)G_CALLBACK( on_value_entry_insert_text ),
 										  user_data );
 		gtk_editable_insert_text( editable, result, count, position );
 		g_signal_handlers_unblock_by_func( G_OBJECT( editable ),
-											G_CALLBACK( on_value_entry_insert_text ),
+											(gpointer)G_CALLBACK( on_value_entry_insert_text ),
 											user_data );
 	}
 	g_signal_stop_emission_by_name( G_OBJECT( editable ), "insert-text" );
@@ -339,7 +339,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 		buttonLabel = g_FuncTable.m_pfnReadProjectKey( buffer );
 		//Sys_Printf( "%s: %s\n", buffer, buttonLabel );
 		surface_buttons[i] = gtk_toggle_button_new_with_label( buttonLabel );
-		g_signal_connect( surface_buttons[i], "toggled", G_CALLBACK( on_surface_button_toggled ), GINT_TO_POINTER( 1 << i ) );
+		g_signal_connect( G_OBJECT( surface_buttons[i] ), "toggled", G_CALLBACK( on_surface_button_toggled ), GINT_TO_POINTER( 1 << i ) );
 		gtk_grid_attach( GTK_GRID( table4 ), surface_buttons[i], x, y, 1, 1 );
 		gtk_widget_set_hexpand( surface_buttons[i], TRUE );
 		gtk_widget_show( surface_buttons[i] );
@@ -358,16 +358,16 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	gtk_box_pack_start( GTK_BOX( hbox3 ), vbox4, TRUE, TRUE, 0 );	
 	gtk_widget_show( vbox4 );
 
-	value_label = gtk_label_new( "Value:" );
+	value_label = gtk_label_new( _( "Value: " ) );
 	gtk_box_pack_start( GTK_BOX( hbox3 ), value_label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( value_label, GTK_ALIGN_START );
 	gtk_widget_show( value_label );
 
 	value_entry = gtk_entry_new();
-	g_signal_connect( value_entry, "changed",
+	g_signal_connect( G_OBJECT( value_entry ), "changed",
 						G_CALLBACK( on_value_entry_changed ),
 						NULL );
-	g_signal_connect( value_entry, "insert-text",
+	g_signal_connect( G_OBJECT( value_entry ), "insert-text",
 						G_CALLBACK( on_value_entry_insert_text ),
 						NULL );
 	gtk_entry_set_max_length( (GtkEntry *)value_entry, 11 );
@@ -379,7 +379,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	gtk_box_pack_start( GTK_BOX( hbox3 ), vbox3, TRUE, TRUE, 0 );
 	gtk_widget_show( vbox3 );
 
-	label5 = gtk_label_new( "Surface Flags" );
+	label5 = gtk_label_new( _( "Surface Flags" ) );
 	gtk_notebook_set_tab_label( GTK_NOTEBOOK( notebook1 ), gtk_notebook_get_nth_page( GTK_NOTEBOOK( notebook1 ), 0 ), label5 );
 	gtk_widget_show( label5 );
 
@@ -400,13 +400,13 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 		snprintf( buffer, sizeof( buffer ), "cont%i", i + 1 );
 		buttonLabel = g_FuncTable.m_pfnReadProjectKey( buffer );
 		content_buttons[i] = gtk_toggle_button_new_with_label( buttonLabel );
-		g_signal_connect( content_buttons[i], "toggled", G_CALLBACK( on_content_button_toggled ), GINT_TO_POINTER( 1 << i ) );
+		g_signal_connect( G_OBJECT( content_buttons[i] ), "toggled", G_CALLBACK( on_content_button_toggled ), GINT_TO_POINTER( 1 << i ) );
 		gtk_grid_attach( GTK_GRID( table3 ), content_buttons[i], x, y, 1, 1 );
 		gtk_widget_set_hexpand( content_buttons[i], TRUE );
 		gtk_widget_show( content_buttons[i] );
 	}
 
-	label6 = gtk_label_new( "Content Flags" );
+	label6 = gtk_label_new( _( "Content Flags" ) );
 	gtk_widget_show( label6 );
 
 	gtk_notebook_set_tab_label( GTK_NOTEBOOK( notebook1 ), gtk_notebook_get_nth_page( GTK_NOTEBOOK( notebook1 ), 1 ), label6 );

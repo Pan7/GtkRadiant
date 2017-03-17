@@ -316,32 +316,32 @@ void DoConfigDialog(){
 	color_button = button = gtk_button_new_with_label( _( "Color" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 0, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnColor3d ), NULL );
+	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColor3d ), NULL );
 
 	depth_button = button = gtk_button_new_with_label( _( "Depth Color" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 1, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnColorFog ), NULL );
+	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColorFog ), NULL );
 
-	aa3check = gtk_check_button_new_with_label( "Anti-Alias (May not work on some video cards)" );
+	aa3check = gtk_check_button_new_with_label( _( "Anti-Alias (May not work on some video cards)" ) );
 	gtk_grid_attach( GTK_GRID( table ), aa3check, 1, 0, 3, 1 );
 	gtk_widget_show( aa3check );
-	g_signal_connect( aa3check, "toggled", G_CALLBACK( OnAntiAlias3d ), NULL );
+	g_signal_connect(  G_OBJECT( aa3check ), "toggled", G_CALLBACK( OnAntiAlias3d ), NULL );
 
 	depthcheck = gtk_check_button_new_with_label( _( "Depth Cue" ) );
 	gtk_grid_attach( GTK_GRID( table ), depthcheck, 1, 1, 1, 1 );
 	gtk_widget_show( depthcheck );
-	g_signal_connect( depthcheck, "toggled", G_CALLBACK( OnFog ), NULL );
+	g_signal_connect(  G_OBJECT( depthcheck ), "toggled", G_CALLBACK( OnFog ), NULL );
 
 	linescheck = gtk_check_button_new_with_label( _( "Lines" ) );
 	gtk_grid_attach( GTK_GRID( table ), linescheck, 2, 1, 1, 1 );
 	gtk_widget_show( linescheck );
-	g_signal_connect( linescheck, "toggled", G_CALLBACK( OnLines ), NULL );
+	g_signal_connect(  G_OBJECT( linescheck ), "toggled", G_CALLBACK( OnLines ), NULL );
 
 	polyscheck = gtk_check_button_new_with_label( _( "Polygons" ) );
 	gtk_grid_attach( GTK_GRID( table ), polyscheck, 3, 1, 1, 1 );
 	gtk_widget_show( polyscheck );
-	g_signal_connect( polyscheck, "toggled", G_CALLBACK( OnPoly ), NULL );
+	g_signal_connect(  G_OBJECT( polyscheck ), "toggled", G_CALLBACK( OnPoly ), NULL );
 
 	combo_list = NULL;
 	combo_list = g_list_append( combo_list, (void *)_( "Z-Buffer Test and Write (recommended for solid or no polygons)" ) );
@@ -400,12 +400,12 @@ void DoConfigDialog(){
 	show3check = gtk_check_button_new_with_label( _( "Show" ) );
 	gtk_widget_show( show3check );
 	gtk_box_pack_start( GTK_BOX( hbox ), show3check, TRUE, TRUE, 0 );
-	g_signal_connect( show3check, "toggled", G_CALLBACK( OnConfig3d ), NULL );
+	g_signal_connect( G_OBJECT( show3check ), "toggled", G_CALLBACK( OnConfig3d ), NULL );
 
 	portalcheck = gtk_check_button_new_with_label( _( "Portal cubic clipper" ) );
 	gtk_widget_show( portalcheck );
 	gtk_box_pack_start( GTK_BOX( hbox ), portalcheck, TRUE, TRUE, 0 );
-	g_signal_connect( portalcheck, "toggled", G_CALLBACK( OnClip ), NULL );
+	g_signal_connect( G_OBJECT( portalcheck ), "toggled", G_CALLBACK( OnClip ), NULL );
 
 	frame = gtk_frame_new( _( "2D View" ) );
 	gtk_widget_show( frame );
@@ -438,7 +438,7 @@ void DoConfigDialog(){
 	button = gtk_button_new_with_label( _( "Color" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnColor2d ), NULL );
+	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColor2d ), NULL );
 
 	button_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
 	gtk_size_group_add_widget( button_group, color_button );
@@ -449,7 +449,7 @@ void DoConfigDialog(){
 	aa2check = gtk_check_button_new_with_label( _( "Anti-Alias (May not work on some video cards)" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), aa2check, TRUE, TRUE, 0 );
 	gtk_widget_show( aa2check );
-	g_signal_connect( aa2check, "toggled", G_CALLBACK( OnAntiAlias2d ), NULL );
+	g_signal_connect(  G_OBJECT( aa2check ), "toggled", G_CALLBACK( OnAntiAlias2d ), NULL );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 5 );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), hbox, TRUE, FALSE, 0 );
@@ -458,7 +458,7 @@ void DoConfigDialog(){
 	show2check = gtk_check_button_new_with_label( _( "Show" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), show2check, FALSE, FALSE, 0 );
 	gtk_widget_show( show2check );
-	g_signal_connect( show2check, "toggled", G_CALLBACK( OnConfig2d ), NULL );
+	g_signal_connect(  G_OBJECT( show2check ), "toggled", G_CALLBACK( OnConfig2d ), NULL );
 
 	// initialize dialog
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( show2check ), portals.show_2d );

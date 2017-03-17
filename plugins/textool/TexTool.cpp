@@ -615,16 +615,16 @@ static GtkWidget* CreateOpenGLWidget(){
 						   GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK );
 
 	// Connect signal handlers
-	g_signal_connect( g_pToolWidget, "draw", G_CALLBACK( expose ), NULL );
-	g_signal_connect( g_pToolWidget, "motion-notify-event",
+	g_signal_connect( G_OBJECT( g_pToolWidget ), "draw", G_CALLBACK( expose ), NULL );
+	g_signal_connect( G_OBJECT( g_pToolWidget ), "motion-notify-event",
 						G_CALLBACK( motion ), NULL );
-	g_signal_connect( g_pToolWidget, "button-press-event",
+	g_signal_connect( G_OBJECT( g_pToolWidget ), "button-press-event",
 						G_CALLBACK( button_press ), NULL );
-	g_signal_connect( g_pToolWidget, "button-release-event",
+	g_signal_connect( G_OBJECT( g_pToolWidget ), "button-release-event",
 						G_CALLBACK( button_release ), NULL );
 
-	g_signal_connect( g_pToolWnd, "delete-event", G_CALLBACK( close ), NULL );
-	g_signal_connect( g_pToolWnd, "key-press-event",
+	g_signal_connect( G_OBJECT( g_pToolWnd ), "delete-event", G_CALLBACK( close ), NULL );
+	g_signal_connect( G_OBJECT( g_pToolWnd ), "key-press-event",
 						G_CALLBACK( keypress ), NULL );
 
 	return g_pToolWidget;

@@ -112,7 +112,8 @@ void Dialog::AddDialogData( GObject *object, void *buf, DLG_DATA_TYPE type ){
 }
 
 void Dialog::AddModalButton( GtkWidget *widget, int ret ) {
-	g_signal_connect( widget, "clicked", G_CALLBACK( dialog_button_callback ), GINT_TO_POINTER( ret ) );
+	g_signal_connect( G_OBJECT( widget ), "clicked", 
+						G_CALLBACK( dialog_button_callback ), GINT_TO_POINTER( ret ) );
 }
 
 void Dialog::UpdateData( bool retrieve ){

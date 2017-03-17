@@ -399,7 +399,7 @@ void CreateEntity( void ){
 
 	// check to make sure we have a brush
 	if ( selected_brushes.next == &selected_brushes ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "You must have a selected brush to create an entity", "info" );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "You must have a selected brush to create an entity" ), _( "info" ) );
 		return;
 	}
 
@@ -407,7 +407,7 @@ void CreateEntity( void ){
 	GtkTreeModel* model;
 	GtkTreeIter iter;
 	if ( gtk_tree_selection_get_selected( gtk_tree_view_get_selection( view ), &model, &iter ) == FALSE ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "You must have a selected class to create an entity", "info" );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "You must have a selected class to create an entity" ), _( "info" ) );
 		return;
 	}
 
@@ -447,14 +447,14 @@ void AddProp(){
 
 	// TTimo: if you change the classname to worldspawn you won't merge back in the structural brushes but create a parasite entity
 	if ( !strcmp( key, "classname" ) && !strcmp( value, "worldspawn" ) ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget,  "Cannot change \"classname\" key back to worldspawn.", NULL, MB_OK );
+		gtk_MessageBox( g_pParentWnd->m_pWidget,  _( "Cannot change \"classname\" key back to worldspawn." ), NULL, MB_OK );
 		return;
 	}
 
 
 	// RR2DO2: we don't want spaces in entity keys
 	if ( strstr( key, " " ) ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "No spaces are allowed in entity keys.", NULL, MB_OK );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "No spaces are allowed in entity keys." ), NULL, MB_OK );
 		return;
 	}
 
@@ -566,10 +566,10 @@ void ResetEntity(){
 	// refresh the dialog
 	SetKeyValuePairs();
 	for ( i = EntCheck1; i <= EntCheck16; i++ )
-		g_signal_handlers_block_by_func( EntWidgets[i], G_CALLBACK( entity_check ), NULL );
+		g_signal_handlers_block_by_func( G_OBJECT( EntWidgets[i] ), (gpointer)G_CALLBACK( entity_check ), NULL );
 	SetSpawnFlags();
 	for ( i = EntCheck1; i <= EntCheck16; i++ )
-		g_signal_handlers_unblock_by_func( EntWidgets[i], G_CALLBACK( entity_check ), NULL );
+		g_signal_handlers_unblock_by_func( G_OBJECT( EntWidgets[i] ), (gpointer)G_CALLBACK( entity_check ), NULL );
 }
 
 bool GetSelectAllCriteria( CString &strKey, CString &strVal ){
@@ -671,7 +671,7 @@ void cam2angles()
  */
 void SetInspectorMode( int iType ){
 	if ( iType == W_GROUP ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "Brush grouping is not functional yet", NULL, MB_OK | MB_ICONWARNING );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "Brush grouping is not functional yet" ), NULL, MB_OK | MB_ICONWARNING );
 	}
 
 	if ( !g_pParentWnd->FloatingGroupDialog() &&
@@ -698,13 +698,13 @@ void SetInspectorMode( int iType ){
 	switch ( iType ) {
 	case W_ENTITY:
 		// entity is always first in the inspector
-		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), "Entities" );
+		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), _( "Entities" ) );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( g_pGroupDlg->m_pNotebook ), 0 );
 		break;
 
 	case W_TEXTURE:
 		g_pParentWnd->GetTexWnd()->FocusEdit();
-		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), "Textures" );
+		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), _( "Textures" ) );
 		if ( g_pParentWnd->FloatingGroupDialog() ) {
                   // if the notebook page is already at 1, no expose event fires up on the embedded GLWindow, leading in the texture window not drawing
                   // I did witness an expose event on the notebook widget though, but for some reason it's not traveling down..
@@ -716,7 +716,7 @@ void SetInspectorMode( int iType ){
 		break;
 
 	case W_CONSOLE:
-		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), "Console" );
+		gtk_window_set_title( GTK_WINDOW( g_qeglobals_gui.d_entity ), _( "Console" ) );
 		if ( g_pParentWnd->FloatingGroupDialog() ) {
 			gtk_notebook_set_current_page( GTK_NOTEBOOK( g_pGroupDlg->m_pNotebook ), 2 );
 		}
@@ -1272,7 +1272,7 @@ void GroupDlg::Create(){
 
 	g_signal_connect( G_OBJECT( dialog ), "delete-event", G_CALLBACK( OnDeleteHide ), NULL );
 	// catch 'Esc'
-	g_signal_connect( dialog, "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
+	g_signal_connect( G_OBJECT( dialog ), "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
 
 	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
 	g_qeglobals_gui.d_entity = dialog;
@@ -1416,7 +1416,7 @@ void GroupDlg::Create(){
 							{
 								GtkWidget* check = gtk_check_button_new_with_label( "" );
 								g_object_ref( check );
-								g_signal_connect( check, "toggled", G_CALLBACK( entity_check ), NULL );
+								g_signal_connect( G_OBJECT( check ), "toggled", G_CALLBACK( entity_check ), NULL );
 								EntWidgets[EntCheck1 + i] = check;
 							}
 
@@ -1509,7 +1509,8 @@ void GroupDlg::Create(){
 					gtk_widget_set_hexpand( entry, TRUE );
 					gtk_widget_show( entry );
 					gtk_widget_set_events( entry, GDK_KEY_PRESS_MASK );
-					g_signal_connect( entry, "key-press-event",	G_CALLBACK( entityentry_keypress ), this );
+					g_signal_connect( G_OBJECT( entry ), "key-press-event",
+										G_CALLBACK( entityentry_keypress ), this );
 					EntWidgets[EntKeyField] = entry;
 				}
 
@@ -1519,7 +1520,8 @@ void GroupDlg::Create(){
 					gtk_widget_set_hexpand( entry, TRUE );
 					gtk_widget_show( entry );
 					gtk_widget_set_events( entry, GDK_KEY_PRESS_MASK );
-					g_signal_connect( entry, "key-press-event",	G_CALLBACK( entityentry_keypress ), this );
+					g_signal_connect( G_OBJECT( entry ), "key-press-event",
+										G_CALLBACK( entityentry_keypress ), this );
 					EntWidgets[EntValueField] = entry;
 				}
 
@@ -1552,21 +1554,21 @@ void GroupDlg::Create(){
 						GtkWidget* button = gtk_button_new_with_label( _( "360" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 2, 1, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"360" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"360" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "45" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 2, 0, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"45" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"45" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "90" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 1, 0, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"90" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"90" );
 					}
 
 
@@ -1574,35 +1576,35 @@ void GroupDlg::Create(){
 						GtkWidget* button = gtk_button_new_with_label( _( "135" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 0, 0, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"135" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"135" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "180" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 0, 1, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"180" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"180" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "225" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 0, 2, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"225" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"225" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "270" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 1, 2, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"270" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"270" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "315" ) );
 						gtk_grid_attach( GTK_GRID( table ), button, 2, 2, 1, 1 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"315" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"315" );
 					}
 				}
 
@@ -1622,14 +1624,14 @@ void GroupDlg::Create(){
 						GtkWidget* button = gtk_button_new_with_label( _( "Dn" ) );
 						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( entitylist_angle ), (void *)"-2" );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_angle ), (void *)"-2" );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "Cam to angles" ) );
 						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( cam2angles ), NULL );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( cam2angles ), NULL );
 						g_object_set_data( G_OBJECT( dialog ), "cam2angles_button", button );
 					}
 
@@ -1644,14 +1646,14 @@ void GroupDlg::Create(){
 						GtkWidget* button = gtk_button_new_with_label( _( "Sound..." ) );
 						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( AssignSound ), NULL );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( AssignSound ), NULL );
 					}
 
 					{
 						GtkWidget* button = gtk_button_new_with_label( _( "Model..." ) );
 						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( AssignModel ), NULL );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( AssignModel ), NULL );
 					}
 				}
 
@@ -1664,7 +1666,7 @@ void GroupDlg::Create(){
 						GtkWidget* button = gtk_button_new_with_label( _( "Del Key/Pair" ) );
 						gtk_box_pack_start( GTK_BOX( vbox2 ), button, FALSE, FALSE, 0 );
 						gtk_widget_show( button );
-						g_signal_connect( button, "clicked", G_CALLBACK( DelProp ), NULL );
+						g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( DelProp ), NULL );
 						g_object_set_data( G_OBJECT( dialog ), "del_button", button );
 					}
 

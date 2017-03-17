@@ -23,7 +23,6 @@
 #include <string.h>
 #include <math.h>
 #include "gensurf.h"
-#include <glib/gi18n.h>
 
 #define GENERAL_TAB   0
 #define EXTENTS_TAB   1
@@ -123,7 +122,7 @@ static void SetupControls(){
 		if ( Game == QUAKE3 && UsePatches != 0 ) {
 			ENABLE_WIDGET( "decimate", FALSE );
 		}
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "snap_text" ) ), "Snap to grid:" ); // ^Fishman - Snap to grid.
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "snap_text" ) ), _( "Snap to grid:" ) ); // ^Fishman - Snap to grid.
 		break;
 
 	case BITMAP_TAB:
@@ -137,8 +136,8 @@ static void SetupControls(){
 			ENABLE_WIDGET( "bmp_text3", FALSE );
 			ENABLE_WIDGET( "bmp_reload", FALSE );
 			gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "bmp_note" ) ),
-								"These options are disabled unless \"From Bitmap\"\n"
-								"is selected as the Waveform on the General tab." );
+								_( "These options are disabled unless \"From Bitmap\"\n"
+								"is selected as the Waveform on the General tab." ) );
 		}
 		else
 		{
@@ -151,9 +150,9 @@ static void SetupControls(){
 			ENABLE_WIDGET( "bmp_text3", TRUE );
 			ENABLE_WIDGET( "bmp_reload", strlen( gbmp.name ) != 0 );
 			gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "bmp_note" ) ),
-								"GenSurf works only with 8-bit bitmaps. Color indices are\n"
+								_( "GenSurf works only with 8-bit bitmaps. Color indices are\n"
 								"mapped to values for each vertex. Generally, gray scale\n"
-								"images are stored with black as color 0, white as color 255." );
+								"images are stored with black as color 0, white as color 255." ) );
 		}
 		break;
 
@@ -227,29 +226,29 @@ static void SetupControls(){
 	{
 	case PLANE_XZ0:
 	case PLANE_XZ1:
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), "Z:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), "Z:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), "Z:" );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), _( "Z:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), _( "Z:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), _( "Z:" ) );
 		break;
 	case PLANE_YZ0:
 	case PLANE_YZ1:
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), "Y:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), "Y:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), "Z:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), "Z:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), "Y:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), "Z:" );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), _( "Y:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), _( "Y:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), _( "Z:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), _( "Z:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), _( "Y:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), _( "Z:" ) );
 		break;
 	default:
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), "Y:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), "Y:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), "X:" );
-		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), "Y:" );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmin_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "hmax_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmin_text" ) ), _( "Y:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "vmax_text" ) ), _( "Y:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nh_text" ) ), _( "X:" ) );
+		gtk_label_set_text( GTK_LABEL( g_object_get_data( G_OBJECT( g_pWnd ), "nv_text" ) ), _( "Y:" ) );
 		break;
 	}
 }
@@ -727,36 +726,36 @@ static void main_go( GtkWidget *widget, gpointer data ){
 	ReadDlgValues( current_tab );
 	if ( NH < 1 || NH > MAX_ROWS ) {
 		snprintf( Text, sizeof( Text ), _( "The number of divisions must be > 0 and no greater than %d." ), MAX_ROWS );
-		g_FuncTable.m_pfnMessageBox( g_pWnd, Text, "GenSurf", MB_ICONEXCLAMATION, NULL );
+		g_FuncTable.m_pfnMessageBox( g_pWnd, Text, _( "GenSurf" ), MB_ICONEXCLAMATION, NULL );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), EXTENTS_TAB );
 		return;
 	}
 
 	if ( NV < 1 || NV > MAX_ROWS ) {
 		snprintf( Text, sizeof( Text ), _( "The number of divisions must be > 0 and no greater than %d." ), MAX_ROWS );
-		g_FuncTable.m_pfnMessageBox( g_pWnd, Text, "GenSurf", MB_ICONEXCLAMATION, NULL );
+		g_FuncTable.m_pfnMessageBox( g_pWnd, Text, _( "GenSurf" ), MB_ICONEXCLAMATION, NULL );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), EXTENTS_TAB );
 		return;
 	}
 
 	if ( Hll >= Hur ) {
-		g_FuncTable.m_pfnMessageBox( g_pWnd, "The \"lower-left\" values must be less than "
+		g_FuncTable.m_pfnMessageBox( g_pWnd, _( "The \"lower-left\" values must be less than "
 											 "the corresponding \"upper-right\" values in "
-											 "the \"Extent\" box.","GenSurf", MB_OK | MB_ICONEXCLAMATION, NULL );
+											 "the \"Extent\" box." ), _( "GenSurf" ), MB_OK | MB_ICONEXCLAMATION, NULL );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), EXTENTS_TAB );
 		return;
 	}
 
 	if ( Vll >= Vur ) {
-		g_FuncTable.m_pfnMessageBox( g_pWnd,"The \"lower-left\" values must be less than "
+		g_FuncTable.m_pfnMessageBox( g_pWnd, _( "The \"lower-left\" values must be less than "
 											"the corresponding \"upper-right\" values in "
-											"the \"Extent\" box.","GenSurf", MB_OK | MB_ICONEXCLAMATION, NULL );
+											"the \"Extent\" box." ), _( "GenSurf" ), MB_OK | MB_ICONEXCLAMATION, NULL );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), EXTENTS_TAB );
 		return;
 	}
 
 	if ( !strlen( Texture[Game][0] ) ) {
-		g_FuncTable.m_pfnMessageBox( g_pWnd, "You must supply a texture name.", "GenSurf", MB_ICONEXCLAMATION, NULL );
+		g_FuncTable.m_pfnMessageBox( g_pWnd, _( "You must supply a texture name." ), _( "GenSurf" ), MB_ICONEXCLAMATION, NULL );
 		gtk_notebook_set_current_page( GTK_NOTEBOOK( notebook ), EXTENTS_TAB );
 		return;
 	}
@@ -897,7 +896,7 @@ static void bitmap_browse( GtkWidget *widget, gpointer data ){
 	const char *filename;
 	char *ptr;
 
-	filename = g_FuncTable.m_pfnFileDialog( g_pWnd, TRUE, "Bitmap File", gbmp.defpath, "gtkgensurf", NULL );
+	filename = g_FuncTable.m_pfnFileDialog( g_pWnd, TRUE, _( "Bitmap File" ), gbmp.defpath, "gtkgensurf", NULL );
 
 	if ( filename != NULL ) {
 		Q_strncpyz( gbmp.name, filename, sizeof( gbmp.name ) );
@@ -933,8 +932,8 @@ static gint fix_value_entryfocusout( GtkWidget* widget, GdkEventFocus *event, gp
 
 	if ( i < -65536 || i > 65536 ) {
 		gdk_beep();
-		g_FuncTable.m_pfnMessageBox( g_pWnd, "The value must be between -65536 and 65536, inclusive.",
-									 "GenSurf", MB_OK | MB_ICONEXCLAMATION, NULL );
+		g_FuncTable.m_pfnMessageBox( g_pWnd, _( "The value must be between -65536 and 65536, inclusive." ),
+									 _( "GenSurf" ), MB_OK | MB_ICONEXCLAMATION, NULL );
 		snprintf( Text, sizeof( Text ), "%d", (int)xyz[Vertex[0].i][Vertex[0].j].fixed_value );
 		gtk_entry_set_text( GTK_ENTRY( widget ), Text );
 		gtk_window_set_focus( GTK_WINDOW( gtk_widget_get_toplevel( widget ) ), widget );
@@ -1627,7 +1626,7 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "nv", spin );
 
-	check = gtk_check_button_new_with_label( "Use Bezier patches" );
+	check = gtk_check_button_new_with_label( _( "Use Bezier patches" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, TRUE, 0 );
 	gtk_widget_show( check );
 	g_object_set_data( G_OBJECT( dlg ), "use_patches", check );
@@ -1733,7 +1732,7 @@ GtkWidget* create_main_dialog(){
 	g_object_set_data( G_OBJECT( dlg ), "z10", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Z10 );
 
-	check = gtk_check_button_new_with_label( "Linear borders" );
+	check = gtk_check_button_new_with_label( _( "Linear borders" ) );
 	gtk_container_add( GTK_CONTAINER( vbox2 ), check );
 	gtk_widget_show( check );
 	g_object_set_data( G_OBJECT( dlg ), "linearborder", check );
@@ -2055,7 +2054,7 @@ GtkWidget* create_main_dialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), label, FALSE, TRUE, 0 );
 	gtk_widget_show( label );
 
-	button = gtk_button_new_with_label( "Open..." );
+	button = gtk_button_new_with_label( _( "Open..." ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), button, FALSE, TRUE, 0 );
 	gtk_widget_show( button );
 	g_object_set_data( G_OBJECT( dlg ), "open", button );

@@ -239,20 +239,20 @@ GLWindow::GLWindow( bool zbuffer ) {
 #endif
 
 	// Connect signal handlers
-	g_signal_connect( m_pWidget, "realize", G_CALLBACK( realize ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "realize", G_CALLBACK( realize ), this );
 #ifdef USE_GTKGLAREA
-	g_signal_connect( m_pWidget, "render", G_CALLBACK( render ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "render", G_CALLBACK( render ), this );
 #else //USE_GTKGLEXT
-	g_signal_connect( m_pWidget, "draw", G_CALLBACK( expose ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "draw", G_CALLBACK( expose ), this );
 #endif
-	g_signal_connect( m_pWidget, "motion-notify-event", G_CALLBACK( motion ), this );
-	g_signal_connect( m_pWidget, "button-press-event", G_CALLBACK( button_press ), this );
-	g_signal_connect( m_pWidget, "button-release-event",G_CALLBACK( button_release ), this );
-	g_signal_connect( m_pWidget, "size-allocate", G_CALLBACK( resize ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "motion-notify-event", G_CALLBACK( motion ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "button-press-event", G_CALLBACK( button_press ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "button-release-event",G_CALLBACK( button_release ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "size-allocate", G_CALLBACK( resize ), this );
 //	g_signal_connect( item, "activate", G_CALLBACK( popup_selected ), data );
 
 #if GTK_CHECK_VERSION( 1,3,0 )
-	g_signal_connect( m_pWidget, "scroll-event", G_CALLBACK( scroll_event ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "scroll-event", G_CALLBACK( scroll_event ), this );
 #endif
 }
 

@@ -300,9 +300,9 @@ void PatchDialog::BuildDialog(){
 	load_window_pos( dlg, g_PrefsDlg.mWindowInfo.posPatchWnd );
 
 	gtk_window_set_title( GTK_WINDOW( dlg ), _( "Patch Properties" ) );
-	g_signal_connect( dlg, "delete-event", G_CALLBACK( OnDone ), NULL );
+	g_signal_connect( G_OBJECT( dlg ), "delete-event", G_CALLBACK( OnDone ), NULL );
 	// catch 'Esc' and 'Enter'
-	g_signal_connect( dlg, "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
+	g_signal_connect( G_OBJECT( dlg ), "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dlg ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
 
 
@@ -645,17 +645,17 @@ void PatchDialog::BuildDialog(){
 	set_button = button = gtk_button_new_with_label( _( "Set..." ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), button, TRUE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnPatchreset ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnPatchreset ), NULL );
 
 	nat_button = button = gtk_button_new_with_label( _( "Natural" ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), button, TRUE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnPatchnatural ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnPatchnatural ), NULL );
 
 	fit_button = button = gtk_button_new_with_label( _( "Fit" ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), button, TRUE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnPatchfit ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnPatchfit ), NULL );
 
 	size_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
 	gtk_size_group_add_widget( size_group, cap_button );
@@ -673,12 +673,12 @@ void PatchDialog::BuildDialog(){
 	button = gtk_button_new_with_label( _( "Done" ) );
 	gtk_box_pack_end( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnDone ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnDone ), NULL );
 
 	button = gtk_button_new_with_label( _( "Apply" ) );
 	gtk_box_pack_end( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnApply ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnApply ), NULL );
 }
 
 // sync the dialog our internal data structures

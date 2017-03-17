@@ -513,7 +513,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_window_set_title( GTK_WINDOW( dlg ), _( "Surface Inspector" ) );
 	//g_signal_connect (G_OBJECT (dlg), "delete-event", G_CALLBACK (OnCancel), NULL);
 	// we catch 'Enter' and interpret is as OnDone
-	g_signal_connect( dlg, "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
+	g_signal_connect( G_OBJECT( dlg ), "key-press-event", G_CALLBACK( OnDialogKey ), NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dlg ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
 
 	// replaced by only the vbox:
@@ -564,7 +564,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 0, 1, 1 );
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hshift_inc", entry );
-	g_signal_connect( entry, "changed",
+	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
 
 	label = gtk_label_new( _( "Vertical shift" ) );
@@ -576,7 +576,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "vshift", spin );
-	g_signal_connect( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ), "value-changed",
+	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
 
 	label = gtk_label_new( _( "Step" ) );
@@ -588,7 +588,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vshift_inc", entry );
-	g_signal_connect( entry, "changed",
+	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
 
 	label = gtk_label_new( _( "Horizontal stretch" ) );
@@ -600,7 +600,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 2, 1, 1 );
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "hscale", spin );
-	g_signal_connect( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ), "value-changed",
+	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
 
 	label = gtk_label_new( _( "Step" ) );
@@ -612,7 +612,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 2, 1, 1 );
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hscale_inc", entry );
-	g_signal_connect( entry, "changed",
+	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
 
 	label = gtk_label_new( _( "Vertical stretch" ) );
@@ -624,7 +624,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 3, 1, 1 );
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "vscale", spin );
-	g_signal_connect( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ), "value-changed",
+	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
 
 	label = gtk_label_new( _( "Step" ) );
@@ -636,7 +636,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 3, 1, 1 );
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vscale_inc", entry );
-	g_signal_connect( entry, "changed",
+	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
 
 	label = gtk_label_new( _( "Rotate" ) );
@@ -649,7 +649,7 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 4, 1, 1 );
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "rotate", spin );
-	g_signal_connect( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ), "value-changed",
+	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
 
 	label = gtk_label_new( _( "Step" ) );
@@ -661,14 +661,14 @@ void SurfaceDlg::BuildDialog() {
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 4, 1, 1 );
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "rotate_inc", entry );
-	g_signal_connect( entry, "changed",
+	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
 
 	// match grid button
 	button = gtk_button_new_with_label( _( "Match Grid" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 3, 5, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnMatchGrid ), NULL );
 
 	frame = gtk_frame_new( _( "Texturing" ) );
@@ -682,17 +682,17 @@ void SurfaceDlg::BuildDialog() {
 	gtk_container_set_border_width( GTK_CONTAINER( table ), 5 );
 	gtk_widget_show( table );
 
-	label = gtk_label_new( "Brush" );
+	label = gtk_label_new( _( "Brush" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Patch" );
+	label = gtk_label_new( _( "Patch" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	label = gtk_label_new( "Width" );
+	label = gtk_label_new( _( "Width" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -705,13 +705,13 @@ void SurfaceDlg::BuildDialog() {
 	axial_button = button = gtk_button_new_with_label( _( "Axial" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 1, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnAxial ), NULL );
 
 	fit_button = button = gtk_button_new_with_label( _( "Fit" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 1, 1, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnFaceFit ), NULL );
 
 	button_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
@@ -722,25 +722,25 @@ void SurfaceDlg::BuildDialog() {
 	cap_button = button = gtk_button_new_with_label( _( "CAP" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 3, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnPatchdetails ), NULL );
 
 	set_button = button = gtk_button_new_with_label( _( "Set..." ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 1, 3, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnPatchreset ), NULL );
 
 	nat_button = button = gtk_button_new_with_label( _( "Natural" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 2, 3, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnPatchnatural ), NULL );
 
 	fit_button = button = gtk_button_new_with_label( _( "Fit" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 3, 3, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnBtnPatchFit ), NULL );
 
 	button_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
@@ -767,19 +767,19 @@ void SurfaceDlg::BuildDialog() {
 	button = gtk_button_new_with_label( _( "Done" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnDone ), NULL );
 
 	button = gtk_button_new_with_label( _( "Apply" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnApply ), NULL );
 
 	button = gtk_button_new_with_label( _( "Cancel" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnCancel ), NULL );
 
 	// that's a bit of trashy stuff from Textool-v2 branch
@@ -788,7 +788,7 @@ void SurfaceDlg::BuildDialog() {
 	button = gtk_button_new_with_label( _( "Test" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( OnTest ), NULL );
 #endif
 

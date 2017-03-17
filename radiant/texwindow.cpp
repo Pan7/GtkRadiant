@@ -653,7 +653,7 @@ void FillTextureMenu( GSList** pArray ){
 					gtk_widget_show( item );
 					CheckMenuSplitting( pSubMenu );
 					gtk_container_add( GTK_CONTAINER( pSubMenu ), item );
-					g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( CMD_TEXTUREWAD + texture_nummenus ) );
 
 					strcpy( texture_menunames[texture_nummenus], (char*)temp->data );
@@ -690,7 +690,7 @@ void FillTextureMenu( GSList** pArray ){
 		gtk_widget_show( item );
 		CheckMenuSplitting( menu );
 		gtk_container_add( GTK_CONTAINER( menu ), item );
-		g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+		g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 							GINT_TO_POINTER( CMD_TEXTUREWAD + texture_nummenus ) );
 
 		strcpy( texture_menunames[texture_nummenus], (char*)temp->data );
@@ -1879,7 +1879,7 @@ void TexWnd::OnCreate(){
 	g_nTextureOffset = 0;
 
 	GtkAdjustment *vadjustment = gtk_range_get_adjustment( GTK_RANGE( g_qeglobals_gui.d_texture_scroll ) );
-	g_signal_connect( vadjustment, "value-changed", G_CALLBACK( vertical_scroll ), this );
+	g_signal_connect( G_OBJECT( vadjustment ), "value-changed", G_CALLBACK( vertical_scroll ), this );
 
 	if ( g_PrefsDlg.m_bTextureScrollbar ) {
 		gtk_widget_show( g_qeglobals_gui.d_texture_scroll );
@@ -1888,7 +1888,7 @@ void TexWnd::OnCreate(){
 	}
 	m_bNeedRange = true;
 
-	g_signal_connect( m_pFilter, "changed", G_CALLBACK( filter_changed ), this );
+	g_signal_connect( G_OBJECT( m_pFilter ), "changed", G_CALLBACK( filter_changed ), this );
 	if ( g_PrefsDlg.m_bTextureWindow ) {
 		gtk_widget_show( m_pFilter );
 	}
@@ -1933,7 +1933,7 @@ void TexWnd::OnExpose() {
 		gtk_adjustment_set_lower( vadjustment, 0 );
 		gtk_adjustment_set_upper( vadjustment, g_qeglobals.d_texturewin.m_nTotalHeight );
 
-		g_signal_emit_by_name( vadjustment, "changed" );
+		g_signal_emit_by_name( G_OBJECT( vadjustment ), "changed" );
 
 		m_bNeedRange = false;
 	}

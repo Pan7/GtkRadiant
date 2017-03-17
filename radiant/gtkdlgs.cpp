@@ -538,7 +538,7 @@ void DoProjectSettings(){
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	gtk_widget_set_hexpand( button, FALSE );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( ProjectSettings_dirbutton_clicked ), dialog );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( ProjectSettings_dirbutton_clicked ), dialog );
 
 	gamemode_list = newMappingModesListForGameFile( g_pGameDescription->mGameFile );
 	if( gamemode_list ) {
@@ -1347,7 +1347,7 @@ void DoEntityList(){
 
 	button = gtk_button_new_with_label( _( "Focus" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked", G_CALLBACK( entitylist_focus ), dialog );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_focus ), dialog );
 	gtk_widget_set_hexpand( button, FALSE );
 	gtk_widget_set_vexpand( button, FALSE );
 	gtk_widget_show( button );
@@ -1492,7 +1492,7 @@ void DoRotateDlg(){
 	gtk_widget_set_tooltip_text( label, _( "Degree" ) );
 	gtk_widget_show( label );
 
-	g_signal_connect( dialog, "response", G_CALLBACK( rotatedialog_response ), dialog );
+	g_signal_connect( G_OBJECT( dialog ), "response", G_CALLBACK( rotatedialog_response ), dialog );
 
 	gtk_widget_show( dialog );
 }
@@ -1979,7 +1979,7 @@ static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer 
 		Sys_UpdateWindows( W_ALL );
 	}
 	else{
-		Sys_FPrintf( SYS_WRN, "Warning.. Tried to scale by a zero value." );
+		Sys_FPrintf( SYS_WRN, _( "Warning.. Tried to scale by a zero value." ) );
 	}
 
 	if ( response_id == GTK_RESPONSE_OK )
@@ -2315,13 +2315,13 @@ void DoAbout(){
 	button = gtk_button_new_with_label( _( "Credits" ) );
 	gtk_widget_show( button );
 	gtk_box_pack_end( GTK_BOX( button_hbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( about_button_credits ), NULL );
 
 	button = gtk_button_new_with_label( _( "Changelog" ) );
 	gtk_widget_show( button );
 	gtk_box_pack_end( GTK_BOX( button_hbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( about_button_changelog ), NULL );
 	*/
 
@@ -2979,9 +2979,9 @@ char* DoNameDlg( const char* title ){
 
 	dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_title( GTK_WINDOW( dlg ), title );
-	g_signal_connect( dlg, "delete-event",
+	g_signal_connect( G_OBJECT( dlg ), "delete-event",
 						G_CALLBACK( dialog_delete_callback ), NULL );
-	g_signal_connect( dlg, "destroy",
+	g_signal_connect( G_OBJECT( dlg ), "destroy",
 						G_CALLBACK( gtk_widget_destroy ), NULL );
 	g_object_set_data( G_OBJECT( dlg ), "loop", &loop );
 	g_object_set_data( G_OBJECT( dlg ), "ret", &ret );
@@ -3006,14 +3006,14 @@ char* DoNameDlg( const char* title ){
 	button = gtk_button_new_with_label( _( "OK" ) );
 	gtk_widget_show( button );
 	gtk_box_pack_start( GTK_BOX( vbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( dialog_button_callback ), GINT_TO_POINTER( IDOK ) );
 	gtk_widget_set_size_request( button, 60, -2 );
 
 	button = gtk_button_new_with_label( _( "Cancel" ) );
 	gtk_widget_show( button );
 	gtk_box_pack_start( GTK_BOX( vbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( dialog_button_callback ), GINT_TO_POINTER( IDCANCEL ) );
 	gtk_widget_set_size_request( button, 60, -2 );
 
@@ -3243,7 +3243,7 @@ static void CreateGtkTextEditor(){
 
 	dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-	g_signal_connect( dlg, "delete-event",
+	g_signal_connect( G_OBJECT( dlg ), "delete-event",
 						G_CALLBACK( editor_delete ), NULL );
 	gtk_window_set_default_size( GTK_WINDOW( dlg ), 600, 300 );
 
@@ -3278,7 +3278,7 @@ static void CreateGtkTextEditor(){
 	button = gtk_button_new_with_label( _( "Save" ) );
 	gtk_widget_show( button );
 	gtk_box_pack_end( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
-	g_signal_connect( button, "clicked",
+	g_signal_connect( G_OBJECT( button ), "clicked",
 						G_CALLBACK( editor_save ), dlg );
 	gtk_widget_set_size_request( button, 60, -2 );
 
@@ -3704,7 +3704,7 @@ void DoFindReplaceTexturesDialog()
 	gtk_grid_attach( GTK_GRID( table ), button, 2, 0, 1, 1 );
 	gtk_widget_show( button );
 	entry = gtk_bin_get_child( GTK_BIN( find_combo ) );
-	g_signal_connect( button, "clicked", G_CALLBACK( findbutton_clicked ), entry );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( findbutton_clicked ), entry );
 
 	label = gtk_label_new( "Replace:" );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
@@ -3721,7 +3721,7 @@ void DoFindReplaceTexturesDialog()
 	gtk_grid_attach( GTK_GRID( table ), button, 2, 1, 1, 1 );
 	gtk_widget_show( button );
 	entry = gtk_bin_get_child( GTK_BIN( replace_combo ) );
-	g_signal_connect( button, "clicked", G_CALLBACK( findbutton_clicked ), entry );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( findbutton_clicked ), entry );
 
 	check = gtk_check_button_new_with_label( "Use selected brushes only" );
 	gtk_box_pack_start( GTK_BOX( vbox ), check, TRUE, TRUE, 0 );

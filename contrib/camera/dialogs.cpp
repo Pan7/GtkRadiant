@@ -107,17 +107,17 @@ static gint ci_new( GtkWidget *widget, gpointer data ){
 
 	// -------------------------- //
 
-	fixed = gtk_radio_button_new_with_label( targetTypeRadio, "Fixed" );
+	fixed = gtk_radio_button_new_with_label( targetTypeRadio, _( "Fixed" ) );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), fixed, FALSE, FALSE, 3 );
 	gtk_widget_show( fixed );
 	targetTypeRadio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( fixed ) );
 
-	interpolated = gtk_radio_button_new_with_label( targetTypeRadio, "Interpolated" );
+	interpolated = gtk_radio_button_new_with_label( targetTypeRadio, _( "Interpolated" ) );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), interpolated, FALSE, FALSE, 3 );
 	gtk_widget_show( interpolated );
 	targetTypeRadio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( interpolated ) );
 
-	spline = gtk_radio_button_new_with_label( targetTypeRadio, "Spline" );
+	spline = gtk_radio_button_new_with_label( targetTypeRadio, _( "Spline" ) );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), spline, FALSE, FALSE, 3 );
 	gtk_widget_show( spline );
 	targetTypeRadio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( spline ) );
@@ -911,7 +911,7 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 
 	dialog = gtk_dialog_new_with_buttons( _( "Camera Inspector" ), GTK_WINDOW( g_pMainWidget ), flags, NULL );
 	w = gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "OK" ), GTK_RESPONSE_OK );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_close ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_close ), NULL );
 
 //	gtk_window_set_title( GTK_WINDOW( window ), _( "Camera Inspector" ) );
 	g_signal_connect( dialog, "delete_event", G_CALLBACK( ci_close ), NULL );
@@ -1021,14 +1021,14 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 	gtk_widget_show( g_pEditModeEditRadioButton );
 	g_pEditTypeRadio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( g_pEditModeEditRadioButton ) );
 
-	g_signal_connect( g_pEditModeEditRadioButton, "clicked", G_CALLBACK( ci_editmode_edit ), NULL );
+	g_signal_connect( G_OBJECT( g_pEditModeEditRadioButton ), "clicked", G_CALLBACK( ci_editmode_edit ), NULL );
 
 	g_pEditModeAddRadioButton = gtk_radio_button_new_with_label( g_pEditTypeRadio, _( "Add Points" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), g_pEditModeAddRadioButton, FALSE, FALSE, 3 );
 	gtk_widget_show( g_pEditModeAddRadioButton );
 	g_pEditTypeRadio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( g_pEditModeAddRadioButton ) );
 
-	g_signal_connect( g_pEditModeAddRadioButton, "clicked", G_CALLBACK( ci_editmode_add ), NULL );
+	g_signal_connect( G_OBJECT( g_pEditModeAddRadioButton ), "clicked", G_CALLBACK( ci_editmode_add ), NULL );
 
 	// see if we should use a different default
 	if ( g_iEditMode == 1 ) {
@@ -1054,23 +1054,23 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 
 	w = gtk_button_new_with_label( _( "Rename..." ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, TRUE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_rename ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_rename ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Add Target..." ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, TRUE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_add_target ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_add_target ), NULL );
 	gtk_widget_show( w );
 
 	// not available in splines library
-	/*w = gtk_button_new_with_label( "Delete Selected" );
+	/*w = gtk_button_new_with_label( _( "Delete Selected" ) );
 	   gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, TRUE, 0);
-	   g_signal_connect( w, "clicked", G_CALLBACK( ci_delete_selected ), NULL );
+	   g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_delete_selected ), NULL );
 	   gtk_widget_show( w );
 
-	   w = gtk_button_new_with_label( "Select All" );
+	   w = gtk_button_new_with_label( _( "Select All" ) );
 	   gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, TRUE, 0);
-	   g_signal_connect( w, "clicked", G_CALLBACK( ci_select_all ), NULL );
+	   g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_select_all ), NULL );
 	   gtk_widget_show( w );*/
 
 	// -------------------------- //
@@ -1132,7 +1132,7 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 	gtk_widget_show( hbox );
 
 	g_pTimeLine = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, 30000, 100, 250, 0 ) );
-	g_signal_connect( g_pTimeLine, "value-changed", G_CALLBACK( ci_timeline_changed ), NULL );
+	g_signal_connect( G_OBJECT( g_pTimeLine ), "value-changed", G_CALLBACK( ci_timeline_changed ), NULL );
 	w = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, g_pTimeLine );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, TRUE, TRUE, 0 );
 	gtk_widget_show( w );
@@ -1196,12 +1196,12 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 
 	w = gtk_button_new_with_label( _( "Add..." ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_add ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_add ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Del" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_del ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_del ), NULL );
 	gtk_widget_show( w );
 
 	// -------------------------- //
@@ -1214,34 +1214,34 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 
 	w = gtk_button_new_with_label( _( "New..." ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_new ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_new ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Load..." ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_load ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_load ), NULL );
 	gtk_widget_show( w );
 
 	// -------------------------- //
 
 	w = gtk_button_new_with_label( _( "Save..." ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_save ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_save ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Unload" ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_unload ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_unload ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Apply" ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_apply ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_apply ), NULL );
 	gtk_widget_show( w );
 
 	w = gtk_button_new_with_label( _( "Preview" ) );
 	gtk_box_pack_start( GTK_BOX( buttons_vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_preview ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_preview ), NULL );
 	gtk_widget_show( w );
 
 	// -------------------------- //
@@ -1256,7 +1256,7 @@ GtkWidget *CreateCameraInspectorDialog( void ){
 
 	w = gtk_button_new_with_label( _( "Close" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 0 );
-	g_signal_connect( w, "clicked", G_CALLBACK( ci_close ), NULL );
+	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( ci_close ), NULL );
 	gtk_widget_show( w );
 */
 	// -------------------------- //

@@ -375,8 +375,8 @@ void CreateViewWindow(){
 
 	g_pWndPreview = dlg = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_title( GTK_WINDOW( dlg ), _( "GtkGenSurf Preview" ) );
-	g_signal_connect( dlg, "delete-event", G_CALLBACK( preview_close ), NULL );
-	g_signal_connect( dlg, "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
+	g_signal_connect( G_OBJECT( dlg ), "delete-event", G_CALLBACK( preview_close ), NULL );
+	g_signal_connect( G_OBJECT( dlg ), "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dlg ), GTK_WINDOW( g_pWnd ) );
 	gtk_window_set_default_size( GTK_WINDOW( dlg ), 300, 400 );
 
@@ -390,7 +390,7 @@ void CreateViewWindow(){
 	gtk_container_set_border_width( GTK_CONTAINER( hbox ), 3 );
 	gtk_widget_show( hbox );
 
-	label = gtk_label_new( "Elevation" );
+	label = gtk_label_new( _( "Elevation" ) );
 	g_object_set( label, "xalign", 1.0, NULL );
 	gtk_widget_set_halign( label, GTK_ALIGN_END );
 	gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, TRUE, 0 );
@@ -414,7 +414,7 @@ void CreateViewWindow(){
 	gtk_box_pack_end( GTK_BOX( hbox ), spin, FALSE, TRUE, 0 );
 	gtk_widget_show( spin );
 
-	label = gtk_label_new( "Azimuth" );
+	label = gtk_label_new( _( "Azimuth" ) );
 	g_object_set( label, "xalign", 1.0, NULL );
 	gtk_widget_set_halign( label, GTK_ALIGN_END );
 	gtk_box_pack_end( GTK_BOX( hbox ), label, FALSE, TRUE, 0 );
@@ -430,7 +430,7 @@ void CreateViewWindow(){
 	g_pPreviewWidget = g_UIGtkTable.m_pfn_glwidget_new( FALSE, NULL );
 
 	gtk_widget_set_events( g_pPreviewWidget, GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK );
-	g_signal_connect( g_pPreviewWidget, "draw", G_CALLBACK( expose ), NULL );
+	g_signal_connect( G_OBJECT( g_pPreviewWidget ), "draw", G_CALLBACK( expose ), NULL );
 	g_signal_connect( g_pPreviewWidget, "motion-notify-event", G_CALLBACK( motion ), NULL );
 	g_signal_connect( g_pPreviewWidget, "button-press-event",
 						G_CALLBACK( button_press ), NULL );

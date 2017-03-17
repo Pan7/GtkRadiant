@@ -130,16 +130,16 @@ bool CGtkWindow::Show(){
 						   GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK );
 
 	// Connect signal handlers
-	g_signal_connect( m_pGLWidget, "draw", G_CALLBACK( expose ), this );
-	g_signal_connect( m_pGLWidget, "motion-notify-event",
+	g_signal_connect( G_OBJECT( m_pGLWidget ), "draw", G_CALLBACK( expose ), this );
+	g_signal_connect( G_OBJECT( m_pGLWidget ), "motion-notify-event",
 						G_CALLBACK( motion ), m_pListen );
-	g_signal_connect( m_pGLWidget, "button-press-event",
+	g_signal_connect( G_OBJECT( m_pGLWidget ), "button-press-event",
 						G_CALLBACK( button_press ), m_pListen );
-	g_signal_connect( m_pGLWidget, "button-release-event",
+	g_signal_connect( G_OBJECT( m_pGLWidget ), "button-release-event",
 						G_CALLBACK( button_release ), m_pListen );
 
-	g_signal_connect( m_pWnd, "delete-event", G_CALLBACK( close_widget ), this );
-	g_signal_connect( m_pWnd, "key-press-event",
+	g_signal_connect( G_OBJECT( m_pWnd ), "delete-event", G_CALLBACK( close_widget ), this );
+	g_signal_connect( G_OBJECT( m_pWnd ), "key-press-event",
 						G_CALLBACK( keypress ), m_pListen );
 
 	gtk_widget_show( m_pGLWidget );

@@ -2319,7 +2319,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );
 	gtk_widget_show( check );
 	g_object_set_data( G_OBJECT( dialog ), "check_startonprimary", check );
-	g_signal_connect( check, "clicked", G_CALLBACK( UpdateSensitivity ), this );
+	g_signal_connect( G_OBJECT( check ), "clicked", G_CALLBACK( UpdateSensitivity ), this );
 	AddDialogData( check, &m_bStartOnPrimMon, DLG_CHECK_BOOL );
 #endif
 
@@ -2599,7 +2599,7 @@ void PrefsDlg::BuildDialog(){
 
 #if PREFERENCES_HAVE_PREFAB_PATH
 	// browse button
-	button = gtk_button_new_with_label( "..." );
+	button = gtk_button_new_with_label( _( "..." ) );
 	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnBrowseprefab ), this );
 	gtk_grid_attach( GTK_GRID( table ), button, 2, 0, 1, 1 );
 	gtk_widget_show( button );
@@ -2720,7 +2720,7 @@ void PrefsDlg::BuildDialog(){
 	check = gtk_check_button_new_with_label( _( "Use Custom Shader Editor" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );
 	gtk_widget_show( check );
-	g_signal_connect( check, "clicked", G_CALLBACK( UpdateEditorSensitivity ), this );
+	g_signal_connect( G_OBJECT( check ), "clicked", G_CALLBACK( UpdateEditorSensitivity ), this );
 	g_object_set_data( G_OBJECT( dialog ), "check_customeditor", check );
 	AddDialogData( check, &g_PrefsDlg.m_bUseCustomEditor, DLG_CHECK_BOOL );
 
@@ -2748,7 +2748,7 @@ void PrefsDlg::BuildDialog(){
 
 	// browse button
 	button = gtk_button_new_with_label( _( "..." ) );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnBrowseEditor ), this );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnBrowseEditor ), this );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
 	g_object_set_data( G_OBJECT( dialog ), "button_customeditor", button );
 	gtk_widget_set_sensitive( button, g_PrefsDlg.m_bUseCustomEditor );
@@ -2775,7 +2775,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );
 	gtk_widget_show( check );
 	g_object_set_data( G_OBJECT( dialog ), "check_monitorbsp", check );
-	g_signal_connect( check, "clicked", G_CALLBACK( UpdateSensitivity ), this );
+	g_signal_connect( G_OBJECT( check ), "clicked", G_CALLBACK( UpdateSensitivity ), this );
 	AddDialogData( check, &g_PrefsDlg.m_bWatchBSP, DLG_CHECK_BOOL );
 
 	// Stop on leak
@@ -2790,7 +2790,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );
 	gtk_widget_show( check );
 	g_object_set_data( G_OBJECT( dialog ), "check_runengine", check );
-	g_signal_connect( check, "clicked", G_CALLBACK( UpdateSensitivity ), this );
+	g_signal_connect( G_OBJECT( check ), "clicked", G_CALLBACK( UpdateSensitivity ), this );
 	AddDialogData( check, &g_PrefsDlg.m_bRunQuake, DLG_CHECK_BOOL );
 
 	// sleep mode when running engine
@@ -2814,7 +2814,7 @@ void PrefsDlg::BuildDialog(){
         gtk_widget_show( check );
         g_object_set_data( G_OBJECT( dialog ), "check_x64_q3map2", check );
         AddDialogData( check, &g_PrefsDlg.m_bx64q3map2, DLG_CHECK_BOOL );
-		g_signal_connect( check, "toggled", G_CALLBACK( OnX64Toggle ), this );
+	g_signal_connect( G_OBJECT( check ), "toggled", G_CALLBACK( OnX64Toggle ), this );
 #endif
 
 	// Add the page to the notebook
@@ -3445,7 +3445,7 @@ void CGameInstall::BuildDialog() {
 	gtk_widget_show( vbox1 );
 	gtk_container_add( GTK_CONTAINER( dlg ), vbox1 );
 
-	frame = gtk_frame_new( "Configure a game" );
+	frame = gtk_frame_new( _( "Configure a game" ) );
 	gtk_widget_show( frame );
 	gtk_container_add( GTK_CONTAINER( vbox1 ), frame );
 
@@ -3510,7 +3510,7 @@ void CGameInstall::BuildDialog() {
 		iGame++;
 	}
 	AddDialogData( game_select_combo, &m_nComboSelect, DLG_COMBO_BOX_INT );
-	g_signal_connect( game_select_combo, "changed", G_CALLBACK( OnGameSelectChanged ), this );
+	g_signal_connect( G_OBJECT( game_select_combo ), "changed", G_CALLBACK( OnGameSelectChanged ), this );
 
 	text = gtk_label_new( _( "Name:" ) );
 	gtk_widget_show( text );
@@ -3536,7 +3536,7 @@ void CGameInstall::BuildDialog() {
 
 	button = gtk_button_new_with_label( _( "..." ) );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnBrowseEngine ), this );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnBrowseEngine ), this );
 	gtk_box_pack_start( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 
 	m_executablesVBox = gtk_box_new( GTK_ORIENTATION_VERTICAL, 5 );
@@ -3559,7 +3559,7 @@ void CGameInstall::BuildDialog() {
 
 	button = gtk_button_new_with_label( _( "..." ) );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( OnBtnBrowseExecutables ), this );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnBtnBrowseExecutables ), this );
 	gtk_box_pack_start( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 5 );
