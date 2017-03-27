@@ -1474,31 +1474,31 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table2 ), entry, 1, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "wavelength", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &WaveLength );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table2 ), entry, 1, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "amplitude", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Amplitude );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table2 ), entry, 1, 2, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "roughness", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Roughness );
 
-	adj = gtk_adjustment_new( 1, 1, 32767, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 32767, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( general_random ), NULL );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_grid_attach( GTK_GRID( table2 ), spin, 1, 3, 1, 1 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "random", spin );
 
@@ -1559,28 +1559,28 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hmin", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Hll );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hmax", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Hur );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 2, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vmin", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Vll );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 2, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vmax", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Vur );
@@ -1608,21 +1608,21 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_show( label );
 	g_object_set_data( G_OBJECT( dlg ), "nv_text", label );
 
-	adj = gtk_adjustment_new( 8, 1, MAX_ROWS, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 8, 1, MAX_ROWS, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( extents_nhnv_spin ), &NH );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "nh", spin );
 
-	adj = gtk_adjustment_new( 8, 1, MAX_ROWS, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 8, 1, MAX_ROWS, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( extents_nhnv_spin ), &NV );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "nv", spin );
 
@@ -1639,12 +1639,12 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_show( label );
 	g_object_set_data( G_OBJECT( dlg ), "snap_text", label );
 
-	adj = gtk_adjustment_new( 8, 0, 256, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 8, 0, 256, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( extents_snaptogrid_spin ), &SP );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_box_pack_start( GTK_BOX( vbox ), spin, FALSE, TRUE, 0 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "sp", spin );
 	// ^Fishman - End of Snap to grid code.
@@ -1658,7 +1658,7 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 0, 0, 110, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, 110, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( extents_decimate ), NULL );
 	g_object_set_data( G_OBJECT( dlg ), "decimate_adj", adj );
 	scale = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
@@ -1706,28 +1706,28 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "z01", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Z01 );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "z00", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Z00 );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "z11", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Z11 );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "z10", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &Z10 );
@@ -1808,14 +1808,14 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "bmp_black", entry );
-	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &gbmp.black_value );
+	g_signal_connect( G_OBJECT( entry ), "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &gbmp.black_value );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "bmp_white", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( doublevariable_entryfocusout ), &gbmp.white_value );
@@ -1863,26 +1863,26 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_show( label );
 	g_object_set_data( G_OBJECT( dlg ), "fix_rate_text", label );
 
-	adj = gtk_adjustment_new( 0, -65536, 65536, 1, 16, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, -65536, 65536, 1, 16, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( fix_value_changed ), NULL );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "fix_value", spin );
 	g_signal_connect( spin, "focus-out-event", G_CALLBACK( fix_value_entryfocusout ), NULL );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 1, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "fix_range", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( fix_range_entryfocusout ), NULL );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 2, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "fix_rate", entry );
 	g_signal_connect( entry, "focus-out-event", G_CALLBACK( fix_rate_entryfocusout ), NULL );
@@ -1897,7 +1897,7 @@ GtkWidget* create_main_dialog(){
 	gtk_grid_attach( GTK_GRID( table ), button, 2, 1, 1, 1 );
 	gtk_widget_show( button );
 	g_object_set_data( G_OBJECT( dlg ), "fix_freeall", button );
-	g_signal_connect( button, "clicked", G_CALLBACK( fix_freeall ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( fix_freeall ), NULL );
 
 	vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL, 10 );
 	gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
@@ -1958,11 +1958,11 @@ GtkWidget* create_main_dialog(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 60, 0, 90, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 60, 0, 90, 1, 10, 0 ) );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), spin, FALSE, TRUE, 0 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "tex_slant", spin );
 
@@ -1980,13 +1980,13 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "texoffsetx", entry );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 2, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "texoffsety", entry );
 
@@ -2004,13 +2004,13 @@ GtkWidget* create_main_dialog(){
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "texscalex", entry );
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 2, 0, 1, 1 );
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "texscaley", entry );
 
@@ -2075,12 +2075,13 @@ GtkWidget* create_main_dialog(){
 	button = gtk_button_new_with_label( _( "About..." ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), button, FALSE, TRUE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect( button, "clicked", G_CALLBACK( main_about ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( main_about ), NULL );
+
 
 	check = gtk_check_button_new_with_label( _( "Preview" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, TRUE, 0 );
 	gtk_widget_show( check );
-	g_signal_connect( check, "toggled", G_CALLBACK( main_preview ), NULL );
+	g_signal_connect( G_OBJECT( check ), "toggled", G_CALLBACK( main_preview ), NULL );
 	g_object_set_data( G_OBJECT( dlg ), "main_preview", check );
 
 	// ^Fishman - Antializing for the preview window.

@@ -1604,8 +1604,7 @@ void XYWnd::HandleDrop(){
 					CheckMenuSplitting( submenu );
 					item = create_entity_menu_item( submenu, strName );
 
-					g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
-//					g_signal_connect( item, "activate", G_CALLBACK( HandleCommand ),
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( nID++ ) );
 
 					gtk_widget_show( item );
@@ -1628,10 +1627,8 @@ void XYWnd::HandleDrop(){
 
 					submenu = gtk_menu_new();
 					submenu_root = submenu;
-					//item = gtk_menu_item_new_with_label( strName );
 					item = create_entity_menu_item( submenu, strName );
 					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
-//					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( nID++ ) );
 					gtk_widget_show( item );
 					gtk_menu_shell_append( GTK_MENU_SHELL( submenu ), item );
@@ -1652,7 +1649,6 @@ void XYWnd::HandleDrop(){
 				}
 				strActive = "";
 
-				//item = gtk_menu_item_new_with_label( strName );
 				item = create_entity_menu_item( menu, strName );
 				g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 //				g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),

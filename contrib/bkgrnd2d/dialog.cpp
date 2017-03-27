@@ -43,8 +43,6 @@
 static GtkWidget *pDialogWnd;
 static GtkWidget *pNotebook;
 
-extern void *g_pMainWidget;
-
 
 class CBackgroundDialogPage
 {
@@ -332,6 +330,9 @@ void InitBackgroundDialog(){
 						G_CALLBACK( response_callback ), NULL );
 //  g_signal_connect( GTK_OBJECT (pDialogWnd), "draw", G_CALLBACK( ci_expose ), NULL );
 
+
+	content_area = gtk_dialog_get_content_area( GTK_DIALOG( pDialogWnd ) );
+
 	pNotebook = gtk_notebook_new();
 	pPage = new CBackgroundDialogPage( XY );
 	pPage->Append( pNotebook );
@@ -340,7 +341,7 @@ void InitBackgroundDialog(){
 	pPage = new CBackgroundDialogPage( YZ );
 	pPage->Append( pNotebook );
 
-	content_area = gtk_dialog_get_content_area( GTK_DIALOG( pDialogWnd ) );
+
 
 	vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL, 5 );
 	gtk_container_add( GTK_CONTAINER( content_area ), vbox );
@@ -349,8 +350,6 @@ void InitBackgroundDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox ), pNotebook, TRUE, TRUE, 0 );
 
 	gtk_widget_show( pNotebook );
-
-	gtk_widget_realize( pDialogWnd );
 }
 
 void ShowBackgroundDialog(){

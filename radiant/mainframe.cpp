@@ -1742,6 +1742,7 @@ void MainFrame::create_main_toolbar( GtkWidget *window, GtkWidget *vbox ){
 	//  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), user_rc.toolbar_style);
 	gtk_box_pack_start( GTK_BOX( vbox ), toolbar, FALSE, FALSE, 0 );	
 
+
 	w = toolbar_append_item( GTK_TOOLBAR( toolbar ), _( "Open" ), _( "Open an existing map" ), "",
 								 new_image_icon("file_open.png"), G_CALLBACK( HandleCommand ),
 								 GINT_TO_POINTER( ID_FILE_OPEN ) );

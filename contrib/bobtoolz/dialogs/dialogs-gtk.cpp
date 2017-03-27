@@ -44,7 +44,7 @@ typedef struct {
 
 dlg_texReset_t dlgTexReset;
 
-extern GtkWidget *g_pMainWidget;
+extern GtkWidget *g_pRadiantWnd;
 
 void Update_TextureReseter();
 
@@ -213,8 +213,8 @@ int DoMessageBox( const char* lpText, const char* lpCaption, guint32 uType ){
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( lpCaption, NULL, flags, NULL );	
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pMainWidget ) );
-	gtk_window_set_position( GTK_WINDOW( dialog ), GTK_WIN_POS_CENTER );
+	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( dialog ), GTK_WIN_POS_CENTER_ON_PARENT );
 	gtk_container_set_border_width( GTK_CONTAINER( dialog ), 10 );
 
 	content_area = gtk_dialog_get_content_area( GTK_DIALOG( dialog ) );
@@ -296,6 +296,8 @@ int DoIntersectBox( IntersectRS* rs ){
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "Intersect" ) );
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -354,7 +356,6 @@ int DoIntersectBox( IntersectRS* rs ){
 
 	// ---- /vbox ----
 
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 
@@ -388,8 +389,8 @@ int DoPolygonBox( PolygonRS* rs ){
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( _( "Polygon Builder" ), NULL, flags, NULL );	
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pMainWidget ) );
-	gtk_window_set_position( GTK_WINDOW( dialog ),GTK_WIN_POS_CENTER );
+	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( dialog ), GTK_WIN_POS_CENTER_ON_PARENT );
 	gtk_container_set_border_width( GTK_CONTAINER( dialog ), 5 );
 
 	gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "OK" ), GTK_RESPONSE_OK );
@@ -430,7 +431,7 @@ int DoPolygonBox( PolygonRS* rs ){
 	gtk_widget_show( w );
 
 	text1 = gtk_entry_new();
-	g_object_set( text1, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( text1 ), 1.0 ); //right
 	gtk_entry_set_max_length( GTK_ENTRY( text1 ), 256 );
 	gtk_entry_set_text( GTK_ENTRY( text1 ), "3" );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), text1, FALSE, FALSE, 2 );
@@ -452,22 +453,23 @@ int DoPolygonBox( PolygonRS* rs ){
 	gtk_widget_show( w );
 
 	text2 = gtk_entry_new();
-	g_object_set( text2, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( text2 ), 1.0 ); //right
 	gtk_entry_set_max_length( GTK_ENTRY( text2 ), 256 );
 	gtk_entry_set_text( GTK_ENTRY( text2 ), "8" );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), text2, FALSE, FALSE, 2 );
 	gtk_widget_show( text2 );
 
 	
-	label_group = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
-	gtk_size_group_add_widget( label_group, sides_label );
-	gtk_size_group_add_widget( label_group, width_label );
-	g_object_unref( label_group );
+	
 
 	// ---- /hbox2 ----
 
 	// ---- /vbox2 ----
 
+	label_group = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
+	gtk_size_group_add_widget( label_group, sides_label );
+	gtk_size_group_add_widget( label_group, width_label );
+	g_object_unref( label_group );
 
 
 	vbox2 = gtk_box_new( GTK_ORIENTATION_VERTICAL, 10 );
@@ -521,8 +523,7 @@ int DoPolygonBox( PolygonRS* rs ){
 		}
 	}
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		ret = IDOK;
 	} else {
 		ret = IDCANCEL;
@@ -556,8 +557,9 @@ int DoBuildStairsBox( BuildStairsRS* rs ){
 	g_signal_connect( G_OBJECT( window ), "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "Stair Builder" ) );
-
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -740,7 +742,6 @@ int DoBuildStairsBox( BuildStairsRS* rs ){
 	ret = IDCANCEL;
 
 // +djbob: need our "little" modal loop mars :P
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 
@@ -817,8 +818,9 @@ int DoDoorsBox( DoorRS* rs ){
 	g_signal_connect( G_OBJECT( window ), "destroy", G_CALLBACK( gtk_widget_destroy ), NULL );
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "Door Builder" ) );
-
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -997,7 +999,6 @@ int DoDoorsBox( DoorRS* rs ){
 	// ----------------- //
 
 //+djbob
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 
@@ -1041,6 +1042,8 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "Texture Reset" ) );
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -1166,7 +1169,6 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	// ----------------- //
 
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 
@@ -1214,6 +1216,8 @@ int DoCTFColourChangeBox(){
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "CTF Colour Changer" ) );
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -1257,7 +1261,6 @@ int DoCTFColourChangeBox(){
 
 	// ---- /vbox ----
 
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 
@@ -1281,7 +1284,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( _( "Texture Reset" ), NULL, flags, NULL );
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pMainWidget ) );
+	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pRadiantWnd ) );
 	gtk_window_set_position( GTK_WINDOW( dialog ), GTK_WIN_POS_CENTER );
 	gtk_container_set_border_width( GTK_CONTAINER( dialog ), 5 );
 
@@ -1381,8 +1384,8 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	dlgTexReset.cbScaleHor = gtk_check_button_new_with_label( _( "Enabled" ) );
 	gtk_grid_attach( GTK_GRID( table ), dlgTexReset.cbScaleHor, 0, 0, 1, 1 );
-	gtk_widget_show( dlgTexReset.cbScaleHor );
 	g_signal_connect( dlgTexReset.cbScaleHor, "toggled", G_CALLBACK( dialog_button_callback_texreset_update ), NULL );
+	gtk_widget_show( dlgTexReset.cbScaleHor );
 
 	hscale_label = w = gtk_label_new( _( "New Horizontal Scale: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 0, 1, 1 );
@@ -1579,8 +1582,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 		}
 	}
 
-	switch( response_id )
-	{
+	switch( response_id ) {
 	case GTK_RESPONSE_OK:
 		ret = IDOK;
 		break;
@@ -1616,6 +1618,8 @@ int DoTrainThingBox( TrainThingRS* rs ){
 
 	gtk_window_set_title( GTK_WINDOW( window ), _( "Train Thing" ) );
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 10 );
+	gtk_window_set_transient_for( GTK_WINDOW( window ), GTK_WINDOW( g_pRadiantWnd ) );
+	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER_ON_PARENT );
 
 	g_object_set_data( G_OBJECT( window ), "loop", &loop );
 	g_object_set_data( G_OBJECT( window ), "ret", &ret );
@@ -1826,7 +1830,6 @@ int DoTrainThingBox( TrainThingRS* rs ){
 
 
 
-	gtk_window_set_position( GTK_WINDOW( window ),GTK_WIN_POS_CENTER );
 	gtk_widget_show( window );
 	gtk_grab_add( window );
 

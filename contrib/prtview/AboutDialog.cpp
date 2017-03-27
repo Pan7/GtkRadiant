@@ -29,43 +29,18 @@
 //static char THIS_FILE[] = __FILE__;
 #endif
 
-extern void *g_pMainWidget;
-
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDialog dialog
 
-static void dialog_button_callback( GtkWidget *widget, gpointer data ){
-	GtkWidget *parent;
-	int *loop, *ret;
-
-	parent = gtk_widget_get_toplevel( widget );
-	loop = (int*)g_object_get_data( G_OBJECT( parent ), "loop" );
-	ret = (int*)g_object_get_data( G_OBJECT( parent ), "ret" );
-
-	*loop = 0;
-	*ret = (int)((intptr_t)data);
-}
-
-static gint dialog_delete_callback( GtkWidget *widget, GdkEvent* event, gpointer data ){
-	int *loop;
-
-	gtk_widget_hide( widget );
-	loop = (int*)g_object_get_data( G_OBJECT( widget ), "loop" );
-	*loop = 0;
-
-	return TRUE;
-}
-
-void DoAboutDlg(){
+void DoAboutDlg( GtkWidget *parent ){
 	GtkWidget *dialog, *vbox, *label, *content_area;
-	gint response_id;
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( _( "About Portal Viewer" ), NULL, flags, NULL );
 	gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "OK" ), GTK_RESPONSE_OK );
 
 	content_area = gtk_dialog_get_content_area( GTK_DIALOG( dialog ) );
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pMainWidget ) );
+	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( parent) );
 
 	vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL, 5 );
 	gtk_container_add( GTK_CONTAINER( content_area ), vbox );
@@ -83,7 +58,7 @@ void DoAboutDlg(){
 	gtk_widget_show( label );
 
 
-	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
+	gtk_dialog_run( GTK_DIALOG( dialog ) );
 
 	gtk_widget_destroy( dialog );
 }

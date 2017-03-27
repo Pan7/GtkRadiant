@@ -396,28 +396,28 @@ void CreateViewWindow(){
 	gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, TRUE, 0 );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 30, -90, 90, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 30, -90, 90, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( preview_spin ), &elevation );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_box_pack_start( GTK_BOX( hbox ), spin, FALSE, TRUE, 0 );
 	gtk_widget_show( spin );
-	g_signal_connect( spin, "focus-out-event", G_CALLBACK( doublevariable_spinfocusout ), &elevation );
+	g_signal_connect( G_OBJECT( spin ), "focus-out-event", G_CALLBACK( doublevariable_spinfocusout ), &elevation );
 
-	adj = gtk_adjustment_new( 30, 0, 359, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 30, 0, 359, 1, 10, 0 ) );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( preview_spin ), &azimuth );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_box_pack_end( GTK_BOX( hbox ), spin, FALSE, TRUE, 0 );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Azimuth" ) );
-	g_object_set( label, "xalign", 1.0, NULL );
 	gtk_widget_set_halign( label, GTK_ALIGN_END );
 	gtk_box_pack_end( GTK_BOX( hbox ), label, FALSE, TRUE, 0 );
+	gtk_misc_set_alignment( GTK_MISC( label ), 1, 0.5 );
 	gtk_widget_show( label );
 	g_signal_connect( spin, "focus-out-event", G_CALLBACK( doublevariable_spinfocusout ), &azimuth );
 #endif

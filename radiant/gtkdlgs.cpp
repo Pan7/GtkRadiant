@@ -117,10 +117,10 @@ static void DoProjectAddEdit( bool edit, GtkWidget *parent ){
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	if ( edit ) {
-		dialog = gtk_dialog_new_with_buttons( _( "Edit Command" ), NULL, flags, NULL );
+		dialog = gtk_dialog_new_with_buttons( _( "Edit Command" ), NULL, flags, NULL, NULL );
 	}
 	else{
-		dialog = gtk_dialog_new_with_buttons( _( "Add Command" ), NULL, flags, NULL );
+		dialog = gtk_dialog_new_with_buttons( _( "Add Command" ), NULL, flags, NULL, NULL );
 	}
 	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( parent ) );
 
@@ -159,6 +159,7 @@ static void DoProjectAddEdit( bool edit, GtkWidget *parent ){
 	cmd = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), cmd, 1, 1, 1, 1 );
 	gtk_widget_set_hexpand( cmd, TRUE );
+
 	gtk_widget_show( cmd );
 	g_object_set_data( G_OBJECT( dialog ), "cmd", cmd );
 
@@ -180,8 +181,7 @@ static void DoProjectAddEdit( bool edit, GtkWidget *parent ){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if ( response_id == GTK_RESPONSE_OK ) 
-	{
+	if ( response_id == GTK_RESPONSE_OK ) {
 		const char* key = gtk_entry_get_text( GTK_ENTRY( text ) );
 		const char* value = gtk_entry_get_text( GTK_ENTRY( cmd ) );
 
@@ -495,6 +495,7 @@ void DoProjectSettings(){
 
 	dialog = gtk_dialog_new_with_buttons( _( "Project Settings" ), NULL, flags, NULL );
 	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pParentWnd->m_pWidget ) );
+	gtk_window_set_default_size( GTK_WINDOW( dialog ), 550, 400 );
 
 	gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "OK" ), GTK_RESPONSE_OK );
 	gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "Cancel" ), GTK_RESPONSE_CANCEL );
@@ -604,10 +605,9 @@ void DoProjectSettings(){
 	}
 	gtk_grid_attach( GTK_GRID( table ), game_select, 1, 2, 1, 1 );
 	gtk_widget_set_hexpand( game_select, TRUE );
-	gtk_widget_show( game_select );
 	g_signal_connect( GTK_COMBO_BOX( game_select ), "changed", G_CALLBACK( OnSelchangeComboWhatgame ), dialog );
 	g_object_set_data( G_OBJECT( dialog ), "game_select", game_select );
-
+	gtk_widget_show( game_select );
 
 	label = gtk_label_new( _( "fs_game" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 3, 1, 1 );
@@ -631,6 +631,7 @@ void DoProjectSettings(){
 			if( strcmp( g_pGameDescription->mGameFile.GetBuffer(), game_x->gameFile ) == 0 && strcmp( game_x->fs_game, fs_game ) == 0 ) {
 				gtk_combo_box_set_active_id( GTK_COMBO_BOX( game_select ), fs_game );
 				isBasegame = qfalse;
+				break;
 			}
 		}
 		if( isBasegame ) {
@@ -766,8 +767,7 @@ void DoProjectSettings(){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		char buf[1024];
 		const char *r;
 		char *w;
@@ -887,7 +887,6 @@ void DoMapInfo(){
 	static GtkWidget *dialog;
 	GtkWidget *vbox, *table, *label, *scr, *button;
 	GtkWidget *brushes_label, *entities_label, *net_label, *content_area;
-	gint response_id;
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	if ( dialog != NULL ) {
@@ -944,15 +943,16 @@ void DoMapInfo(){
 	net_label = gtk_label_new( "" );
 	gtk_grid_attach( GTK_GRID( table ), net_label, 1, 2, 1, 1 );
 	gtk_widget_set_halign( net_label, GTK_ALIGN_START );
-	gtk_widget_show( net_label );
 	g_object_set( net_label, "xalign", 1.0, NULL );
+	gtk_widget_show( net_label );
+
 
 	label = gtk_label_new( _( "Entity breakdown" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	scr = gtk_scrolled_window_new( (GtkAdjustment*)NULL, (GtkAdjustment*)NULL ); //
+	scr = gtk_scrolled_window_new( (GtkAdjustment*)NULL, (GtkAdjustment*)NULL );
 	gtk_widget_set_hexpand( scr, TRUE );
 	gtk_widget_set_vexpand( scr, TRUE );
 	gtk_box_pack_start( GTK_BOX( vbox ), scr, TRUE, TRUE, 0 );
@@ -1069,7 +1069,7 @@ void DoMapInfo(){
 	gtk_label_set_text( GTK_LABEL( net_label ), tmp );
 
 
-	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
+	gtk_dialog_run( GTK_DIALOG( dialog ) );
 
 	save_window_pos( dialog, g_PrefsDlg.mWindowInfo.posMapInfoWnd );
 
@@ -1220,7 +1220,7 @@ void DoEntityList(){
 		GtkTreeStore* store = gtk_tree_store_new( 2, G_TYPE_STRING, G_TYPE_POINTER );
 
 		GtkWidget* view = gtk_tree_view_new_with_model( GTK_TREE_MODEL( store ) );
-		g_signal_connect( view, "button-press-event", G_CALLBACK( entitylist_click ), dialog );
+		g_signal_connect( G_OBJECT( view ), "button-press-event", G_CALLBACK( entitylist_click ), dialog );
 		gtk_tree_view_set_headers_visible( GTK_TREE_VIEW( view ), FALSE );
 
 		{
@@ -1231,7 +1231,7 @@ void DoEntityList(){
 
 		{
 			GtkTreeSelection* selection = gtk_tree_view_get_selection( GTK_TREE_VIEW( view ) );
-			g_signal_connect( selection, "changed", G_CALLBACK( entitylist_selection_changed ), dialog );
+			g_signal_connect( G_OBJECT( selection ), "changed", G_CALLBACK( entitylist_selection_changed ), dialog );
 		}
 
 		gtk_container_add( GTK_CONTAINER( scr ), view );
@@ -1347,7 +1347,8 @@ void DoEntityList(){
 
 	button = gtk_button_new_with_label( _( "Focus" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), button, FALSE, FALSE, 0 );
-	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( entitylist_focus ), dialog );
+	g_signal_connect( G_OBJECT( button ), "clicked", 
+						G_CALLBACK( entitylist_focus ), dialog );
 	gtk_widget_set_hexpand( button, FALSE );
 	gtk_widget_set_vexpand( button, FALSE );
 	gtk_widget_show( button );
@@ -1361,19 +1362,10 @@ void DoEntityList(){
 // =============================================================================
 // Rotate dialog
 
-static void rotatedialog_response( GtkWidget *widget, gint response_id, gpointer data ){
+static void rotatedlg_apply( GtkWidget *widget, gpointer data ){
 	GtkSpinButton *spin;
 	float f;
 
-	if ( response_id == GTK_RESPONSE_CANCEL )
-    {
-		gtk_widget_destroy( GTK_WIDGET( widget ) );
-		return;
-	}
-	if ( !( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) )
-    {
-		return;
-	}
 	spin = GTK_SPIN_BUTTON( g_object_get_data( G_OBJECT( data ), "x" ) );
 	f = gtk_spin_button_get_value( spin );
 	if ( f != 0.0 ) {
@@ -1394,11 +1386,22 @@ static void rotatedialog_response( GtkWidget *widget, gint response_id, gpointer
 		Select_RotateAxis( 2, f );
 	}
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), 0.0f );
+}
 
-	if ( response_id == GTK_RESPONSE_OK )
-    {
+static void rotatedialog_response( GtkWidget *widget, gint response_id, gpointer data ){
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) {
+		rotatedlg_apply( widget, data );
+	}
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_CANCEL ) {
 		gtk_widget_destroy( GTK_WIDGET( widget ) );
 	}
+}
+
+static void rotatedialog_activate( GtkWidget *widget, gpointer data ){
+	GtkWidget *dialog = (GtkWidget *)data;
+	rotatedlg_apply( dialog, dialog );
 }
 
 void DoRotateDlg(){
@@ -1437,15 +1440,16 @@ void DoRotateDlg(){
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 0, -359, 359, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, -359, 359, 1, 10, 0 ) );
 	x = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_grid_attach( GTK_GRID( table ), x, 1, 0, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( x ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( x ), TRUE );
 	gtk_widget_set_hexpand( x, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( x ), 1.0 ); //right align numbers
 	gtk_widget_show( x );
 	g_object_set_data( G_OBJECT( dialog ), "x", x );
-	g_object_set( x, "xalign", 1.0, NULL ); //right align numbers
+	g_signal_connect_after( x, "activate", G_CALLBACK( rotatedialog_activate ), dialog );
 
 	label = gtk_label_new( _( "\302\260" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
@@ -1457,15 +1461,16 @@ void DoRotateDlg(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 0, -359, 359, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, -359, 359, 1, 10, 0 ) );
 	y = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_grid_attach( GTK_GRID( table ), y, 1, 1, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( y ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( y ), TRUE );
 	gtk_widget_set_hexpand( y, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( y ), 1.0 ); //right align numbers
 	gtk_widget_show( y );
+	g_signal_connect_after( y, "activate", G_CALLBACK( rotatedialog_activate ), dialog );
 	g_object_set_data( G_OBJECT( dialog ), "y", y );
-	g_object_set( y, "xalign", 1.0, NULL );
 
 	label = gtk_label_new( _( "\302\260" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 1, 1, 1 );
@@ -1477,15 +1482,16 @@ void DoRotateDlg(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 0, -359, 359, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, -359, 359, 1, 10, 0 ) );
 	z = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_grid_attach( GTK_GRID( table ), z, 1, 2, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( z ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( z ), TRUE );
 	gtk_widget_set_hexpand( z, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( z ), 1.0 ); //right align numbers
 	gtk_widget_show( z );
+	g_signal_connect_after( z, "activate", G_CALLBACK( rotatedialog_activate ), dialog );
 	g_object_set_data( G_OBJECT( dialog ), "z", z );
-	g_object_set( z, "xalign", 1.0, NULL );
 
 	label = gtk_label_new( _( "\302\260" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 2, 1, 1 );
@@ -1529,22 +1535,22 @@ void DoGamma(){
 	gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, TRUE, 0 );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 1, 0, 1, 0.1, 0.01, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1, 0, 1, 0.1, 0.01, 0 ) );
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 2 );
 	gtk_box_pack_start( GTK_BOX( vbox ), spin, TRUE, TRUE, 0 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), FALSE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_set_hexpand( spin, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
-	g_object_set( spin, "xalign", 1.0, NULL );
+
 
 	// Initialize dialog
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spin ), g_qeglobals.d_savedinfo.fGamma );
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		g_qeglobals.d_savedinfo.fGamma = gtk_spin_button_get_value( GTK_SPIN_BUTTON( spin ) );
 	}
 
@@ -1691,20 +1697,10 @@ static void GetSelectionIndex( int *ent, int *brush ){
 	for ( b2 = b->owner->brushes.onext; b2 != b && b2 != &b->owner->brushes; b2 = b2->onext, ( *brush )++ )
 		;
 }
-static void findbrushdialog_response( GtkWidget *widget, gint response_id, gpointer data ){
+static void findbrushdialog_apply( GtkWidget *widget, gpointer data ){
 	int ent_num;
 	int brush_num;
 	GtkSpinButton *spin;
-
-	if ( response_id == GTK_RESPONSE_CANCEL )
-    {
-		gtk_widget_destroy( GTK_WIDGET( widget ) );
-		return;
-	}
-	if ( !( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) )
-    {
-		return;
-	}
 
 	spin = GTK_SPIN_BUTTON( g_object_get_data( G_OBJECT( data ), "entity-spin" ) );
 	ent_num = gtk_spin_button_get_value_as_int( spin );
@@ -1713,9 +1709,14 @@ static void findbrushdialog_response( GtkWidget *widget, gint response_id, gpoin
 	brush_num = gtk_spin_button_get_value_as_int( spin );
 
 	SelectBrush( ent_num, brush_num );
+}
+static void findbrushdialog_response( GtkWidget *widget, gint response_id, gpointer data ){
 
-	if ( response_id == GTK_RESPONSE_OK )
-    {
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) {
+		findbrushdialog_apply( widget, widget );
+	}
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_CANCEL ) {
 		gtk_widget_destroy( GTK_WIDGET( widget ) );
 	}
 }
@@ -1755,25 +1756,25 @@ void DoFind(){
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 0, 0, G_MAXINT, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, G_MAXINT, 1, 10, 0 ) );
 	entity = spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_widget_set_hexpand( spin, TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), FALSE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right align numbers
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dialog ), "entity-spin", spin );
-	g_object_set( spin, "xalign", 1.0, NULL ); //right align numbers
 
-	adj = gtk_adjustment_new( 0, 0, G_MAXINT, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, G_MAXINT, 1, 10, 0 ) );
 	brush = spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_widget_set_hexpand( spin, TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), FALSE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right align numbers
 	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dialog ), "brush-spin", spin );
-	g_object_set( spin, "xalign", 1.0, NULL ); //right align numbers
 
 	// Initialize dialog
 	GetSelectionIndex( &ent, &br );
@@ -1930,13 +1931,11 @@ void DoNewPatchDlg(){
 	}
 	g_list_free( cells );
 
-	// Initialize dialog
 	g_list_free( combo_list );
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		const char* w = gtk_combo_box_text_get_active_text( GTK_COMBO_BOX_TEXT( width_combo ) );
 		const char* h = gtk_combo_box_text_get_active_text( GTK_COMBO_BOX_TEXT( height_combo ) );
 
@@ -1950,18 +1949,10 @@ void DoNewPatchDlg(){
 // =============================================================================
 // New Patch dialog
 
-static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer data ){
+static void scaledlg_apply( GtkWidget *widget, gpointer data ){
 	float sx, sy, sz;
 	GtkWidget *x, *y, *z;
-	if ( response_id == GTK_RESPONSE_CANCEL )
-    {
-		gtk_widget_destroy( GTK_WIDGET( widget ) );
-		return;
-	}
-	if ( !( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) )
-    {
-		return;
-	}
+
 	x = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "x" ) );
 	y = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "y" ) );
 	z = GTK_WIDGET( g_object_get_data( G_OBJECT( data ), "z" ) );
@@ -1981,12 +1972,24 @@ static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer 
 	else{
 		Sys_FPrintf( SYS_WRN, _( "Warning.. Tried to scale by a zero value." ) );
 	}
+}
 
-	if ( response_id == GTK_RESPONSE_OK )
-    {
+static void scaledlg_activate( GtkWidget *widget, gpointer data ){
+	GtkWidget *dialog = (GtkWidget *)data;
+	scaledlg_apply( dialog, dialog );
+}
+
+static void ScaleDialog_response( GtkWidget *widget, gint response_id, gpointer data ){
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) {
+		scaledlg_apply( widget, widget );
+	}
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_CANCEL ) {
 		gtk_widget_destroy( GTK_WIDGET( widget ) );
 	}
 }
+
 void DoScaleDlg(){
 	GtkWidget *dialog, *vbox1, *table, *label;
 	GtkWidget *x, *y, *z, *content_area;
@@ -2023,15 +2026,16 @@ void DoScaleDlg(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 1.0, 1, 100, 0.1, 1, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1.0, 0, 100, 0.1, 1, 0 ) );
 	x = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 0.1, 1 );
-	gtk_grid_attach( GTK_GRID( table ), x, 1, 0, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( x ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( x ), TRUE );
+	gtk_grid_attach( GTK_GRID( table ), x, 1, 0, 1, 1 );
 	gtk_widget_set_hexpand( x, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( x ), 1.0 ); //right align numbers
 	gtk_widget_show( x );
 	g_object_set_data( G_OBJECT( dialog ), "x", x );
-	g_object_set( x, "xalign", 1.0, NULL ); //right align numbers
+	g_signal_connect_after( x, "activate", G_CALLBACK( scaledlg_activate ), dialog );
 
 	label = gtk_label_new( _( "Y:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
@@ -2040,28 +2044,30 @@ void DoScaleDlg(){
 
 	adj = gtk_adjustment_new( 1.0, 1, 100, 0.1, 1, 0 );
 	y = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 0.1, 1 );
-	gtk_grid_attach( GTK_GRID( table ), y, 1, 1, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( y ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( y ), TRUE );
+	gtk_grid_attach( GTK_GRID( table ), y, 1, 1, 1, 1 );
 	gtk_widget_set_hexpand( y, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( y ), 1.0 ); //right align numbers
 	gtk_widget_show( y );
 	g_object_set_data( G_OBJECT( dialog ), "y", y );
-	g_object_set( y, "xalign", 1.0, NULL );
+	g_signal_connect_after( y, "activate", G_CALLBACK( scaledlg_activate ), dialog );
 
 	label = gtk_label_new( _( "Z:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 1.0, 1, 100, 0.1, 1, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1.0, 1, 100, 0.1, 1, 0 ) );
 	z = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 0.1, 1 );
-	gtk_grid_attach( GTK_GRID( table ), z, 1, 2, 1, 1 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( z ), TRUE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( z ), TRUE );
+	gtk_grid_attach( GTK_GRID( table ), z, 1, 2, 1, 1 );
 	gtk_widget_set_hexpand( z, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( z ), 1.0 ); //right align numbers
 	gtk_widget_show( z );
 	g_object_set_data( G_OBJECT( dialog ), "z", z );
-	g_object_set( z, "xalign", 1.0, NULL );
+	g_signal_connect_after( z, "activate", G_CALLBACK( scaledlg_activate ), dialog );
 
 	g_signal_connect( dialog, "response", G_CALLBACK( ScaleDialog_response ), dialog );
 
@@ -2108,14 +2114,14 @@ void DoThickenDlg(){
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
-	adj = gtk_adjustment_new( 1, 1, 100, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 100, 1, 10, 0 ) );
 	amount = spin = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_box_pack_start( GTK_BOX( hbox ), spin, TRUE, TRUE, 0 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), FALSE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_set_hexpand( spin, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_widget_show( spin );
-	g_object_set( spin, "xalign", 1.0, NULL );
 
 	seams = gtk_check_button_new_with_label( _( "Seams" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), seams, TRUE, TRUE, 0 );
@@ -2136,8 +2142,7 @@ void DoThickenDlg(){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		int new_amount;
 
 		if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON( group ) ) ) {
@@ -2177,7 +2182,6 @@ void about_button_credits( GtkWidget *widget, gpointer data ){
 
 void DoAbout(){
 	GtkWidget *dialog, *content_area, *button;
-	gint response_id;
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	// create dialog window
@@ -2224,6 +2228,7 @@ void DoAbout(){
 		"changelogs, and to report problems with this software." );
 	gtk_box_pack_start( GTK_BOX( info_hbox ), info_label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( info_label, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( info_label ), TRUE );
 	gtk_widget_show( info_label );
 
 	// OpenGL properties 
@@ -2259,18 +2264,21 @@ void DoAbout(){
 	gtk_grid_attach( GTK_GRID( gl_prop_table ), gl_vendor_label, 1, 0, 1, 1 );
 	gtk_widget_set_hexpand( gl_vendor_label, TRUE );
 	gtk_widget_set_halign( gl_vendor_label, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( gl_vendor_label ), TRUE );
 	gtk_widget_show( gl_vendor_label );
 
 	GtkWidget *gl_version_label = gtk_label_new( (char*)qglGetString( GL_VERSION ) );
 	gtk_grid_attach( GTK_GRID( gl_prop_table ), gl_version_label, 1, 1, 1, 1 );
 	gtk_widget_set_hexpand( gl_version_label, TRUE );
 	gtk_widget_set_halign( gl_version_label, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( gl_version_label ), TRUE );
 	gtk_widget_show( gl_version_label );
 
 	GtkWidget *gl_renderer_label = gtk_label_new( (char*)qglGetString( GL_RENDERER ) );
 	gtk_grid_attach( GTK_GRID( gl_prop_table ), gl_renderer_label, 1, 2, 1, 1 );
 	gtk_widget_set_hexpand( gl_renderer_label, TRUE );
 	gtk_widget_set_halign( gl_renderer_label, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( gl_renderer_label ), TRUE );
 	gtk_widget_show( gl_renderer_label );
 
 	// OpenGL extensions
@@ -2325,7 +2333,7 @@ void DoAbout(){
 						G_CALLBACK( about_button_changelog ), NULL );
 	*/
 
-	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
+	gtk_dialog_run( GTK_DIALOG( dialog ) );
 
 	gtk_widget_destroy( dialog );
 }
@@ -2335,7 +2343,6 @@ void DoAbout(){
 
 void DoCommandListDlg(){
 	GtkWidget *dialog, *vbox1, *scr, *content_area, *button;
-	gint response_id;
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( _( "Shortcut List" ), NULL, flags, NULL );
@@ -2454,7 +2461,7 @@ void DoCommandListDlg(){
 	}
 
 
-	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
+	gtk_dialog_run( GTK_DIALOG( dialog ) );
 
 	gtk_widget_destroy( dialog );
 }
@@ -2462,23 +2469,15 @@ void DoCommandListDlg(){
 // =============================================================================
 // Texture List dialog
 
-static void TextureListDialog_response( GtkWidget *widget, gint response_id, gpointer data ){
-	GtkTreeSelection* selection;
+static void TextureListDialog_apply( GtkWidget *widget, gpointer data ){
 
+	GtkWidget *texture_list;
+	GtkTreeSelection* selection;
 	GtkTreeModel* model;
 	GtkTreeIter iter;
 
-	if ( response_id == GTK_RESPONSE_CANCEL )
-    {
-		gtk_widget_destroy( GTK_WIDGET( widget ) );
-		return;
-	}
-	if ( !( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) )
-    {
-		return;
-	}
-
-	selection = gtk_tree_view_get_selection( GTK_TREE_VIEW( data ) );
+	texture_list = GTK_WIDGET( g_object_get_data( G_OBJECT( widget ), "view" ) );
+	selection = gtk_tree_view_get_selection( GTK_TREE_VIEW( texture_list ) );
 
 	if ( gtk_tree_selection_get_selected( selection, &model, &iter ) ) {
 		GtkTreePath* path = gtk_tree_model_get_path( model, &iter );
@@ -2491,9 +2490,14 @@ static void TextureListDialog_response( GtkWidget *widget, gint response_id, gpo
 		}
 		gtk_tree_path_free( path );
 	}
+}
+static void TextureListDialog_response( GtkWidget *widget, gint response_id, gpointer data ){
 
-	if ( response_id == GTK_RESPONSE_OK )
-    {
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_APPLY ) {
+		TextureListDialog_apply( widget, widget );
+	}
+
+	if ( response_id == GTK_RESPONSE_OK || response_id == GTK_RESPONSE_CANCEL ) {
 		gtk_widget_destroy( GTK_WIDGET( widget ) );
 	}
 }
@@ -2559,6 +2563,7 @@ void DoTextureListDlg(){
 		gtk_widget_show( view );
 
 		texture_list = view;
+		g_object_set_data( G_OBJECT( dialog ), "view", view );
 	}
 
 	g_signal_connect( dialog, "response", G_CALLBACK( TextureListDialog_response ), texture_list );
@@ -2646,8 +2651,7 @@ int DoCapDlg( int *type, bool *b_GroupResult ){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON( bevel ) ) ) {
 			*type = BEVEL; //*type = CapDialog::BEVEL;
 		}
@@ -2798,10 +2802,10 @@ void DoScriptsDlg(){
 	g_object_unref( button_group );
 
 
+
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		GtkTreeSelection* selection = gtk_tree_view_get_selection( GTK_TREE_VIEW( scripts_list ) );
 
 		GtkTreeModel* model;
@@ -2871,8 +2875,7 @@ int DoBSInputDlg( const char *fields[5], float values[5] ){
 
 		values[i] = atof( gtk_entry_get_text( GTK_ENTRY( entries[i] ) ) );
 	}
-	switch( response_id )
-	{
+	switch( response_id ) {
 	case GTK_RESPONSE_OK:
 		ret = IDOK;
 		break;
@@ -2954,8 +2957,8 @@ int DoTextureLayout( float *fx, float *fy ){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
+
 		*fx = atof( gtk_entry_get_text( GTK_ENTRY( x ) ) );
 		*fy = atof( gtk_entry_get_text( GTK_ENTRY( y ) ) );
 
@@ -3119,8 +3122,7 @@ char* DoNewProjectDlg( const char *path ){
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		str = strdup( gtk_entry_get_text( GTK_ENTRY( entry ) ) );
 		ret = IDOK;
 	} else {
@@ -3487,22 +3489,21 @@ int DoLightIntensityDlg( int *intensity ){
 	gtk_container_set_border_width( GTK_CONTAINER( hbox ), 5 );
 	gtk_widget_show( hbox );
 
-	adj = gtk_adjustment_new( *intensity, 0, G_MAXINT, 1, 10, 0 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( *intensity, 0, G_MAXINT, 1, 10, 0 ) );
 	spinbutton = gtk_spin_button_new( GTK_ADJUSTMENT( adj ), 1, 0 );
 	gtk_box_pack_start( GTK_BOX( hbox ), spinbutton, TRUE, TRUE, 0 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spinbutton ), FALSE );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spinbutton ), TRUE );
 	gtk_widget_set_hexpand( spinbutton, TRUE );
+	gtk_entry_set_alignment( GTK_ENTRY( spinbutton ), 1.0 ); //right
 	gtk_widget_show( spinbutton );
-	g_object_set( spinbutton, "xalign", 1.0, NULL );
 
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( spinbutton ), *intensity );
 
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	if( response_id == GTK_RESPONSE_OK ) 
-	{
+	if( response_id == GTK_RESPONSE_OK ) {
 		*intensity = gtk_spin_button_get_value_as_int( GTK_SPIN_BUTTON( spinbutton ) );
 		ret = IDOK;
 	} else {

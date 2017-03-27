@@ -747,8 +747,7 @@ GtkWidget* create_menu_item_with_mnemonic( GtkWidget *menu, const gchar *mnemoni
 	gtk_widget_show( item );
 	gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 //	gtk_container_add( GTK_CONTAINER( menu ), item );
-	g_signal_connect( G_OBJECT( item ), "activate", func, GINT_TO_POINTER( id ) );
-//	g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( func ), GINT_TO_POINTER( id ) );
+	g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( func ), GINT_TO_POINTER( id ) );
 
 	AddMenuItem( item, id );
 	return item;
@@ -782,7 +781,7 @@ GtkWidget* create_radio_menu_item_with_mnemonic( GtkWidget *menu, GtkWidget *las
 	gtk_widget_show( item );
 	gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 //	gtk_container_add( GTK_CONTAINER( menu ), item );
-	g_signal_connect( item, "activate", func, GINT_TO_POINTER( id ) );
+	g_signal_connect( G_OBJECT( item ), "activate", func, GINT_TO_POINTER( id ) );
 
 	AddMenuItem( item, id );
 	return item;
@@ -925,6 +924,7 @@ int WINAPI gtk_MessageBoxNew( void *parent, const char *message,
 	GtkWidget *dlg_msg = gtk_label_new( message );
 	gtk_box_pack_start( GTK_BOX( icon_text_hbox ), dlg_msg, FALSE, FALSE, MSGBOX_PAD_MINOR );
 	gtk_widget_set_halign( dlg_msg, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( dlg_msg ), TRUE );
 	gtk_widget_show( dlg_msg );
 
 	// add buttons
@@ -999,8 +999,7 @@ int WINAPI gtk_MessageBoxNew( void *parent, const char *message,
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	switch( response_id )
-	{
+	switch( response_id ) {
 	case GTK_RESPONSE_OK:
 		ret = IDOK;
 		break;
@@ -1048,6 +1047,7 @@ int WINAPI gtk_MessageBox( void *parent, const char* lpText, const char* lpCapti
 	w = gtk_label_new( lpText );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 2 );
 	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_selectable( GTK_LABEL( w ), TRUE );
 	gtk_widget_show( w );
 
 	w = gtk_separator_new( GTK_ORIENTATION_HORIZONTAL );
@@ -1102,8 +1102,7 @@ int WINAPI gtk_MessageBox( void *parent, const char* lpText, const char* lpCapti
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
 
-	switch( response_id )
-	{
+	switch( response_id ) {
 	case GTK_RESPONSE_OK:
 		ret = IDOK;
 		break;
@@ -1463,7 +1462,7 @@ const char* file_dialog( void *parent, gboolean open, const char* title, const c
 	*w = '\0';
 
 	action = open ? GTK_FILE_CHOOSER_ACTION_OPEN : GTK_FILE_CHOOSER_ACTION_SAVE;
-	file_sel = gtk_file_chooser_dialog_new( title, GTK_WINDOW( parent ), action, NULL );
+	file_sel = gtk_file_chooser_dialog_new( title, GTK_WINDOW( parent ), action, NULL, NULL );
 	gtk_dialog_add_button( GTK_DIALOG( file_sel ), open ? _( "Open" ) : _("Save" ), GTK_RESPONSE_ACCEPT );
 	gtk_dialog_add_button( GTK_DIALOG( file_sel ), _( "Cancel" ), GTK_RESPONSE_CANCEL );
 
@@ -1577,11 +1576,11 @@ const char* file_dialog( void *parent, gboolean open, const char* title, const c
 
 gchar* WINAPI dir_dialog( void *parent, const char* title, const char* path ){
 	GtkWidget* file_sel;
-	gchar* filename = (char*)NULL;
+	char* filename = (char*)NULL;
 	gint response_id;
 	GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
 
-	file_sel = gtk_file_chooser_dialog_new( title, GTK_WINDOW( parent ), action, NULL );
+	file_sel = gtk_file_chooser_dialog_new( title, GTK_WINDOW( parent ), action, NULL, NULL );
 	gtk_dialog_add_button( GTK_DIALOG( file_sel ), _( "OK" ), GTK_RESPONSE_ACCEPT );
 	gtk_dialog_add_button( GTK_DIALOG( file_sel ), _( "Cancel" ), GTK_RESPONSE_CANCEL );
 

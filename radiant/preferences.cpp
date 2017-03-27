@@ -1884,7 +1884,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( label );
 
 	// adjustment
-	adj = gtk_adjustment_new( 100, 1, 300, 1, 10, 10 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 100, 1, 300, 1, 10, 10 ) );
 	AddDialogData( G_OBJECT( adj ), &m_nMoveSpeed, DLG_ADJ_INT );
 
 	// scale
@@ -1907,7 +1907,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( label );
 
 	// adjustment
-	adj = gtk_adjustment_new( 3, 1, 180, 1, 10, 10 ); // value, low, high, step, page_step, page_size
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 3, 1, 180, 1, 10, 10 ) ); // value, low, high, step, page_step, page_size
 	AddDialogData( G_OBJECT( adj ), &m_nAngleSpeed, DLG_ADJ_INT );
 
 	// scale
@@ -2011,7 +2011,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( label );
 
 	// adjustment
-	adj = gtk_adjustment_new( 0, 0, 4, 1, 1, 1 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( 0, 0, 4, 1, 1, 1 ) );
 	AddDialogData( G_OBJECT( adj ), &m_nLatchedTextureQuality, DLG_ADJ_INT );
 
 	// scale
@@ -2024,10 +2024,12 @@ void PrefsDlg::BuildDialog(){
 	hbox2 = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 0 );
 	gtk_box_pack_start( GTK_BOX( vbox ), hbox2, FALSE, FALSE, 0 );
 	gtk_widget_show( hbox2 );
+
 	label = gtk_label_new( _( "low" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
+
 	label = gtk_label_new( _( "high" ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_END );
@@ -2059,9 +2061,9 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( hbox2 );
 
 	tcomp_label = label = gtk_label_new( _( "Texture Compression (if available):" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_widget_show( label );
 
 	// Texture compression choice label
@@ -2100,9 +2102,9 @@ void PrefsDlg::BuildDialog(){
 	// Startup shaders
 	// label
 	startup_label = label = gtk_label_new( _( "Startup Shaders:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_widget_show( label );
 
 	// combo list
@@ -2391,7 +2393,7 @@ void PrefsDlg::BuildDialog(){
 
 	// entry
 	entry = gtk_entry_new();
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_box_pack_start( GTK_BOX( hbox2 ), entry, FALSE, FALSE, 0 );
 	gtk_widget_show( entry );
 	AddDialogData( entry, &m_nWheelInc, DLG_ENTRY_INT );
@@ -2418,7 +2420,7 @@ void PrefsDlg::BuildDialog(){
 
 	// Fix target/targetname collisions
 	check = gtk_check_button_new_with_label( _( "Fix target/targetname collisions" ) );
-	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );	
+	gtk_box_pack_start( GTK_BOX( vbox ), check, FALSE, FALSE, 0 );
 	gtk_widget_show( check );
 	AddDialogData( check, &m_bDoTargetFix, DLG_CHECK_BOOL );
 
@@ -2463,7 +2465,7 @@ void PrefsDlg::BuildDialog(){
 
 	// entry
 	entry = gtk_entry_new();
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 0, 1, 1 );
 	gtk_widget_show( entry );
 	AddDialogData( entry, &m_nRotation, DLG_ENTRY_INT );
@@ -2479,7 +2481,7 @@ void PrefsDlg::BuildDialog(){
 	// spinner (allows undo levels to be set to zero)
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 0, 64, 1, 10, 0 ) ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
 	gtk_widget_show( spin );
 	AddDialogData( spin, &m_nUndoLevels, DLG_SPIN_INT );
@@ -2494,8 +2496,9 @@ void PrefsDlg::BuildDialog(){
 
 	// entry (spinner perhaps? [2-16])
 	entry = gtk_entry_new();
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_grid_attach( GTK_GRID( table ), entry, 1, 2, 1, 1 );
+
 	gtk_widget_show( entry );
 	AddDialogData( entry, &m_nSubdivisions, DLG_ENTRY_INT );
 
@@ -2547,7 +2550,7 @@ void PrefsDlg::BuildDialog(){
 	// spinner
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 60, 1, 10, 0 ) ), 1, 0 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
-	g_object_set( spin, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( spin ), 1.0 ); //right
 	gtk_box_pack_start( GTK_BOX( hbox2 ), spin, FALSE, FALSE, 0 );
 	gtk_widget_show( spin );
 	AddDialogData( spin, &m_nAutoSave, DLG_SPIN_INT );
@@ -2586,7 +2589,7 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Prefab path:" ) );
-	g_object_set( label, "xalign", 1.0, NULL );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -2608,7 +2611,7 @@ void PrefsDlg::BuildDialog(){
 	// User ini path
 	// label
 	label = gtk_label_new( _( "User INI path:" ) );
-	g_object_set( label, "xalign", 1.0, NULL );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -2646,13 +2649,14 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Default texture scale:" ) );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
 
 	// scale entry
 	entry = gtk_entry_new();
-	g_object_set( entry, "xalign", 1.0, NULL );
+	gtk_entry_set_alignment( GTK_ENTRY( entry ), 1.0 ); //right
 	gtk_box_pack_start( GTK_BOX( hbox2 ), entry, FALSE, FALSE, 0 );
 	gtk_widget_show( entry );
 	AddDialogData( entry, &m_fDefTextureScale, DLG_ENTRY_FLOAT );
@@ -2692,6 +2696,7 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( hbox2 );
 
 	label = gtk_label_new( _( "Light radiuses:" ) );
+	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_show( label );
@@ -2731,7 +2736,7 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Custom Editor Command" ) );
-	g_object_set( brushes_label, "xalign", 9.0, NULL );
+	g_object_set( label, "xalign", 9.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	g_object_set_data( G_OBJECT( dialog ), "label_customeditor", label );
 	gtk_widget_set_halign( label, GTK_ALIGN_START );

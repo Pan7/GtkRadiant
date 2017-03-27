@@ -430,13 +430,13 @@ extern "C" void QERPlug_Dispatch( const char* p, vec3_t vMin, vec3_t vMax, bool 
 	Sys_Printf( MSG_PREFIX "Command \"%s\"\n",p );
 
 	if ( !strcmp( p,Q3R_CMD_ABOUT ) ) {
-		DoAboutDlg();
+		DoAboutDlg( GTK_WIDGET( g_pMainWidget ) );
 	}
 	else if ( !strcmp( p,Q3R_CMD_LOAD ) ) {
 		CheckInterfaces();
 
 		if ( interfaces_started ) {
-			if ( DoLoadPortalFileDialog() == IDOK ) {
+			if ( DoLoadPortalFileDialog( GTK_WIDGET( g_pMainWidget ) ) == IDOK ) {
 				portals.Load();
 				g_FuncTable.m_pfnSysUpdateWindows( UPDATE_ALL );
 			}
@@ -486,7 +486,7 @@ extern "C" void QERPlug_Dispatch( const char* p, vec3_t vMin, vec3_t vMax, bool 
 		}
 	}
 	else if ( !strcmp( p,Q3R_CMD_OPTIONS ) ) {
-		DoConfigDialog();
+		DoConfigDialog( GTK_WIDGET( g_pMainWidget ) );
 		SaveConfig();
 
 		if ( interfaces_started ) {

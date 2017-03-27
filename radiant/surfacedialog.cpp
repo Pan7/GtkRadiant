@@ -532,9 +532,9 @@ void SurfaceDlg::BuildDialog() {
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
+	g_signal_connect( G_OBJECT( entry ), "key-press-event", G_CALLBACK( OnTextureKey ), NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), entry, TRUE, TRUE, 0 );
 	gtk_widget_show( entry );
-	g_signal_connect( entry, "key_press_event", G_CALLBACK( OnTextureKey ), NULL );
 	g_object_set_data( G_OBJECT( m_pWidget ), "texture", entry );
 
 	table = gtk_grid_new();
@@ -550,10 +550,11 @@ void SurfaceDlg::BuildDialog() {
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -8192, 8192, 2, 8, 0 ) ), 0, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
-	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "hshift", spin );
-	g_signal_connect( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ), "value-changed",
+	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
@@ -562,10 +563,10 @@ void SurfaceDlg::BuildDialog() {
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 0, 1, 1 );
-	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hshift_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Vertical shift" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
@@ -574,10 +575,11 @@ void SurfaceDlg::BuildDialog() {
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -8192, 8192, 2, 8, 0 ) ), 0, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
-	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "vshift", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 1, 1, 1 );
@@ -586,10 +588,10 @@ void SurfaceDlg::BuildDialog() {
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
-	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vshift_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Horizontal stretch" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
@@ -598,10 +600,11 @@ void SurfaceDlg::BuildDialog() {
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -1000, 1000, 1, 10, 0 ) ), 0, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 2, 1, 1 );
-	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "hscale", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 2, 1, 1 );
@@ -610,10 +613,10 @@ void SurfaceDlg::BuildDialog() {
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 2, 1, 1 );
-	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "hscale_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Vertical stretch" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 3, 1, 1 );
@@ -622,10 +625,11 @@ void SurfaceDlg::BuildDialog() {
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -1000, 1000, 1, 10, 0 ) ), 0, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 3, 1, 1 );
-	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "vscale", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 3, 1, 1 );
@@ -634,10 +638,10 @@ void SurfaceDlg::BuildDialog() {
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 3, 1, 1 );
-	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "vscale_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Rotate" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 4, 1, 1 );
@@ -647,10 +651,11 @@ void SurfaceDlg::BuildDialog() {
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -360, 360, 1, 10, 0 ) ), 1, 0 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_grid_attach( GTK_GRID( table ), spin, 1, 4, 1, 1 );
-	gtk_widget_show( spin );
 	g_object_set_data( G_OBJECT( dlg ), "rotate", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
+	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 4, 1, 1 );
@@ -659,10 +664,10 @@ void SurfaceDlg::BuildDialog() {
 
 	entry = gtk_entry_new();
 	gtk_grid_attach( GTK_GRID( table ), entry, 3, 4, 1, 1 );
-	gtk_widget_show( entry );
 	g_object_set_data( G_OBJECT( dlg ), "rotate_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_widget_show( entry );
 
 	// match grid button
 	button = gtk_button_new_with_label( _( "Match Grid" ) );
@@ -752,11 +757,13 @@ void SurfaceDlg::BuildDialog() {
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 32, 1, 10, 0 ) ), 1, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 2, 1, 1, 1 );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 	AddDialogData( spin, &m_nWidth, DLG_SPIN_INT );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 32, 1, 10, 0 ) ), 1, 0 );
 	gtk_grid_attach( GTK_GRID( table ), spin, 3, 1, 1, 1 );
+	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 	AddDialogData( spin, &m_nHeight, DLG_SPIN_INT );
 

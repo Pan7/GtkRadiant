@@ -95,8 +95,7 @@ int BP_MessageBox( int status ){
 		}
 		SetKeyValue( g_qeglobals.d_project_entity, "brush_primit", ( g_qeglobals.m_bBrushPrimitMode ? "1" : "0" ) );
 	}
-	if( response_id < 0 )
-	{
+	if( response_id < 0 ) {
 		response_id = 0; //default abort
 	}
 	gtk_widget_destroy( dialog );

@@ -307,7 +307,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	gtk_container_add( GTK_CONTAINER( surfacedialog_widget ), frame1 );
 	gtk_widget_show( frame1 );
 
-	vbox1 = gtk_box_new( GTK_ORIENTATION_VERTICAL, 0 );
+	vbox1 = gtk_vbox_new( FALSE, 0 );
 	gtk_container_add( GTK_CONTAINER( frame1 ), vbox1 );
 	gtk_widget_show( vbox1 );
 
@@ -317,7 +317,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	gtk_container_set_border_width( GTK_CONTAINER( notebook1 ), 5 );
 	gtk_widget_show( notebook1 );
 
-	vbox2 = gtk_box_new( GTK_ORIENTATION_VERTICAL, 5 );
+	vbox2 = gtk_vbox_new( FALSE, 5 );
 	gtk_container_add( GTK_CONTAINER( notebook1 ), vbox2 );
 	gtk_widget_show( vbox2 );
 
@@ -355,7 +355,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 	gtk_widget_show( hbox3 );
 
 	vbox4 = gtk_box_new( GTK_ORIENTATION_VERTICAL, 0 );
-	gtk_box_pack_start( GTK_BOX( hbox3 ), vbox4, TRUE, TRUE, 0 );	
+	gtk_box_pack_start( GTK_BOX( hbox3 ), vbox4, TRUE, TRUE, 0 );
 	gtk_widget_show( vbox4 );
 
 	value_label = gtk_label_new( _( "Value: " ) );
@@ -372,8 +372,8 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 						NULL );
 	gtk_entry_set_max_length( (GtkEntry *)value_entry, 11 );
 	gtk_box_pack_start( GTK_BOX( hbox3 ), value_entry, TRUE, TRUE, 0 );
+	gtk_entry_set_alignment( GTK_ENTRY( value_entry ), 1.0 ); //right
 	gtk_widget_show( value_entry );
-	g_object_set( value_entry, "xalign", 1.0, NULL );
 
 	vbox3 = gtk_box_new( GTK_ORIENTATION_VERTICAL, 0 );
 	gtk_box_pack_start( GTK_BOX( hbox3 ), vbox3, TRUE, TRUE, 0 );
@@ -408,7 +408,6 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 
 	label6 = gtk_label_new( _( "Content Flags" ) );
 	gtk_widget_show( label6 );
-
 	gtk_notebook_set_tab_label( GTK_NOTEBOOK( notebook1 ), gtk_notebook_get_nth_page( GTK_NOTEBOOK( notebook1 ), 1 ), label6 );
 
 	return frame1;

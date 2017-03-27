@@ -30,7 +30,6 @@
 #endif
 #include <glib/gi18n.h>
 
-extern void *g_pMainWidget;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
@@ -75,8 +74,7 @@ static int DoColor( GdkRGBA *color ){
 	gtk_color_chooser_set_rgba( GTK_COLOR_CHOOSER( dialog ), &defaultcolor );
 
 	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
-	if ( response_id == GTK_RESPONSE_OK )
-    {
+	if ( response_id == GTK_RESPONSE_OK ) {
 		gtk_color_chooser_get_rgba( GTK_COLOR_CHOOSER( dialog ), color );
 
 		result = IDOK;
@@ -258,14 +256,13 @@ static void OnClip( GtkWidget *widget, gpointer data ){
 	}
 }
 
-void DoConfigDialog(){
+void DoConfigDialog( GtkWidget *parent ){
 	GtkWidget *dialog, *hbox, *vbox, *vbox2, *button, *table, *frame;
 	GtkWidget *lw3slider, *lw3label, *lw2slider, *lw2label, *zlist;
 	GtkWidget *aa2check, *aa3check, *depthcheck, *linescheck, *polyscheck;
 	GtkWidget *transslider, *translabel, *clipslider, *cliplabel;
 	GtkWidget *show2check, *show3check, *portalcheck;
 	GtkWidget *content_area, *color_button, *depth_button;
-	gint response_id;
 	GtkSizeGroup *button_group;
 	GList *combo_list;
 	GList *lst;
@@ -273,7 +270,7 @@ void DoConfigDialog(){
 	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	dialog = gtk_dialog_new_with_buttons( _( "Portal Viewer Configuration" ), NULL, flags, NULL );
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( g_pMainWidget ) );
+	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( parent ) );
 	gtk_dialog_add_button( GTK_DIALOG( dialog ), _( "OK" ), GTK_RESPONSE_OK );
 
 	content_area = gtk_dialog_get_content_area( GTK_DIALOG( dialog ) );
@@ -296,7 +293,7 @@ void DoConfigDialog(){
 	gtk_box_pack_start( GTK_BOX( vbox2 ), hbox, TRUE, TRUE, 0 );
 	gtk_widget_show( hbox );
 
-	adj = gtk_adjustment_new( portals.width_3d, 2, 40, 1, 1, 1 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( portals.width_3d, 2, 40, 1, 1, 1 ) );
 	lw3slider = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), lw3slider, TRUE, TRUE, 0 );
 	gtk_scale_set_draw_value( GTK_SCALE( lw3slider ), FALSE );
@@ -316,32 +313,32 @@ void DoConfigDialog(){
 	color_button = button = gtk_button_new_with_label( _( "Color" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 0, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColor3d ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnColor3d ), NULL );
 
 	depth_button = button = gtk_button_new_with_label( _( "Depth Color" ) );
 	gtk_grid_attach( GTK_GRID( table ), button, 0, 1, 1, 1 );
 	gtk_widget_show( button );
-	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColorFog ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnColorFog ), NULL );
 
 	aa3check = gtk_check_button_new_with_label( _( "Anti-Alias (May not work on some video cards)" ) );
 	gtk_grid_attach( GTK_GRID( table ), aa3check, 1, 0, 3, 1 );
 	gtk_widget_show( aa3check );
-	g_signal_connect(  G_OBJECT( aa3check ), "toggled", G_CALLBACK( OnAntiAlias3d ), NULL );
+	g_signal_connect( G_OBJECT( aa3check ), "toggled", G_CALLBACK( OnAntiAlias3d ), NULL );
 
 	depthcheck = gtk_check_button_new_with_label( _( "Depth Cue" ) );
 	gtk_grid_attach( GTK_GRID( table ), depthcheck, 1, 1, 1, 1 );
 	gtk_widget_show( depthcheck );
-	g_signal_connect(  G_OBJECT( depthcheck ), "toggled", G_CALLBACK( OnFog ), NULL );
+	g_signal_connect( G_OBJECT( depthcheck ), "toggled", G_CALLBACK( OnFog ), NULL );
 
 	linescheck = gtk_check_button_new_with_label( _( "Lines" ) );
 	gtk_grid_attach( GTK_GRID( table ), linescheck, 2, 1, 1, 1 );
 	gtk_widget_show( linescheck );
-	g_signal_connect(  G_OBJECT( linescheck ), "toggled", G_CALLBACK( OnLines ), NULL );
+	g_signal_connect( G_OBJECT( linescheck ), "toggled", G_CALLBACK( OnLines ), NULL );
 
 	polyscheck = gtk_check_button_new_with_label( _( "Polygons" ) );
 	gtk_grid_attach( GTK_GRID( table ), polyscheck, 3, 1, 1, 1 );
 	gtk_widget_show( polyscheck );
-	g_signal_connect(  G_OBJECT( polyscheck ), "toggled", G_CALLBACK( OnPoly ), NULL );
+	g_signal_connect( G_OBJECT( polyscheck ), "toggled", G_CALLBACK( OnPoly ), NULL );
 
 	combo_list = NULL;
 	combo_list = g_list_append( combo_list, (void *)_( "Z-Buffer Test and Write (recommended for solid or no polygons)" ) );
@@ -367,12 +364,12 @@ void DoConfigDialog(){
 	gtk_grid_set_column_spacing( GTK_GRID( table ), 5 );
 	gtk_widget_show( table );
 
-	adj = gtk_adjustment_new( portals.trans_3d, 0, 100, 1, 1, 1 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( portals.trans_3d, 0, 100, 1, 1, 1 ) );
 	transslider = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
 	gtk_grid_attach( GTK_GRID( table ), transslider, 0, 0, 1, 1 );
 	gtk_widget_set_hexpand( transslider, TRUE );
-	gtk_widget_show( transslider );
 	gtk_scale_set_draw_value( GTK_SCALE( transslider ), FALSE );
+	gtk_widget_show( transslider );
 
 	translabel = gtk_label_new( "" );
 	gtk_grid_attach( GTK_GRID( table ), translabel, 1, 0, 1, 1 );
@@ -380,12 +377,12 @@ void DoConfigDialog(){
 	gtk_widget_show( translabel );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScrollTrans ), translabel );
 
-	adj = gtk_adjustment_new( portals.clip_range, 1, 128, 1, 1, 1 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( portals.clip_range, 1, 128, 1, 1, 1 ) );
 	clipslider = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
 	gtk_grid_attach( GTK_GRID( table ), clipslider, 0, 1, 1, 1 );
 	gtk_widget_set_hexpand( clipslider, TRUE );
-	gtk_widget_show( clipslider );
 	gtk_scale_set_draw_value( GTK_SCALE( clipslider ), FALSE );
+	gtk_widget_show( clipslider );
 
 	cliplabel = gtk_label_new( "" );
 	gtk_grid_attach( GTK_GRID( table ), cliplabel, 1, 1, 1, 1 );
@@ -420,7 +417,7 @@ void DoConfigDialog(){
 	gtk_widget_show( hbox );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), hbox, TRUE, FALSE, 0 );
 
-	adj = gtk_adjustment_new( portals.width_2d, 2, 40, 1, 1, 1 );
+	adj = GTK_ADJUSTMENT( gtk_adjustment_new( portals.width_2d, 2, 40, 1, 1, 1 ) );
 	lw2slider = gtk_scale_new( GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT( adj ) );
 	gtk_widget_show( lw2slider );
 	gtk_box_pack_start( GTK_BOX( hbox ), lw2slider, TRUE, TRUE, 0 );
@@ -438,7 +435,7 @@ void DoConfigDialog(){
 	button = gtk_button_new_with_label( _( "Color" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), button, FALSE, FALSE, 0 );
 	gtk_widget_show( button );
-	g_signal_connect(  G_OBJECT( button ), "clicked", G_CALLBACK( OnColor2d ), NULL );
+	g_signal_connect( G_OBJECT( button ), "clicked", G_CALLBACK( OnColor2d ), NULL );
 
 	button_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
 	gtk_size_group_add_widget( button_group, color_button );
@@ -449,7 +446,7 @@ void DoConfigDialog(){
 	aa2check = gtk_check_button_new_with_label( _( "Anti-Alias (May not work on some video cards)" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), aa2check, TRUE, TRUE, 0 );
 	gtk_widget_show( aa2check );
-	g_signal_connect(  G_OBJECT( aa2check ), "toggled", G_CALLBACK( OnAntiAlias2d ), NULL );
+	g_signal_connect( G_OBJECT( aa2check ), "toggled", G_CALLBACK( OnAntiAlias2d ), NULL );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 5 );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), hbox, TRUE, FALSE, 0 );
@@ -458,7 +455,7 @@ void DoConfigDialog(){
 	show2check = gtk_check_button_new_with_label( _( "Show" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), show2check, FALSE, FALSE, 0 );
 	gtk_widget_show( show2check );
-	g_signal_connect(  G_OBJECT( show2check ), "toggled", G_CALLBACK( OnConfig2d ), NULL );
+	g_signal_connect( G_OBJECT( show2check ), "toggled", G_CALLBACK( OnConfig2d ), NULL );
 
 	// initialize dialog
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( show2check ), portals.show_2d );
@@ -478,7 +475,7 @@ void DoConfigDialog(){
 	SetClipText( cliplabel );
 
 
-	response_id = gtk_dialog_run( GTK_DIALOG( dialog ) );
+	gtk_dialog_run( GTK_DIALOG( dialog ) );
 
 	gtk_widget_destroy( dialog );
 }
