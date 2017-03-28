@@ -2035,7 +2035,7 @@ void MainFrame::create_main_statusbar( GtkWidget *window, GtkWidget *vbox ){
 
 	label = gtk_label_new( _( " Label " ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), label, FALSE, TRUE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 	m_pStatusLabel[0] = label;
 
@@ -2048,6 +2048,8 @@ void MainFrame::create_main_statusbar( GtkWidget *window, GtkWidget *vbox ){
 
 		label = gtk_label_new( _( " Label " ) );
 		gtk_container_add( GTK_CONTAINER( frame ), label );
+		gtk_widget_set_margin_start( label, 3 );
+		gtk_widget_set_margin_end( label, 3 );
 		gtk_widget_show( label );
 		m_pStatusLabel[i] = label;
 	}

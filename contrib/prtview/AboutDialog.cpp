@@ -54,7 +54,8 @@ void DoAboutDlg( GtkWidget *parent ){
 						   __DATE__
 						   );
 	gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, TRUE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 

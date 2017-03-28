@@ -664,7 +664,7 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( _( "Texture: " ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	texture_combo = gtk_combo_box_text_new_with_entry();
@@ -693,37 +693,37 @@ GtkWidget* create_SurfaceInspector( void ){
 	gtk_widget_show( table1 );
 
 	label = gtk_label_new( _( "Value" ) );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 1, 0, 1, 1 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Step" ) );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 2, 0, 1, 1 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal Shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical Shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal Scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical Scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Rotate: " ) );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 5, 1, 1 );
 	gtk_widget_show( label );
 
@@ -868,7 +868,7 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( "" ); //only need this for layout
 	gtk_grid_attach( GTK_GRID( table4 ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	axial_button = gtk_button_new_with_mnemonic( _( "Axial" ) );
@@ -900,7 +900,7 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( "" ); //only need this for layout
 	gtk_grid_attach( GTK_GRID( table3 ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	fit_button = gtk_button_new_with_mnemonic( _( "Fit" ) );
@@ -918,12 +918,12 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( _( "Height" ) );
 	gtk_grid_attach( GTK_GRID( table5 ), label, 1, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );	
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );	
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Width" ) );
 	gtk_grid_attach( GTK_GRID( table5 ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );	
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );	
 	gtk_widget_show( label );
 
 	fit_width_spinbutton_adj = GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 32, 1, 10, 0 ) );

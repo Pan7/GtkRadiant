@@ -373,7 +373,7 @@ void DoConfigDialog( GtkWidget *parent ){
 
 	translabel = gtk_label_new( "" );
 	gtk_grid_attach( GTK_GRID( table ), translabel, 1, 0, 1, 1 );
-	gtk_widget_set_halign( translabel, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( translabel ), 0.0 );
 	gtk_widget_show( translabel );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScrollTrans ), translabel );
 
@@ -386,7 +386,7 @@ void DoConfigDialog( GtkWidget *parent ){
 
 	cliplabel = gtk_label_new( "" );
 	gtk_grid_attach( GTK_GRID( table ), cliplabel, 1, 1, 1, 1 );
-	gtk_widget_set_halign( cliplabel, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( cliplabel ), 0.0 );
 	gtk_widget_show( cliplabel );
 	g_signal_connect( adj, "value-changed", G_CALLBACK( OnScrollClip ), cliplabel );
 

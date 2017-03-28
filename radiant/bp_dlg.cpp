@@ -71,7 +71,8 @@ int BP_MessageBox( int status ){
 							  "in the same maps for a smooth transition." ) );
 	}
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
+	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
 	gtk_widget_show( w );
 
 	w = gtk_separator_new( GTK_ORIENTATION_HORIZONTAL );

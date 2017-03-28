@@ -334,12 +334,12 @@ void PatchDialog::BuildDialog(){
 
 	row_label = label = gtk_label_new( _( "Row:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	col_label = label = gtk_label_new( _( "Column:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 1, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	size_group = gtk_size_group_new( GTK_SIZE_GROUP_BOTH );
@@ -383,32 +383,31 @@ void PatchDialog::BuildDialog(){
 
 	label = gtk_label_new( _( "X:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_tooltip_text( label, _( "X-Axis" ) );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_tooltip_text( label, _( "X-Axis" ) );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Y:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_tooltip_text( label, _( "Y-Axis" ) );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Z:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_tooltip_text( label, _( "Z-Axis" ) );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "S:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_tooltip_text( label, _( "S-coordinates correspond to the \"x\" coordinates on the texture itself" ) );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "T:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_tooltip_text( label, _( "T-coordinates correspond to the \"y\" coordinates on the texture itself. The measurements are in game units." ) );
 	gtk_widget_show( label );
 
@@ -474,7 +473,7 @@ void PatchDialog::BuildDialog(){
 
 	label = gtk_label_new( _( "Name:" ) );
 	gtk_box_pack_start( GTK_BOX( vbox2 ), label, FALSE, TRUE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
@@ -493,37 +492,37 @@ void PatchDialog::BuildDialog(){
 
 	label = gtk_label_new( _( "Value" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 1, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Step" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal Shift:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical Shift:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal Stretch:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical Stretch:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Rotate:" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 5, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	adj = gtk_adjustment_new( 0, -INT_MAX, INT_MAX, 1, 10, 0 );

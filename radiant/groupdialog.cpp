@@ -1528,14 +1528,14 @@ void GroupDlg::Create(){
 				{
 					GtkWidget* label = gtk_label_new( _( "Value" ) );
 					gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-					gtk_widget_set_halign( label, GTK_ALIGN_START );
+					gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 					gtk_widget_show( label );
 				}
 
 				{
 					GtkWidget* label = gtk_label_new( _( "Key" ) );
 					gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-					gtk_widget_set_halign( label, GTK_ALIGN_START );
+					gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 					gtk_widget_show( label );
 				}
 			}

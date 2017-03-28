@@ -225,7 +225,8 @@ int DoMessageBox( const char* lpText, const char* lpCaption, guint32 uType ){
 
 	w = gtk_label_new( lpText );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	w = gtk_separator_new( GTK_ORIENTATION_HORIZONTAL );
@@ -425,9 +426,8 @@ int DoPolygonBox( PolygonRS* rs ){
 	// ---- hbox2 ----
 
 	sides_label = w = gtk_label_new( _( "Number Of Sides" ) );
-	g_object_set( w, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	text1 = gtk_entry_new();
@@ -447,9 +447,8 @@ int DoPolygonBox( PolygonRS* rs ){
 	// ---- hbox2 ----
 
 	width_label = w = gtk_label_new( "Border Width" );
-	g_object_set( w, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	text2 = gtk_entry_new();
@@ -1072,7 +1071,7 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	w = gtk_label_new( _( "Number Of Points" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, FALSE, 2 );
-	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	// ---- /hbox ----
@@ -1091,14 +1090,14 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	w = gtk_label_new( _( "Multipler" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, FALSE, 2 );
-	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	// ---- /hbox ----
 
 	w = gtk_label_new( _( "Path Distance = dist(start -> apex) * multiplier" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 0 );
-	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 10 );
@@ -1115,7 +1114,7 @@ int DoPathPlotterBox( PathPlotterRS* rs ){
 
 	w = gtk_label_new( _( "Gravity" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, FALSE, 2 );
-	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	// ---- /hbox ----
@@ -1309,7 +1308,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	w = gtk_label_new( _( "Currently Selected Face:   " ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	texSelected = "";
@@ -1318,7 +1317,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 	}
 	w = gtk_label_new( texSelected );
 	gtk_box_pack_start( GTK_BOX( hbox ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	// ---- /hbox ----
@@ -1344,7 +1343,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	new_label = w = gtk_label_new( _( "Old Name: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 0, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editTexOld = gtk_entry_new();
@@ -1356,7 +1355,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	old_label = w = gtk_label_new( _( "New Name: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 1, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editTexNew = gtk_entry_new();
@@ -1389,7 +1388,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	hscale_label = w = gtk_label_new( _( "New Horizontal Scale: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 0, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editScaleHor = gtk_entry_new();
@@ -1408,7 +1407,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	vscale_label = w = gtk_label_new( _( "New Vertical Scale: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 1, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editScaleVert = gtk_entry_new();
@@ -1441,7 +1440,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	hshift_label = w = gtk_label_new( _( "New Horizontal Shift: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 0, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editShiftHor = gtk_entry_new();
@@ -1459,7 +1458,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 	gtk_widget_show( dlgTexReset.cbShiftVert );
 
 	vshift_label = w = gtk_label_new( _( "New Vertical Shift: " ) );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 1, 1, 1 );
 	gtk_widget_show( w );
 
@@ -1492,7 +1491,7 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 
 	rvalue_label = w = gtk_label_new( _( "New Rotation Value: " ) );
 	gtk_grid_attach( GTK_GRID( table ), w, 1, 0, 1, 1 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	dlgTexReset.editRotation = gtk_entry_new();
@@ -1516,16 +1515,6 @@ int DoResetTextureBox( ResetTextureRS* rs ){
 	gtk_size_group_add_widget( label_group, vshift_label );
 	gtk_size_group_add_widget( label_group, rvalue_label );
 	g_object_unref( label_group );
-
-	//by default text is centered in labels, 
-	//setting text in labels left align because the label size is managed by the gtksizegroup
-	g_object_set( new_label, "xalign", 0.0, NULL );
-	g_object_set( old_label, "xalign", 0.0, NULL );
-	g_object_set( hscale_label, "xalign", 0.0, NULL );
-	g_object_set( vscale_label, "xalign", 0.0, NULL );
-	g_object_set( hshift_label, "xalign", 0.0, NULL );
-	g_object_set( vshift_label, "xalign", 0.0, NULL );
-	g_object_set( rvalue_label, "xalign", 0.0, NULL );
 
 
 	Update_TextureReseter();
@@ -1655,6 +1644,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	radiusX = gtk_entry_new();
@@ -1671,7 +1661,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 1, 2,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	radiusY = gtk_entry_new();
@@ -1701,7 +1691,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	angleStart = gtk_entry_new();
@@ -1718,7 +1708,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 1, 2,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	angleEnd = gtk_entry_new();
@@ -1747,7 +1737,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	heightStart = gtk_entry_new();
@@ -1764,7 +1754,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 1, 2,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	heightEnd = gtk_entry_new();
@@ -1794,7 +1784,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_table_attach( GTK_TABLE( table ), w, 0, 1, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
 					  (GtkAttachOptions) ( 0 ), 0, 0 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
 	gtk_widget_show( w );
 
 	numPoints = gtk_entry_new();
@@ -1802,7 +1792,7 @@ int DoTrainThingBox( TrainThingRS* rs ){
 	gtk_entry_set_text( GTK_ENTRY( numPoints ), "0" );
 	gtk_table_attach( GTK_TABLE( table ), numPoints, 1, 2, 0, 1,
 					  (GtkAttachOptions) ( GTK_FILL ),
-					  (GtkAttachOptions) ( 0 ), 0, 0 );	
+					  (GtkAttachOptions) ( 0 ), 0, 0 );
 	gtk_widget_show( numPoints );
 
 

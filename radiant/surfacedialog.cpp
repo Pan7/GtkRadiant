@@ -528,7 +528,7 @@ void SurfaceDlg::BuildDialog() {
 
 	label = gtk_label_new( _( "Texture" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, TRUE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
@@ -544,129 +544,139 @@ void SurfaceDlg::BuildDialog() {
 	gtk_widget_show( table );
 
 	label = gtk_label_new( _( "Horizontal shift" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -8192, 8192, 2, 8, 0 ) ), 0, 0 );
-	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "hshift", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), spin, 1, 0, 1, 1 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
-	gtk_grid_attach( GTK_GRID( table ), entry, 3, 0, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "hshift_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), entry, 3, 0, 1, 1 );
 	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Vertical shift" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -8192, 8192, 2, 8, 0 ) ), 0, 0 );
-	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "vshift", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), spin, 1, 1, 1, 1 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
-	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "vshift_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), entry, 3, 1, 1, 1 );
 	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Horizontal stretch" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -1000, 1000, 1, 10, 0 ) ), 0, 0 );
-	gtk_grid_attach( GTK_GRID( table ), spin, 1, 2, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "hscale", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), spin, 1, 2, 1, 1 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
-	gtk_grid_attach( GTK_GRID( table ), entry, 3, 2, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "hscale_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), entry, 3, 2, 1, 1 );
 	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Vertical stretch" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -1000, 1000, 1, 10, 0 ) ), 0, 0 );
-	gtk_grid_attach( GTK_GRID( table ), spin, 1, 3, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "vscale", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), spin, 1, 3, 1, 1 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
-	gtk_grid_attach( GTK_GRID( table ), entry, 3, 3, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "vscale_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), entry, 3, 3, 1, 1 );
 	gtk_widget_show( entry );
 
 	label = gtk_label_new( _( "Rotate" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 0, -360, 360, 1, 10, 0 ) ), 1, 0 );
 	gtk_spin_button_set_wrap( GTK_SPIN_BUTTON( spin ), TRUE );
-	gtk_grid_attach( GTK_GRID( table ), spin, 1, 4, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "rotate", spin );
 	g_signal_connect( G_OBJECT( gtk_spin_button_get_adjustment( GTK_SPIN_BUTTON( spin ) ) ), "value-changed",
 						G_CALLBACK( OnUpdate ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), spin, 1, 4, 1, 1 );
 	gtk_spin_button_set_numeric( GTK_SPIN_BUTTON( spin ), TRUE );
 	gtk_widget_show( spin );
 
 	label = gtk_label_new( _( "Step" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+
 	gtk_widget_show( label );
 
 	entry = gtk_entry_new();
-	gtk_grid_attach( GTK_GRID( table ), entry, 3, 4, 1, 1 );
 	g_object_set_data( G_OBJECT( dlg ), "rotate_inc", entry );
 	g_signal_connect( G_OBJECT( entry ), "changed",
 						G_CALLBACK( OnIncrementChanged ), NULL );
+	gtk_grid_attach( GTK_GRID( table ), entry, 3, 4, 1, 1 );
 	gtk_widget_show( entry );
 
 	// match grid button
@@ -681,30 +691,31 @@ void SurfaceDlg::BuildDialog() {
 	gtk_widget_show( frame );
 
 	table = gtk_grid_new();
+	gtk_container_add( GTK_CONTAINER( frame ), table );
 	gtk_grid_set_row_spacing( GTK_GRID( table ), 5 );
 	gtk_grid_set_column_spacing( GTK_GRID( table ), 5 );
-	gtk_container_add( GTK_CONTAINER( frame ), table );
+
 	gtk_container_set_border_width( GTK_CONTAINER( table ), 5 );
 	gtk_widget_show( table );
 
 	label = gtk_label_new( _( "Brush" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Patch" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Width" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 2, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Height" ) );
 	gtk_grid_attach( GTK_GRID( table ), label, 3, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	axial_button = button = gtk_button_new_with_label( _( "Axial" ) );

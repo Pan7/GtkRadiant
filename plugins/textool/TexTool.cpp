@@ -145,7 +145,9 @@ int DoMessageBox( const char* lpText, const char* lpCaption, guint32 uType ){
 
 	w = gtk_label_new( lpText );
 	gtk_box_pack_start( GTK_BOX( vbox ), w, FALSE, FALSE, 2 );
-	gtk_widget_set_halign( w, GTK_ALIGN_START );
+	gtk_label_set_justify( GTK_LABEL( w ), GTK_JUSTIFY_LEFT );
+	gtk_label_set_xalign( GTK_LABEL( w ), 0.0 );
+	gtk_label_set_selectable( GTK_LABEL( w ), TRUE );
 	gtk_widget_show( w );
 
 	w = gtk_separator_new( GTK_ORIENTATION_HORIZONTAL );

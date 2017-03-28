@@ -571,7 +571,7 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( _( "Texture: " ) );
 	gtk_box_pack_start( GTK_BOX( hbox1 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	texture_combo = gtk_combo_box_text_new();
@@ -599,37 +599,37 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( "Value" );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 1, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( "Step" );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 2, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical shift: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Horizontal scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 3, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Vertical scale: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 4, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Rotate: " ) );
 	gtk_grid_attach( GTK_GRID( table1 ), label, 0, 5, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// Value Spins
@@ -753,19 +753,19 @@ GtkWidget* create_SurfaceInspector( void ){
 
 	label = gtk_label_new( "Brush" );
 	gtk_grid_attach( GTK_GRID( table2 ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_hexpand( GTK_WIDGET( label ), TRUE );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( "Height" );
 	gtk_grid_attach( GTK_GRID( table2 ), label, 2, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_hexpand( GTK_WIDGET( label ), TRUE );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "Width" ) );
 	gtk_grid_attach( GTK_GRID( table2 ), label, 3, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_set_hexpand( GTK_WIDGET( label ), TRUE );
 	gtk_widget_show( label );
 

@@ -360,7 +360,7 @@ GtkWidget* create_SurfaceFlagsFrame( GtkWidget* surfacedialog_widget ){
 
 	value_label = gtk_label_new( _( "Value: " ) );
 	gtk_box_pack_start( GTK_BOX( hbox3 ), value_label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( value_label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( value_label ), 0.0 );
 	gtk_widget_show( value_label );
 
 	value_entry = gtk_entry_new();

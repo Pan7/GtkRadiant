@@ -1102,7 +1102,7 @@ GtkWidget* CGameDialog::GetGlobalFrame(){
 
 	text = gtk_label_new( _( "(use preferences to undo this)" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), text, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( text, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( text ), 0.0 );
 	gtk_widget_show( text );
 
 #ifdef _WIN32
@@ -1880,7 +1880,7 @@ void PrefsDlg::BuildDialog(){
 	// label
 	label = gtk_label_new( _( "Movement Velocity" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// adjustment
@@ -1903,7 +1903,7 @@ void PrefsDlg::BuildDialog(){
 	// label
 	label = gtk_label_new( _( "Rotational Velocity" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// adjustment
@@ -1925,13 +1925,13 @@ void PrefsDlg::BuildDialog(){
 	// label
 	label = gtk_label_new( _( "slow" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// label
 	label = gtk_label_new( _( "fast" ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_END );
+	gtk_label_set_xalign( GTK_LABEL( label ), 1.0 );
 	gtk_widget_show( label );
 
 	// Allow drag to select multiple faces/brushes
@@ -1942,7 +1942,7 @@ void PrefsDlg::BuildDialog(){
 
 	label = gtk_label_new( _( "Use paint-select in camera view:" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 5 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	combo_list = NULL;
@@ -2007,7 +2007,7 @@ void PrefsDlg::BuildDialog(){
 	// label
 	label = gtk_label_new( _( "Texture quality" ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// adjustment
@@ -2027,12 +2027,12 @@ void PrefsDlg::BuildDialog(){
 
 	label = gtk_label_new( _( "low" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	label = gtk_label_new( _( "high" ) );
 	gtk_box_pack_end( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_END );
+	gtk_label_set_xalign( GTK_LABEL( label ), 1.0 );
 	gtk_widget_show( label );
 
 	// texture subsets
@@ -2062,8 +2062,7 @@ void PrefsDlg::BuildDialog(){
 
 	tcomp_label = label = gtk_label_new( _( "Texture Compression (if available):" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
-	g_object_set( label, "xalign", 0.0, NULL );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// Texture compression choice label
@@ -2103,8 +2102,7 @@ void PrefsDlg::BuildDialog(){
 	// label
 	startup_label = label = gtk_label_new( _( "Startup Shaders:" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
-	g_object_set( label, "xalign", 0.0, NULL );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// combo list
@@ -2141,7 +2139,7 @@ void PrefsDlg::BuildDialog(){
 
 	ftw_label = label = gtk_label_new( _( "Fixed Texture Wdith" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 1024, 1, 10, 0 ) ), 1, 0 );
@@ -2157,7 +2155,7 @@ void PrefsDlg::BuildDialog(){
 
 	fth_label = label = gtk_label_new( _( "Fixed Texture Height" ) );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	spin = gtk_spin_button_new( GTK_ADJUSTMENT( gtk_adjustment_new( 1, 1, 1024, 1, 10, 0 ) ), 1, 0 );
@@ -2388,6 +2386,7 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Wheel Mouse inc:" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_show( label );
 
@@ -2458,9 +2457,8 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Rotation increment:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// entry
@@ -2473,9 +2471,8 @@ void PrefsDlg::BuildDialog(){
 	// Undo levels
 	// label
 	label = gtk_label_new( _( "Undo Levels:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// spinner (allows undo levels to be set to zero)
@@ -2489,9 +2486,8 @@ void PrefsDlg::BuildDialog(){
 	// Patch subdivisions
 	// label
 	label = gtk_label_new( _( "Patch subdivisions:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 2, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// entry (spinner perhaps? [2-16])
@@ -2557,6 +2553,7 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "minutes" ) );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 	gtk_widget_show( label );
 
@@ -2589,9 +2586,8 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Prefab path:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 0, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// path entry
@@ -2611,9 +2607,8 @@ void PrefsDlg::BuildDialog(){
 	// User ini path
 	// label
 	label = gtk_label_new( _( "User INI path:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_grid_attach( GTK_GRID( table ), label, 0, 1, 1, 1 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// user ini path entry
@@ -2649,9 +2644,8 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Default texture scale:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	// scale entry
@@ -2696,9 +2690,8 @@ void PrefsDlg::BuildDialog(){
 	gtk_widget_show( hbox2 );
 
 	label = gtk_label_new( _( "Light radiuses:" ) );
-	g_object_set( label, "xalign", 0.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	gtk_widget_show( label );
 
 	combo_list = NULL;
@@ -2736,10 +2729,9 @@ void PrefsDlg::BuildDialog(){
 
 	// label
 	label = gtk_label_new( _( "Custom Editor Command" ) );
-	g_object_set( label, "xalign", 9.0, NULL );
 	gtk_box_pack_start( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
+	gtk_label_set_xalign( GTK_LABEL( label ), 0.0 );
 	g_object_set_data( G_OBJECT( dialog ), "label_customeditor", label );
-	gtk_widget_set_halign( label, GTK_ALIGN_START );
 	gtk_widget_set_sensitive( label, g_PrefsDlg.m_bUseCustomEditor );
 	gtk_widget_show( label );
 
