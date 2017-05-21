@@ -58,14 +58,14 @@ static gint dialog_delete_callback( GtkWidget *widget, GdkEvent* event, gpointer
 // =============================================================================
 // Color selection dialog
 
-static int DoColor( COLORREF *c ){
+static int DoColor( GdkRGBA *color ){
 	GtkWidget* dlg;
 	double clr[3];
 	int loop = 1, ret = IDCANCEL;
 
-	clr[0] = ( (double)GetRValue( *c ) ) / 255.0;
-	clr[1] = ( (double)GetGValue( *c ) ) / 255.0;
-	clr[2] = ( (double)GetBValue( *c ) ) / 255.0;
+	clr[0] = color->red;;
+	clr[1] = color->green;
+	clr[2] = color->blue;
 
 	dlg = gtk_color_selection_dialog_new( _( "Choose Color" ) );
 	gtk_color_selection_set_color( GTK_COLOR_SELECTION( GTK_COLOR_SELECTION_DIALOG( dlg )->colorsel ), clr );
@@ -92,7 +92,9 @@ static int DoColor( COLORREF *c ){
 	gtk_widget_destroy( dlg );
 
 	if ( ret == IDOK ) {
-		*c = RGB( clr[0] * 255, clr[1] * 255, clr[2] * 255 );
+		color->red = clr[0];
+		color->green = clr[1];
+		color->blue = clr[2];
 	}
 
 	return ret;
