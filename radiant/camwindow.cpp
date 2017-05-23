@@ -57,7 +57,7 @@ CamWnd::~CamWnd (){
 
 void CamWnd::OnCreate(){
 	if ( !MakeCurrent() ) {
-		Error( "glMakeCurrent failed" );
+		Error( "camwindow: glMakeCurrent failed" );
 	}
 
 	// report OpenGL information
@@ -339,7 +339,7 @@ void CamWnd::Cam_MouseControl( float dtime ){
 		dx = m_ptLastCamCursorX - m_ptCursorX;
 		dy = m_ptLastCamCursorY - m_ptCursorY;
 
-		gdk_window_get_origin( m_pWidget->window, &x, &y );
+		gdk_window_get_origin( gtk_widget_get_window( m_pWidget ), &x, &y );
 
 		m_ptLastCamCursorX = x + ( m_Camera.width / 2 );
 		m_ptLastCamCursorY = y + ( m_Camera.height / 2 );
@@ -481,41 +481,30 @@ void CamWnd::ToggleFreeMove(){
 
 	if ( g_pParentWnd->CurrentStyle() == MainFrame::eFloating ) {
 		widget = g_pParentWnd->GetCamWnd()->m_pParent;
-		window = widget->window;
+		window = gtk_widget_get_window( widget );
 	}
 	else
 	{
 		widget = g_pParentWnd->m_pWidget;
-		window = widget->window;
+		window = gtk_widget_get_window( widget );
 	}
 
 	if ( m_bFreeMove ) {
+		GdkDisplay *display;
+		GdkCursor *cursor;
 
 		SetFocus();
 		SetCapture();
 
-		{
-			GdkPixmap *pixmap;
-			GdkBitmap *mask;
-			char buffer [( 32 * 32 ) / 8];
-			memset( buffer, 0, ( 32 * 32 ) / 8 );
-			GdkColor white = {0, 0xffff, 0xffff, 0xffff};
-			GdkColor black = {0, 0x0000, 0x0000, 0x0000};
-			pixmap = gdk_bitmap_create_from_data( NULL, buffer, 32, 32 );
-			mask   = gdk_bitmap_create_from_data( NULL, buffer, 32, 32 );
-			GdkCursor *cursor = gdk_cursor_new_from_pixmap( pixmap, mask, &white, &black, 1, 1 );
-
-			gdk_window_set_cursor( window, cursor );
-			gdk_cursor_unref( cursor );
-			gdk_drawable_unref( pixmap );
-			gdk_drawable_unref( mask );
-		}
+		display = gdk_window_get_display( window );
+		cursor = gdk_cursor_new_for_display( display, GDK_BLANK_CURSOR );
+		gdk_window_set_cursor( window, cursor );
 
 		// RR2DO2: FIXME why does this only work the 2nd and
 		// further times the event is called? (floating windows
 		// mode seems to work fine though...)
-		m_FocusOutHandler_id = gtk_signal_connect( GTK_OBJECT( widget ), "focus_out_event",
-												   GTK_SIGNAL_FUNC( camwindow_focusout ), g_pParentWnd );
+		m_FocusOutHandler_id = g_signal_connect( G_OBJECT( widget ), "focus-out-event",
+												   G_CALLBACK( camwindow_focusout ), g_pParentWnd );
 
 		{
 			GdkEventMask mask = (GdkEventMask)( GDK_POINTER_MOTION_MASK
@@ -527,18 +516,32 @@ void CamWnd::ToggleFreeMove(){
 												| GDK_BUTTON_PRESS_MASK
 												| GDK_BUTTON_RELEASE_MASK );
 
-			gdk_pointer_grab( widget->window, TRUE, mask, widget->window, NULL, GDK_CURRENT_TIME );
+			gdk_pointer_grab( gtk_widget_get_window( widget ), TRUE, mask, gtk_widget_get_window( widget ), NULL, GDK_CURRENT_TIME );
 		}
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+		g_object_unref( cursor );
+#else
+		gdk_cursor_unref( cursor );
+#endif
 	}
 	else
 	{
+		GdkDisplay *display;
+		GdkCursor *cursor;
+
 		gdk_pointer_ungrab( GDK_CURRENT_TIME );
 
-		gtk_signal_disconnect( GTK_OBJECT( widget ), m_FocusOutHandler_id );
+		g_signal_handler_disconnect( G_OBJECT( widget ), m_FocusOutHandler_id );
 
-		GdkCursor *cursor = gdk_cursor_new( GDK_LEFT_PTR );
+		display = gdk_window_get_display( window );
+		cursor = gdk_cursor_new_for_display( display, GDK_LEFT_PTR );
+
 		gdk_window_set_cursor( window, cursor );
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+		g_object_unref( cursor );
+#else
 		gdk_cursor_unref( cursor );
+#endif
 
 		ReleaseCapture();
 	}
@@ -922,12 +925,24 @@ void CamWnd::Cam_DrawBrush( brush_t *b, int mode ){
 				if ( !( nGLState & DRAW_GL_TEXTURE_2D ) ) {
 					qglColor4fv( material );
 				}
-				else{ qglColor4fv( identity ); }
+				else { 
+					qglColor4fv( identity );
+				}
+
 				if ( nGLState & DRAW_GL_LIGHTING ) {
 					qglShadeModel( GL_SMOOTH );
 				}
 
-				b->owner->model.pRender->Draw( nGLState, DRAW_RF_CAM );
+				// Check model validity
+				// If the model is NULL or invalid, draw a box instead
+				bool isModelValid = b->owner->model.pRender->IsModelNotNull();
+				if ( isModelValid ) {
+					b->owner->model.pRender->Draw( nGLState, DRAW_RF_CAM );
+				}
+				else {
+					qglColor4fv( material );
+					aabb_draw( b->owner->model.pRender->GetAABB(), DRAW_GL_WIRE );
+				}
 			}
 			break;
 		case DRAW_WIRE:

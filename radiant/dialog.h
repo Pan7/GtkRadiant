@@ -31,12 +31,9 @@ typedef enum
 	DLG_CHECK_BOOL,
 	DLG_RADIO_INT,
 	DLG_ENTRY_TEXT,
-	DLG_ENTRY_FLOAT,
-	DLG_ENTRY_INT,
 	DLG_SPIN_FLOAT,
 	DLG_SPIN_INT,
 	DLG_ADJ_INT,
-	DLG_COMBO_INT,
 	DLG_COMBO_BOX_INT,
 } DLG_DATA_TYPE;
 
@@ -70,8 +67,8 @@ bool m_nLoop;
 int m_nReturn;
 
 void AddDialogData( GtkWidget *widget, void *buf, DLG_DATA_TYPE type )
-{ AddDialogData( GTK_OBJECT( widget ), buf, type ); };
-void AddDialogData( GtkObject *object, void *buf, DLG_DATA_TYPE type );
+{ AddDialogData( G_OBJECT( widget ), buf, type ); };
+void AddDialogData( GObject *object, void *buf, DLG_DATA_TYPE type );
 /*!
    used in overloaded BuildDialog implementations to configure modal behaviour easily
  */

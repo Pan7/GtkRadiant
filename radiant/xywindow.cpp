@@ -31,10 +31,6 @@
 #include <assert.h>
 #include <GL/gl.h>
 
-#ifdef _WIN32
-#include <gdk/gdkwin32.h>
-#endif
-
 // =============================================================================
 // variables
 
@@ -383,7 +379,7 @@ void CreateEntityFromName( const char* name, const vec3_t origin ){
 	entity_t *e;
 	brush_t* b;
 	if ( stricmp( name, "worldspawn" ) == 0 ) {
-		gtk_MessageBox( g_pParentWnd->m_pWidget, "Can't create an entity with worldspawn.", "info", 0 );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, _( "Can't create an entity with worldspawn." ), "info", 0 );
 		return;
 	}
 
@@ -1010,7 +1006,7 @@ rectangle_t rectangle_from_area_xy(){
 
 void update_xor_rectangle_xy( XORRectangle& xor_rectangle ){
 	rectangle_t rectangle;
-	if ( ( g_qeglobals.d_select_mode == sel_area ) ) {
+	if ( g_qeglobals.d_select_mode == sel_area ) {
 		rectangle = rectangle_from_area_xy();
 	}
 	xor_rectangle.set( rectangle );
@@ -1165,14 +1161,23 @@ void XYWnd::OnMouseMove( guint32 nFlags, int pointx, int pointy ){
 
 	if ( ( nFlags & MK_RBUTTON ) == 0 ) {
 		if ( bCrossHair && !g_bWaitCursor ) {
+			GdkWindow *window;
+			GdkDisplay *display;
 			GdkCursor *cursor;
-			cursor = gdk_cursor_new( GDK_CROSSHAIR );
-			gdk_window_set_cursor( m_pWidget->window, cursor );
+
+			window = gtk_widget_get_window( m_pWidget );
+			display = gdk_window_get_display( window );
+			cursor = gdk_cursor_new_for_display( display, GDK_CROSSHAIR );
+			gdk_window_set_cursor( window, cursor );
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+			g_object_unref( cursor );
+#else
 			gdk_cursor_unref( cursor );
+#endif
 		}
 		else
 		{
-			gdk_window_set_cursor( m_pWidget->window, NULL );
+			gdk_window_set_cursor( gtk_widget_get_window( m_pWidget ), NULL );
 		}
 	}
 
@@ -1428,7 +1433,7 @@ void XYWnd::XY_MouseUp( int x, int y, int buttons ){
 	}
 	m_nButtonstate = 0;
 
-	gdk_window_set_cursor( m_pWidget->window, NULL );
+	gdk_window_set_cursor( gtk_widget_get_window( m_pWidget ), NULL );
 
 	update_xor_rectangle_xy( m_XORRectangle );
 }
@@ -1458,6 +1463,58 @@ qboolean XYWnd::DragDelta( int x, int y, vec3_t move ){
 	return false;
 }
 
+static GtkWidget * create_entity_menu_item( GtkWidget *submenu, CString strName )
+{
+	GtkWidget *item, *box, *icon, *label;
+	CString filepath;
+	GdkPixbuf *pixbuf;
+
+	filepath = g_pGameDescription->mEnginePath;
+	filepath += g_pGameDescription->mBaseGame;
+	filepath += "/icons/entity_icons/";
+	filepath += strName;
+	filepath += ".png";
+
+	item = gtk_menu_item_new();
+
+	box = gtk_hbox_new( FALSE, 6 );
+	
+	gtk_container_add( GTK_CONTAINER( item ), box );
+	gtk_widget_show( box );
+
+	pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
+	if( !pixbuf ) {
+		filepath = g_strGameToolsPath;
+		filepath += "entity_icons/";
+		filepath += g_pGameDescription->mBaseGame;
+		filepath += "/";
+		filepath += strName;
+		filepath += ".png";
+		pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
+		if( !pixbuf ) {
+			filepath = g_strGameToolsPath;
+			filepath += "entity_icons/";
+			filepath += strName;
+			filepath += ".png";
+			pixbuf = gdk_pixbuf_new_from_file( filepath, NULL );
+		}
+	}
+	if( pixbuf ) {
+		icon = gtk_image_new_from_pixbuf( pixbuf );
+		gtk_box_pack_start( GTK_BOX( box ), icon, FALSE, FALSE, 0 );
+		gtk_widget_show( icon );
+
+		g_object_unref( pixbuf );
+	}
+	label = gtk_label_new( strName );
+	gtk_box_pack_start( GTK_BOX( box ), label, TRUE, TRUE, 0 );
+	gtk_misc_set_alignment( GTK_MISC( label ), 0.0f, 0.5f );
+	gtk_widget_show( label );
+
+	g_object_set_data( G_OBJECT( item ), "classname-label", label );
+
+	return item;
+}
 void XYWnd::HandleDrop(){
 	if ( g_PrefsDlg.m_bRightClick == false ) {
 		return;
@@ -1471,44 +1528,44 @@ void XYWnd::HandleDrop(){
 
 		menu_in_menu = create_menu_in_menu_with_mnemonic( menu, "Select" );
 		create_menu_item_with_mnemonic( menu_in_menu, "Select Complete Tall",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_SELECTCOMPLETETALL );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_SELECTCOMPLETETALL );
 		create_menu_item_with_mnemonic( menu_in_menu, "Select Touching",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_SELECTTOUCHING );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_SELECTTOUCHING );
 		create_menu_item_with_mnemonic( menu_in_menu, "Select Partial Tall",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_SELECTPARTIALTALL );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_SELECTPARTIALTALL );
 		create_menu_item_with_mnemonic( menu_in_menu, "Select Inside",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_SELECTINSIDE );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_SELECTINSIDE );
 		menu_separator( menu ); nID++;
 		// NOTE: temporary commented out until we put it back in for good (that is with actual features)
 		/*
 		menu_in_menu = create_menu_in_menu_with_mnemonic (menu, "Group",);
 		create_menu_item_with_mnemonic (menu_in_menu, "Add to...",
-			GTK_SIGNAL_FUNC (HandleCommand), ID_DROP_GROUP_ADDTO);
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_ADDTO);
 		create_menu_item_with_mnemonic (menu_in_menu, "Remove",
-			GTK_SIGNAL_FUNC (HandleCommand), ID_DROP_GROUP_REMOVE);
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_REMOVE);
 		create_menu_item_with_mnemonic (menu_in_menu, "Name...",
-			GTK_SIGNAL_FUNC (HandleCommand), ID_DROP_GROUP_NAME);
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_NAME);
 		menu_separator (menu_in_menu); nID++;
 		create_menu_item_with_mnemonic (menu_in_menu, "New Group...",
-			GTK_SIGNAL_FUNC (HandleCommand), ID_DROP_GROUP_NEWGROUP);
+			G_CALLBACK (HandleCommand), ID_DROP_GROUP_NEWGROUP);
 		 */
 		create_menu_item_with_mnemonic( menu, "Ungroup Entity",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_UNGROUPENTITY );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_UNGROUPENTITY );
 
 		create_menu_item_with_mnemonic( menu, "Move into entity",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_MERGE );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_MERGE );
 		create_menu_item_with_mnemonic( menu, "Move into worldspawn",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_SEPERATE );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_SEPERATE );
 
 		create_menu_item_with_mnemonic( menu, "Make Detail",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_MAKE_DETAIL );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_MAKE_DETAIL );
 		create_menu_item_with_mnemonic( menu, "Make Structural",
-										GTK_SIGNAL_FUNC( HandleCommand ), ID_SELECTION_MAKE_STRUCTURAL );
+										G_CALLBACK( HandleCommand ), ID_SELECTION_MAKE_STRUCTURAL );
 		menu_separator( menu ); nID++;
 
 		menu_in_menu = create_menu_in_menu_with_mnemonic( menu, "Smart Entities" );
 		create_menu_item_with_mnemonic( menu_in_menu, "Smart__Train",
-										GTK_SIGNAL_FUNC( HandleCommand ), nID++ );
+										G_CALLBACK( HandleCommand ), nID++ );
 		menu_separator( menu ); nID++;
 
 		submenu = NULL;
@@ -1527,12 +1584,14 @@ void XYWnd::HandleDrop(){
 				CString strRight = strName.Right( strName.GetLength() - n_ - 1 );
 				if ( strLeft == strActive ) { // this is a child
 					assert( submenu );
-					item = gtk_menu_item_new_with_label( strName );
-					gtk_signal_connect( GTK_OBJECT( item ), "activate", GTK_SIGNAL_FUNC( HandleCommand ),
-										GINT_TO_POINTER( nID++ ) );
-					gtk_widget_show( item );
 					CheckMenuSplitting( submenu );
-					gtk_menu_append( GTK_MENU( submenu ), item );
+					item = create_entity_menu_item( submenu, strName );
+
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
+										GINT_TO_POINTER( nID++ ) );
+
+					gtk_widget_show( item );
+					gtk_menu_shell_append( GTK_MENU_SHELL( submenu ), item );
 				}
 				else
 				{
@@ -1541,7 +1600,7 @@ void XYWnd::HandleDrop(){
 						// we use submenu_root cause we may have been cascading submenu
 						item = gtk_menu_item_new_with_label( strActive );
 						gtk_widget_show( item );
-						gtk_menu_append( GTK_MENU( menu ), item );
+						gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 						gtk_menu_item_set_submenu( GTK_MENU_ITEM( item ), submenu_root );
 						g_ptrMenus.Add( submenu_root );
 						submenu = NULL;
@@ -1551,11 +1610,11 @@ void XYWnd::HandleDrop(){
 
 					submenu = gtk_menu_new();
 					submenu_root = submenu;
-					item = gtk_menu_item_new_with_label( strName );
-					gtk_signal_connect( GTK_OBJECT( item ), "activate", GTK_SIGNAL_FUNC( HandleCommand ),
+					item = create_entity_menu_item( submenu, strName );
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( nID++ ) );
 					gtk_widget_show( item );
-					gtk_menu_append( GTK_MENU( submenu ), item );
+					gtk_menu_shell_append( GTK_MENU_SHELL( submenu ), item );
 				}
 			}
 			else
@@ -1565,7 +1624,7 @@ void XYWnd::HandleDrop(){
 					// we use submenu_root cause we may have been cascading submenu
 					item = gtk_menu_item_new_with_label( strActive );
 					gtk_widget_show( item );
-					gtk_menu_append( GTK_MENU( menu ), item );
+					gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 					gtk_menu_item_set_submenu( GTK_MENU_ITEM( item ), submenu_root );
 					g_ptrMenus.Add( submenu_root );
 					submenu = NULL;
@@ -1573,11 +1632,11 @@ void XYWnd::HandleDrop(){
 				}
 				strActive = "";
 
-				item = gtk_menu_item_new_with_label( strName );
-				gtk_signal_connect( GTK_OBJECT( item ), "activate", GTK_SIGNAL_FUNC( HandleCommand ),
+				item = create_entity_menu_item( menu, strName );
+				g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 									GINT_TO_POINTER( nID++ ) );
 				gtk_widget_show( item );
-				gtk_menu_append( GTK_MENU( menu ), item );
+				gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 			}
 		}
 	}
@@ -1779,19 +1838,20 @@ void XYWnd::XY_MouseMoved( int x, int y, int buttons ){
 
 			// create an empty cursor
 			if ( !g_bWaitCursor ) {
-				GdkPixmap *pixmap;
-				GdkBitmap *mask;
-				char buffer [( 32 * 32 ) / 8];
-				memset( buffer, 0, ( 32 * 32 ) / 8 );
-				GdkColor white = {0, 0xffff, 0xffff, 0xffff};
-				GdkColor black = {0, 0x0000, 0x0000, 0x0000};
-				pixmap = gdk_bitmap_create_from_data( NULL, buffer, 32, 32 );
-				mask   = gdk_bitmap_create_from_data( NULL, buffer, 32, 32 );
-				GdkCursor *cursor = gdk_cursor_new_from_pixmap( pixmap, mask, &white, &black, 1, 1 );
-				gdk_window_set_cursor( m_pWidget->window, cursor );
+				GdkWindow *window;
+				GdkDisplay *display;
+				GdkCursor *cursor;
+
+				window = gtk_widget_get_window( m_pWidget );
+				display = gdk_window_get_display( window );
+				cursor = gdk_cursor_new_for_display( display, GDK_BLANK_CURSOR );
+
+				gdk_window_set_cursor( window, cursor );
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+				g_object_unref( cursor );
+#else
 				gdk_cursor_unref( cursor );
-				gdk_drawable_unref( pixmap );
-				gdk_drawable_unref( mask );
+#endif
 			}
 
 			Sys_UpdateWindows( W_XY | W_XY_OVERLAY );
@@ -3185,7 +3245,7 @@ bool XYWnd::AreaSelectOK(){
 
 void XYWnd::OnCreate(){
 	if ( !MakeCurrent() ) {
-		Error( "glXMakeCurrent failed" );
+		Error( "xywindow: glXMakeCurrent failed" );
 	}
 
 	qglPolygonStipple( (unsigned char *)s_stipple );

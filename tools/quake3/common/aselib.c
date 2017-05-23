@@ -411,9 +411,9 @@ static void ASE_SkipRestOfLine( void ){
 }
 
 static void ASE_KeyMAP_DIFFUSE( const char *token ){
-	char fullpath[1024], bitmap[1024], modeldir[1024];
+	char bitmap[1024];
 	char filename[1024];
-	int i = 0, count;
+	int i = 0;
 
 	Q_strncpyz( filename, gl_filename, sizeof( filename ) );
 
@@ -474,7 +474,7 @@ static void ASE_KeyMAP_DIFFUSE( const char *token ){
 		else
 		{
 			snprintf( ase.materials[ase.numMaterials].name, sizeof( ase.materials[ase.numMaterials].name ), "(not converted: '%s')", bitmap );
-			Sys_Printf( "WARNING: illegal material name '%s'\n", bitmap );
+			Sys_FPrintf( SYS_WRN, "WARNING: illegal material name '%s'\n", bitmap );
 		}
 	}
 	else

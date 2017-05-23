@@ -122,7 +122,7 @@ extern void ( *_pico_ptr_print )( int, const char* );
 void            *_pico_alloc( size_t size );
 void            *_pico_calloc( size_t num, size_t size );
 void            *_pico_realloc( void **ptr, size_t oldSize, size_t newSize );
-char            *_pico_clone_alloc( char *str, int size );
+char            *_pico_clone_alloc( const char *str );
 void            _pico_free( void *ptr );
 
 /* files */
@@ -130,6 +130,7 @@ void            _pico_load_file( char *name, unsigned char **buffer, int *bufSiz
 void            _pico_free_file( void *buffer );
 
 /* strings */
+void			_pico_first_token(char *str);
 char            *_pico_strltrim( char *str );
 char            *_pico_strrtrim( char *str );
 int             _pico_strchcount( char *str, int ch );
@@ -137,7 +138,7 @@ void            _pico_printf( int level, const char *format, ... );
 char            *_pico_stristr( char *str, const char *substr );
 void            _pico_unixify( char *path );
 int             _pico_nofname( const char *path, char *dest, int destSize );
-char            *_pico_nopath( const char *path );
+const char      *_pico_nopath( const char *path );
 char            *_pico_setfext( char *path, const char *ext, size_t length );
 int             _pico_getline( char *buf, int bufsize, char *dest, int destsize );
 char            *_pico_strlwr( char *str );

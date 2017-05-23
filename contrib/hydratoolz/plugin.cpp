@@ -334,16 +334,19 @@ void UpdateWadKeyPair( void ){
 const char *PLUGIN_NAME = "HydraToolz";
 
 // commands in the menu
-const char *PLUGIN_COMMANDS = "About...;Create/Update WAD keypair";
+const char *PLUGIN_COMMANDS = "About;-;Create/Update WAD keypair";
 
 const char *PLUGIN_ABOUT = "HydraToolz v1.0 for GTKRadiant\n\n"
 						   "By Hydra!";
+
+void *g_pMainWidget = NULL;
 
 extern "C" void* WINAPI QERPlug_GetFuncTable(){
 	return &g_FuncTable;
 }
 
 const char* QERPlug_Init( void* hApp, void *pWidget ){
+	g_pMainWidget = pWidget;
 	return "HydraToolz for GTKRadiant"; // do we need this ? hmmm
 }
 
@@ -359,8 +362,8 @@ extern "C" void QERPlug_Dispatch( const char* p, vec3_t vMin, vec3_t vMax, bool 
 	if ( !strcmp( p, "Create/Update WAD keypair" ) ) {
 		UpdateWadKeyPair();
 	}
-	else if ( !strcmp( p, "About..." ) ) {
-		g_FuncTable.m_pfnMessageBox( NULL, PLUGIN_ABOUT, "About", MB_OK, NULL );
+	else if ( !strcmp( p, "About" ) ) {
+		g_FuncTable.m_pfnMessageBox( g_pMainWidget, PLUGIN_ABOUT, "About", MB_OK, NULL );
 	}
 }
 

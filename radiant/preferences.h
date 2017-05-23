@@ -275,7 +275,6 @@ protected:
   // maps from m_nComboSelect to the games
   int m_availGames[GAME_COUNT];
 
-  GtkWidget * m_executablesVBox;
 };
 
 /*!
@@ -286,7 +285,7 @@ class CGameDialog : public Dialog
 GtkWidget *mFrame;   ///< this is built on-demand first time it's used
 GtkWidget *mTopBox;   ///< top level box used to store the dialog frame, must unhook after modal use
 
-GtkComboBox   *mGameCombo;      // combo box holds the selection of available game
+GtkComboBoxText   *mGameCombo;      // combo box holds the selection of available game
 
 /*!
    global prefs storage
@@ -470,6 +469,8 @@ typedef struct {
 	int nCamHeight;
 	int nZFloatWidth;
 	int nState;
+	int nTextureDirectoryListWidth;
+
 } windowPosInfo_t;
 
 class PrefsDlg : public Dialog
@@ -506,7 +507,7 @@ enum {SHADER_NONE = 0, SHADER_COMMON, SHADER_ALL};
 
 // Gef: updated preferences dialog
 /*! Preference notebook page numbers */
-enum {PTAB_FRONT = 0, PTAB_GAME_SETTINGS, PTAB_2D, PTAB_CAMERA, PTAB_TEXTURE, PTAB_LAYOUT, PTAB_MOUSE,
+enum {PTAB_FRONT = 0, PTAB_GAME_SETTINGS, PTAB_2D, PTAB_CAMERA, PTAB_TEXTURE, PTAB_TEXTURE_DIR, PTAB_LAYOUT, PTAB_MOUSE,
 	  PTAB_EDITING, PTAB_STARTUP, PTAB_PATHS, PTAB_BRUSH, PTAB_MISC, PTAB_BSPMONITOR} pref_tabs;
 
 GtkWidget *notebook;
@@ -527,8 +528,15 @@ void LoadTexdefPref( texdef_t* pTexdef, const char* pName );
 
 PrefsDlg ();
 virtual ~PrefsDlg (){
-	g_string_free( m_rc_path, true );
-	g_string_free( m_inipath, true );
+	if ( m_global_rc_path ) {
+		g_string_free( m_global_rc_path, true );
+	}
+	if ( m_rc_path ) {
+		g_string_free( m_rc_path, true );
+	}
+	if ( m_inipath ) {
+		g_string_free( m_inipath, true );
+	}
 }
 
 /*!
@@ -589,6 +597,7 @@ bool m_bInternalBSP;
 bool m_bRightClick;
 bool m_bSetGame;
 bool m_bAutoSave;
+bool m_bSaveBeep;
 bool m_bLoadLastMap;
 bool m_bTextureWindow;
 bool m_bSnapShots;
@@ -718,6 +727,8 @@ int m_nLatchedTextureQuality;
 // RIANT
 // texture compression format
 int m_nTextureCompressionFormat;
+
+bool m_bShowTexDirList;
 
 int m_nLightRadiuses;
 

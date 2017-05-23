@@ -263,6 +263,7 @@ struct SKeyInfo
 #define ID_REGION_SETXY                 40044
 #define ID_REGION_SETBRUSH              40045
 #define ID_SELECTION_MAKEHOLLOW         40046
+#define ID_SELECTION_MAKEHOLLOW_TOUCH   40051
 #define ID_SELECTION_SELECTPARTIALTALL  40047
 #define ID_SELECTION_SELECTCOMPLETETALL 40048
 #define ID_SELECTION_CSGSUBTRACT        40049
@@ -488,7 +489,7 @@ void create_main_toolbar( GtkWidget *window, GtkWidget *vbox );
 void create_plugin_toolbar( GtkWidget *window, GtkWidget *vbox );
 void create_main_statusbar( GtkWidget *window, GtkWidget *vbox );
 GtkWidget *m_pStatusLabel[6];
-GtkWidget *m_pSplits[4];
+GtkWidget *m_pSplits[5];
 XYWnd* m_pXYWnd;
 XYWnd* m_pYZWnd;
 XYWnd* m_pXZWnd;
@@ -682,6 +683,7 @@ void OnSelectionDragvertecies();
 void OnSelectionMakeDetail();
 void OnSelectionMakeStructural();
 void OnSelectionMakehollow();
+void OnSelectionMakehollowTouch();
 void OnSelectionSelectcompletetall();
 void OnSelectionSelectinside();
 void OnSelectionSelectpartialtall();
@@ -873,7 +875,7 @@ void OnViewNearest( unsigned int nID );
 void OnTextureWad( unsigned int nID );
 void OnBspCommand( unsigned int nID );
 void OnGrid( unsigned int nID );
-void OnPlugIn( unsigned int nID, char *str );
+void OnPlugIn( unsigned int nID, const char *str );
 void OnFaceFit();
 void SetTextureScale( int id );
 void OnDontselectmodel();

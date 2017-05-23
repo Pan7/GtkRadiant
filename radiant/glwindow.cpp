@@ -67,7 +67,7 @@ static void button_press( GtkWidget *widget, GdkEventButton *event, gpointer dat
 	GLWindow *wnd = (GLWindow*)data;
 	guint32 flags = 0;
 
-	gdk_pointer_grab( widget->window, FALSE,
+	gdk_pointer_grab( gtk_widget_get_window( widget ), FALSE,
 					  (GdkEventMask)( GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK ),
 					  NULL, NULL, GDK_CURRENT_TIME );
 
@@ -195,7 +195,7 @@ GLWindow::GLWindow( bool zbuffer ) {
 	m_pParent = NULL;
 
 	m_pWidget = gtk_glwidget_new( zbuffer, g_qeglobals_gui.d_glBase );
-	GTK_WIDGET_SET_FLAGS( m_pWidget, GTK_CAN_FOCUS );
+	gtk_widget_set_can_focus( m_pWidget, TRUE );
 
 #ifdef DBG_GLWINDOW
 	Sys_Printf( "GLWindow::GLWindow m_pWidget = %p\n", m_pWidget );
@@ -214,14 +214,14 @@ GLWindow::GLWindow( bool zbuffer ) {
 #endif
 
 	// Connect signal handlers
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "realize", GTK_SIGNAL_FUNC( realize ), this );
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "expose_event", GTK_SIGNAL_FUNC( expose ), this );
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "motion_notify_event", GTK_SIGNAL_FUNC( motion ), this );
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "button_press_event", GTK_SIGNAL_FUNC( button_press ), this );
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "button_release_event",GTK_SIGNAL_FUNC( button_release ), this );
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "size_allocate", GTK_SIGNAL_FUNC( resize ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "realize", G_CALLBACK( realize ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "expose-event", G_CALLBACK( expose ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "motion-notify-event", G_CALLBACK( motion ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "button-press-event", G_CALLBACK( button_press ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "button-release-event",G_CALLBACK( button_release ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "size-allocate", G_CALLBACK( resize ), this );
 #if GTK_CHECK_VERSION( 1,3,0 )
-	gtk_signal_connect( GTK_OBJECT( m_pWidget ), "scroll_event", GTK_SIGNAL_FUNC( scroll_event ), this );
+	g_signal_connect( G_OBJECT( m_pWidget ), "scroll-event", G_CALLBACK( scroll_event ), this );
 #endif
 }
 
@@ -244,11 +244,11 @@ void GLWindow::CreateContext(){
 }
 
 void GLWindow::SetTimer( guint millisec ){
-	m_nTimer = gtk_timeout_add( millisec, timer, this );
+	m_nTimer = g_timeout_add( millisec, timer, this );
 }
 
 void GLWindow::KillTimer(){
-	gtk_timeout_remove( m_nTimer );
+	g_source_remove( m_nTimer );
 	m_nTimer = 0;
 }
 

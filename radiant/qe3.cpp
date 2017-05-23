@@ -100,8 +100,8 @@ void WINAPI QE_CheckOpenGLForErrors( void ){
 	int i = qglGetError();
 	if ( i != GL_NO_ERROR ) {
 		if ( i == GL_OUT_OF_MEMORY ) {
-			snprintf( strMsg, sizeof( strMsg ), "OpenGL out of memory error %s\nDo you wish to save before exiting?", qgluErrorString( (GLenum)i ) );
-			if ( gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, "Radiant Error", MB_YESNO ) == IDYES ) {
+			snprintf( strMsg, sizeof( strMsg ), _( "OpenGL out of memory error %s\nDo you wish to save before exiting?" ), qgluErrorString( (GLenum)i ) );
+			if ( gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, _( "Radiant Error" ), MB_YESNO ) == IDYES ) {
 				Map_SaveFile( NULL, false );
 			}
 			_exit( 1 );
@@ -598,10 +598,9 @@ bool QE_LoadProject( const char *projectfile ){
 	int ver = IntForKey( g_qeglobals.d_project_entity, "version" );
 	if ( ver > PROJECT_VERSION ) {
 		char strMsg[1024];
-		snprintf( strMsg, sizeof( strMsg ),
-			"This is a version %d project file. This build only supports <=%d project files.\n"
-			"Please choose another project file or upgrade your version of Radiant.", ver, PROJECT_VERSION );
-		gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, "Can't load project file", MB_ICONERROR | MB_OK );
+		snprintf( strMsg, sizeof( strMsg ), _( "This is a version %d project file. This build only supports <=%d project files.\n"
+						 "Please choose another project file or upgrade your version of Radiant." ), ver, PROJECT_VERSION );
+		gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, _( "Can't load project file" ), MB_ICONERROR | MB_OK );
 		// set the project file to nothing so we are sure we'll ask next time?
 		g_PrefsDlg.m_strLastProject = "";
 		g_PrefsDlg.SavePrefs();
@@ -647,11 +646,11 @@ bool QE_LoadProject( const char *projectfile ){
 		if ( IntForKey( g_qeglobals.d_project_entity, "version" ) != PROJECT_VERSION ) {
 			char strMsg[2048];
 			snprintf( strMsg, sizeof( strMsg ), 
-					 "The template project '%s' has version %d. The editor binary is configured for version %d.\n"
+					_( "The template project '%s' has version %d. The editor binary is configured for version %d.\n"
 					 "This indicates a problem in your setup.\n"
-					 "I will keep going with this project till you fix this",
+					 "I will keep going with this project till you fix this" ),
 					 projectfile, IntForKey( g_qeglobals.d_project_entity, "version" ), PROJECT_VERSION );
-			gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, "Can't load project file", MB_ICONERROR | MB_OK );
+			gtk_MessageBox( g_pParentWnd->m_pWidget, strMsg, _( "Can't load project file" ), MB_ICONERROR | MB_OK );
 		}
 
 		// create the writable project file path
@@ -903,7 +902,10 @@ void QE_Init( void ){
 	FillClassList();    // list in entity window
 	Map_Init();
 
-	FillTextureMenu();
+	GSList *texdirs = NULL;
+	FillTextureList( &texdirs );
+	FillTextureMenu( texdirs );
+	ClearGSList( texdirs );
 	FillBSPMenu();
 
 	/*
@@ -1281,36 +1283,49 @@ void Sys_SetTitle( const char *text ){
 bool g_bWaitCursor = false;
 
 void WINAPI Sys_BeginWait( void ){
-	GdkCursor *cursor = gdk_cursor_new( GDK_WATCH );
-	gdk_window_set_cursor( g_pParentWnd->m_pWidget->window, cursor );
+	GdkWindow *window;
+	GdkDisplay *display;
+	GdkCursor *cursor;
+
+	window = gtk_widget_get_window( g_pParentWnd->m_pWidget );
+	display = gdk_window_get_display( window );
+	cursor = gdk_cursor_new_for_display( display, GDK_WATCH );
+	gdk_window_set_cursor( window, cursor );
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+	g_object_unref( cursor );
+#else
 	gdk_cursor_unref( cursor );
+#endif
+
 	g_bWaitCursor = true;
 }
 
 void WINAPI Sys_EndWait( void ){
-	GdkCursor *cursor = gdk_cursor_new( GDK_LEFT_PTR );
-	gdk_window_set_cursor( g_pParentWnd->m_pWidget->window, cursor );
+	GdkWindow *window;
+	GdkDisplay *display;
+	GdkCursor *cursor;
+
+	window = gtk_widget_get_window( g_pParentWnd->m_pWidget );
+	display = gdk_window_get_display( window );
+	cursor = gdk_cursor_new_for_display( display, GDK_LEFT_PTR );
+
+	gdk_window_set_cursor( window, cursor );
+#if GTK_CHECK_VERSION( 3, 0, 0 )
+	g_object_unref( cursor );
+#else
 	gdk_cursor_unref( cursor );
+#endif
+
 	g_bWaitCursor = false;
 }
 
 void Sys_GetCursorPos( int *x, int *y ){
-	// FIXME: not multihead safe
-	gdk_window_get_pointer( NULL, x, y, NULL );
+	gdk_display_get_pointer( gdk_display_get_default(), 0, x, y, 0 );
 }
 
 void Sys_SetCursorPos( int x, int y ){
-	// NOTE: coordinates are in GDK space, not OS space
-#ifdef _WIN32
-	int sys_x = x - g_pParentWnd->GetGDKOffsetX();
-	int sys_y = y - g_pParentWnd->GetGDKOffsetY();
-
-	SetCursorPos( sys_x, sys_y );
-#endif
-
-#if defined ( __linux__ ) || defined ( __APPLE__ )
-	XWarpPointer( GDK_DISPLAY(), None, GDK_ROOT_WINDOW(), 0, 0, 0, 0, x, y );
-#endif
+	GdkDisplay *display = gdk_display_get_default();
+	gdk_display_warp_pointer( display, gdk_display_get_default_screen( display ), x, y );
 }
 
 void Sys_Beep( void ){
@@ -1381,7 +1396,7 @@ static void MRU_SetText( int index, const char *filename ){
 	mnemonic[2] = '-';
 	mnemonic[3] = ' ';
 	buffer_write_escaped_mnemonic( mnemonic + 4, filename );
-	gtk_label_set_text_with_mnemonic( GTK_LABEL( GTK_BIN( MRU_items[index] )->child ), mnemonic );
+	gtk_menu_item_set_label( GTK_MENU_ITEM( MRU_items[index] ), mnemonic );
 }
 
 void MRU_Load(){
@@ -1458,7 +1473,7 @@ void MRU_Activate( int index ){
 			MRU_SetText( i, MRU_GetText( i + 1 ) );
 
 		if ( MRU_used == 0 ) {
-			gtk_label_set_text( GTK_LABEL( GTK_BIN( MRU_items[0] )->child ), "Recent Files" );
+			gtk_menu_item_set_label( GTK_MENU_ITEM( MRU_items[0] ), _( "Recent Files" ) );
 			gtk_widget_set_sensitive( MRU_items[0], FALSE );
 		}
 		else
@@ -1552,17 +1567,23 @@ char *bsp_commands[256];
 void FillBSPMenu(){
 	GtkWidget *item, *menu; // menu points to a GtkMenu (not an item)
 	epair_t *ep;
-	GList *lst;
+	GList *children, *lst;
 	int i;
 
 	menu = GTK_WIDGET( g_object_get_data( G_OBJECT( g_qeglobals_gui.d_main_window ), "menu_bsp" ) );
 
-	while ( ( lst = gtk_container_children( GTK_CONTAINER( menu ) ) ) != NULL )
-		gtk_container_remove( GTK_CONTAINER( menu ), GTK_WIDGET( lst->data ) );
+	children = gtk_container_get_children( GTK_CONTAINER( menu ) );
+	if( children ) {
+		for ( lst = children; lst != NULL; lst = g_list_next( lst ) )
+		{
+			gtk_container_remove( GTK_CONTAINER( menu ), GTK_WIDGET( lst->data ) );
+		}
+		g_list_free( children );
+	}
 
 	if ( g_PrefsDlg.m_bDetachableMenus ) {
 		item = gtk_tearoff_menu_item_new();
-		gtk_menu_append( GTK_MENU( menu ), item );
+		gtk_menu_shell_append( GTK_MENU_SHELL( menu ), item );
 		gtk_widget_set_sensitive( item, TRUE );
 		gtk_widget_show( item );
 	}
@@ -1579,9 +1600,13 @@ void FillBSPMenu(){
 		i = 0;
 
 		// first token is menu name
-		item = gtk_menu_get_attach_widget( GTK_MENU( menu ) );
-		gtk_label_set_text( GTK_LABEL( GTK_BIN( item )->child ), token );
-
+		children = gtk_container_get_children( GTK_CONTAINER( menu ) );
+		if( children ) {
+			if( g_list_first( children ) ) {
+				gtk_label_set_text( GTK_LABEL( g_list_first( children )->data ), token );
+			}
+			g_list_free( children );
+		}
 		token = strtok( NULL, ",;" );
 		while ( token != NULL )
 		{
@@ -1589,8 +1614,8 @@ void FillBSPMenu(){
 			item = gtk_menu_item_new_with_label( token );
 			gtk_widget_show( item );
 			gtk_container_add( GTK_CONTAINER( menu ), item );
-			gtk_signal_connect( GTK_OBJECT( item ), "activate",
-								GTK_SIGNAL_FUNC( HandleCommand ), GINT_TO_POINTER( CMD_BSPCOMMAND + i ) );
+			g_signal_connect( G_OBJECT( item ), "activate",
+								G_CALLBACK( HandleCommand ), GINT_TO_POINTER( CMD_BSPCOMMAND + i ) );
 			token = strtok( NULL, ",;" );
 			i++;
 		}
@@ -1605,8 +1630,8 @@ void FillBSPMenu(){
 				item = gtk_menu_item_new_with_label( ep->key + 4 );
 				gtk_widget_show( item );
 				gtk_container_add( GTK_CONTAINER( menu ), item );
-				gtk_signal_connect( GTK_OBJECT( item ), "activate",
-									GTK_SIGNAL_FUNC( HandleCommand ), GINT_TO_POINTER( CMD_BSPCOMMAND + i ) );
+				g_signal_connect( G_OBJECT( item ), "activate",
+									G_CALLBACK( HandleCommand ), GINT_TO_POINTER( CMD_BSPCOMMAND + i ) );
 				i++;
 			}
 		}
@@ -1692,8 +1717,8 @@ void Sys_LogFile( void ){
 			Sys_Printf( RADIANT_ABOUTMSG "\n" );
 		}
 		else{
-			gtk_MessageBox( NULL, "Failed to create log file, check write permissions in Radiant directory.\n",
-							"Console logging", MB_OK );
+			gtk_MessageBox( NULL, _( "Failed to create log file, check write permissions in Radiant directory.\n" ),
+							_( "Console logging" ), MB_OK );
 		}
 	}
 	else if ( !g_PrefsDlg.mGamesDialog.m_bLogConsole && g_qeglobals.hLogFile ) {
@@ -1774,7 +1799,7 @@ extern "C" void Sys_FPrintf_VA( int level, const char *text, va_list args ) {
 			gtk_text_view_scroll_mark_onscreen( GTK_TEXT_VIEW( g_qeglobals_gui.d_edit ), end );
 
 			// update console widget immediately if we're doing something time-consuming
-			if ( !g_bScreenUpdates && GTK_WIDGET_REALIZED( g_qeglobals_gui.d_edit ) ) {
+			if ( !g_bScreenUpdates && gtk_widget_get_realized( g_qeglobals_gui.d_edit ) ) {
 				gtk_grab_add( g_qeglobals_gui.d_edit );
 
 				while ( gtk_events_pending() )

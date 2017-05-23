@@ -115,9 +115,9 @@ extern _QERPlugMapTable g_MapTable;
 //++timo for BP conversion escaping FIXME: remove when mixing two formats!
 extern bool g_bCancel_Map_LoadFile;
 // used to be #defines, multiple engine support suggests we should go towards dynamic
-extern int g_MaxWorldCoord;
-extern int g_MinWorldCoord;
-extern int g_MaxBrushSize;
+extern vec_t g_MaxWorldCoord;
+extern vec_t g_MinWorldCoord;
+extern vec_t g_MaxBrushSize;
 /*
    // set to true when we are parsing a terrain entity
    extern bool g_bParseTerrain;
@@ -222,7 +222,10 @@ void Drag_MouseUp( int nButtons = 0 );
 //
 // csg.c
 //
+#define CSG_HOLLOW_MODE_OVERLAP (0)
+#define CSG_HOLLOW_MODE_TOUCH (1)
 void CSG_MakeHollow( void );
+void CSG_MakeHollowMode( int mode );
 void CSG_Subtract( void );
 void CSG_Merge( void );
 
@@ -256,8 +259,11 @@ void MRU_AddFile( const char *str );
 void MRU_Activate( int index );
 
 
-void FillTextureMenu( GSList** pArray = NULL );
 void FillBSPMenu( void );
+void ClearGSList( GSList *lst );
+void FillTextureList( GSList** pArray );
+void FillTextureMenu( GSList *texdirs );
+void FillTextureDirListWidget( GSList *texdirs );
 
 // profile functions - kind of utility lib
 // they are kind of dumb, they expect to get the path to the .ini file or to the prefs directory when called

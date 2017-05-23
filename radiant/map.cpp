@@ -20,6 +20,7 @@
  */
 
 #include "stdafx.h"
+#include <glib/gi18n.h>
 #include <string.h>
 #if defined ( __linux__ ) || defined ( __APPLE__ )
 #include <unistd.h>
@@ -57,12 +58,12 @@ bool g_bCancel_Map_LoadFile;  // Hydra: moved this here
 
 // TTimo
 // need that in a variable, will have to tweak depending on the game
-int g_MaxWorldCoord = 64 * 1024;
-int g_MinWorldCoord = -64 * 1024;
+vec_t g_MaxWorldCoord = 64 * 1024;
+vec_t g_MinWorldCoord = -64 * 1024;
 
 // the max size we allow on brushes, this is dependant on world coords too
 // makes more sense to say smaller I think?
-int g_MaxBrushSize = ( g_MaxWorldCoord - 1 ) * 2;
+vec_t g_MaxBrushSize = ( g_MaxWorldCoord - 1 ) * 2;
 
 void AddRegionBrushes( void );
 void RemoveRegionBrushes( void );
@@ -155,7 +156,7 @@ void Map_Free( void ){
 	g_bRestoreBetween = false;
 	if ( selected_brushes.next &&
 		 ( selected_brushes.next != &selected_brushes ) ) {
-		if ( gtk_MessageBox( g_pParentWnd->m_pWidget, "Copy selection?", " ", MB_YESNO ) == IDYES ) {
+		if ( gtk_MessageBox( g_pParentWnd->m_pWidget, _( "Copy selection?" ), " ", MB_YESNO ) == IDYES ) {
 			Map_SaveBetween();
 		}
 	}
@@ -814,8 +815,9 @@ void Map_SaveFile( const char *filename, qboolean use_region ){
 
 		time( &timer );
 
-		Sys_Beep();
-
+		if( g_PrefsDlg.m_bSaveBeep ) {
+			Sys_Beep();
+		}
 		Sys_Status( "Saved.", 0 );
 	}
 }

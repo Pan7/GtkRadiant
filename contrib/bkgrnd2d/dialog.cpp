@@ -42,7 +42,7 @@
 
 static GtkWidget *pDialogWnd;
 static GtkWidget *pNotebook;
-static GtkTooltips *pTooltips;
+
 
 class CBackgroundDialogPage
 {
@@ -218,19 +218,19 @@ CBackgroundDialogPage::CBackgroundDialogPage( VIEWTYPE vt ){
 
 	gtk_widget_show( m_pFileLabel );
 
-	w = gtk_button_new_with_label( "Browse..." );
+	w = gtk_button_new_with_label( _( "Browse..." ) );
 	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( browse_callback ),
 					  ( gpointer ) this );
 	gtk_box_pack_start( GTK_BOX( hbox ),w, FALSE, FALSE, 5 );
-	gtk_tooltips_set_tip( pTooltips, w, "Select a file", NULL );
+	gtk_widget_set_tooltip_text( w, _( "Select a file" ) );
 	gtk_widget_show( w );
 
-	w = gtk_button_new_with_label( "Reload" );
+	w = gtk_button_new_with_label( _( "Reload" ) );
 	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( reload_callback ),
 					  ( gpointer ) this );
 	// TODO disable until we have file
 	// gtk_widget_set_sensitive(w,FALSE);
-	gtk_tooltips_set_tip( pTooltips, w, "Reload current file", NULL );
+	gtk_widget_set_tooltip_text( w, _( "Reload current file" ) );
 	gtk_box_pack_start( GTK_BOX( hbox ),w, FALSE, FALSE, 5 );
 	gtk_widget_show( w );
 
@@ -255,7 +255,7 @@ CBackgroundDialogPage::CBackgroundDialogPage( VIEWTYPE vt ){
 	g_signal_connect( G_OBJECT( w ), "value-changed",
 					  G_CALLBACK( alpha_adjust_callback ), ( gpointer ) this );
 	gtk_box_pack_start( GTK_BOX( hbox ),w, TRUE, TRUE, 5 );
-	gtk_tooltips_set_tip( pTooltips, w, _( "Set image transparancy" ), NULL );
+	gtk_widget_set_tooltip_text( w, _( "Set image transparancy" ) );
 	gtk_widget_show( w );
 
 	gtk_widget_show( hbox );
@@ -273,7 +273,7 @@ CBackgroundDialogPage::CBackgroundDialogPage( VIEWTYPE vt ){
 	gtk_box_pack_start( GTK_BOX( hbox ),w, TRUE, FALSE, 5 );
 	g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( size_sel_callback ),
 					  ( gpointer ) this );
-	gtk_tooltips_set_tip( pTooltips, w, _( "Set the size of the image to the bounding rectangle of all selected brushes and entities" ), NULL );
+	gtk_widget_set_tooltip_text( w, _( "Set the size of the image to the bounding rectangle of all selected brushes and entities" ) );
 	gtk_widget_show( w );
 
 	if ( m_vt == XY ) {
@@ -281,7 +281,7 @@ CBackgroundDialogPage::CBackgroundDialogPage( VIEWTYPE vt ){
 		gtk_box_pack_start( GTK_BOX( hbox ),w, TRUE, FALSE, 2 );
 		g_signal_connect( G_OBJECT( w ), "clicked", G_CALLBACK( size_mm_callback ),
 						  ( gpointer ) this );
-		gtk_tooltips_set_tip( pTooltips, w, _( "Set the size of the image using the mapcoordsmins and mapcoordsmaxs keys of the worldspawn entity" ), NULL );
+		gtk_widget_set_tooltip_text( w, _( "Set the size of the image using the mapcoordsmins and mapcoordsmaxs keys of the worldspawn entity" ) );
 		gtk_widget_show( w );
 	}
 
@@ -316,21 +316,22 @@ static gint close_callback( GtkWidget *widget, gpointer data ){
 
 void InitBackgroundDialog(){
 	CBackgroundDialogPage *pPage;
+	GtkWidget *content_area, *vbox;
+	GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 
 	pDialogWnd = gtk_dialog_new_with_buttons( _( "Background Images" ),
 											  GTK_WINDOW( g_pMainWidget ),
-											  (GtkDialogFlags)( GTK_DIALOG_DESTROY_WITH_PARENT ),
+											  flags,
 	                                          // TODO dialog with no buttons
-	                                          //										  GTK_STOCK_CLOSE,
-	                                          //										  GTK_RESPONSE_CLOSE,
 											  NULL );
-	gtk_signal_connect( GTK_OBJECT( pDialogWnd ), "delete_event",
-						GTK_SIGNAL_FUNC( close_callback ), NULL );
-	gtk_signal_connect( GTK_OBJECT( pDialogWnd ), "response",
-						GTK_SIGNAL_FUNC( response_callback ), NULL );
-//  gtk_signal_connect( GTK_OBJECT (pDialogWnd), "expose_event", GTK_SIGNAL_FUNC( ci_expose ), NULL );
+	g_signal_connect( G_OBJECT( pDialogWnd ), "delete-event",
+						G_CALLBACK( close_callback ), NULL );
+	g_signal_connect( G_OBJECT( pDialogWnd ), "response",
+						G_CALLBACK( response_callback ), NULL );
+//  g_signal_connect( G_OBJECT (pDialogWnd), "expose-event", G_CALLBACK( ci_expose ), NULL );
 
-	pTooltips = gtk_tooltips_new();
+
+	content_area = gtk_dialog_get_content_area( GTK_DIALOG( pDialogWnd ) );
 
 	pNotebook = gtk_notebook_new();
 	pPage = new CBackgroundDialogPage( XY );
@@ -340,11 +341,14 @@ void InitBackgroundDialog(){
 	pPage = new CBackgroundDialogPage( YZ );
 	pPage->Append( pNotebook );
 
-	gtk_box_pack_start( GTK_BOX( GTK_DIALOG( pDialogWnd )->vbox ), pNotebook, TRUE, TRUE, 0 );
+	vbox = gtk_hbox_new( FALSE, 5 );
+	gtk_box_set_homogeneous( GTK_BOX( vbox ), TRUE );
+	gtk_container_add( GTK_CONTAINER( content_area ), vbox );
+	gtk_widget_show( vbox );
+
+	gtk_box_pack_start( GTK_BOX( vbox ), pNotebook, TRUE, TRUE, 0 );
 
 	gtk_widget_show( pNotebook );
-
-	gtk_widget_realize( pDialogWnd );
 }
 
 void ShowBackgroundDialog(){

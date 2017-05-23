@@ -33,7 +33,7 @@
 
 typedef struct
 {
-	GtkObject     *object;
+	GObject     *object;
 	void          *buffer;
 	DLG_DATA_TYPE type;
 } DLG_DATA;
@@ -81,10 +81,10 @@ static gint delete_event_callback( GtkWidget *widget, GdkEvent* event, gpointer 
 void Dialog::Create(){
 	if ( m_bNeedBuild ) {
 		m_pWidget = gtk_window_new( GTK_WINDOW_TOPLEVEL );
-		gtk_signal_connect( GTK_OBJECT( m_pWidget ), "delete_event",
-							GTK_SIGNAL_FUNC( delete_event_callback ), this );
-		gtk_signal_connect( GTK_OBJECT( m_pWidget ), "destroy",
-							GTK_SIGNAL_FUNC( gtk_widget_destroy ), NULL );
+		g_signal_connect( G_OBJECT( m_pWidget ), "delete-event",
+							G_CALLBACK( delete_event_callback ), this );
+		g_signal_connect( G_OBJECT( m_pWidget ), "destroy",
+							G_CALLBACK( gtk_widget_destroy ), NULL );
 		g_object_set_data( G_OBJECT( m_pWidget ), "loop", &m_nLoop );
 		g_object_set_data( G_OBJECT( m_pWidget ), "ret", &m_nReturn );
 
@@ -100,7 +100,7 @@ void Dialog::Destroy(){
 	}
 }
 
-void Dialog::AddDialogData( GtkObject *object, void *buf, DLG_DATA_TYPE type ){
+void Dialog::AddDialogData( GObject *object, void *buf, DLG_DATA_TYPE type ){
 	DLG_DATA *data;
 
 	data = (DLG_DATA*)qmalloc( sizeof( DLG_DATA ) );
@@ -112,8 +112,8 @@ void Dialog::AddDialogData( GtkObject *object, void *buf, DLG_DATA_TYPE type ){
 }
 
 void Dialog::AddModalButton( GtkWidget *widget, int ret ) {
-	gtk_signal_connect( GTK_OBJECT( widget ), "clicked",
-						GTK_SIGNAL_FUNC( dialog_button_callback ), GINT_TO_POINTER( ret ) );
+	g_signal_connect( G_OBJECT( widget ), "clicked", 
+						G_CALLBACK( dialog_button_callback ), GINT_TO_POINTER( ret ) );
 }
 
 void Dialog::UpdateData( bool retrieve ){
@@ -133,7 +133,7 @@ void Dialog::UpdateData( bool retrieve ){
 				break;
 			case DLG_RADIO_INT:
 			{
-				GSList *radio = gtk_radio_button_group( GTK_RADIO_BUTTON( data->object ) );
+				GSList *radio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( data->object ) );
 				*(int*)data->buffer = g_slist_length( radio ) - 1;
 				for (; radio; radio = g_slist_next( radio ) )
 					if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON( radio->data ) ) ) {
@@ -151,43 +151,15 @@ void Dialog::UpdateData( bool retrieve ){
 				txt = gtk_entry_get_text( GTK_ENTRY( data->object ) );
 				*str = txt;
 			} break;
-			case DLG_ENTRY_FLOAT:
-				*(float*)data->buffer = atof( gtk_entry_get_text( GTK_ENTRY( data->object ) ) );
-				break;
-			case DLG_ENTRY_INT:
-				*(int*)data->buffer = atoi( gtk_entry_get_text( GTK_ENTRY( data->object ) ) );
-				break;
 			case DLG_SPIN_FLOAT:
-				*(float*)data->buffer = gtk_spin_button_get_value_as_float( GTK_SPIN_BUTTON( data->object ) );
+				*(float*)data->buffer = gtk_spin_button_get_value( GTK_SPIN_BUTTON( data->object ) );
 				break;
 			case DLG_SPIN_INT:
 				*(int*)data->buffer = gtk_spin_button_get_value_as_int( GTK_SPIN_BUTTON( data->object ) );
 				break;
 			case DLG_ADJ_INT:
-				*(int*)data->buffer = (int) GTK_ADJUSTMENT( data->object )->value;
+				*(int*)data->buffer = (int) gtk_adjustment_get_value( GTK_ADJUSTMENT( data->object ) );
 				break;
-			case DLG_COMBO_INT:
-			{
-				GList *lst = GTK_LIST( GTK_COMBO( data->object )->list )->children;
-				char *label;
-				const char *entry;
-				int i;
-
-				*(int*)data->buffer = -1;
-				entry = gtk_entry_get_text( GTK_ENTRY( GTK_COMBO( data->object )->entry ) );
-
-				for ( i = 0; lst != NULL; lst = g_list_next( lst ) )
-				{
-					gtk_label_get( GTK_LABEL( GTK_BIN( lst->data )->child ), &label );
-
-					if ( strcmp( label, entry ) == 0 ) {
-						*(int*)data->buffer = i;
-						break;
-					}
-					i++;
-				}
-			}
-			break;
 			case DLG_COMBO_BOX_INT: {
 				*(int*)data->buffer = gtk_combo_box_get_active( GTK_COMBO_BOX( data->object ) );
 			}
@@ -209,7 +181,7 @@ void Dialog::UpdateData( bool retrieve ){
 				break;
 			case DLG_RADIO_INT:
 			{
-				GSList *radio = gtk_radio_button_group( GTK_RADIO_BUTTON( data->object ) );
+				GSList *radio = gtk_radio_button_get_group( GTK_RADIO_BUTTON( data->object ) );
 				gpointer btn =  g_slist_nth_data( radio, g_slist_length( radio ) - ( *(int*)data->buffer ) - 1 );
 				gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( btn ), TRUE );
 			} break;
@@ -220,14 +192,6 @@ void Dialog::UpdateData( bool retrieve ){
 				const char *txt = str->GetBuffer();
 				gtk_entry_set_text( GTK_ENTRY( data->object ), txt );
 			} break;
-			case DLG_ENTRY_FLOAT:
-				snprintf( buf, sizeof( buf ), "%g", ( *(float*)data->buffer ) );
-				gtk_entry_set_text( GTK_ENTRY( data->object ), buf );
-				break;
-			case DLG_ENTRY_INT:
-				snprintf( buf, sizeof( buf ), "%d", ( *(int*)data->buffer ) );
-				gtk_entry_set_text( GTK_ENTRY( data->object ), buf );
-				break;
 			case DLG_SPIN_FLOAT:
 				gtk_spin_button_set_value( GTK_SPIN_BUTTON( data->object ), ( *(float*)data->buffer ) );
 				break;
@@ -237,24 +201,6 @@ void Dialog::UpdateData( bool retrieve ){
 			case DLG_ADJ_INT:
 				gtk_adjustment_set_value( GTK_ADJUSTMENT( data->object ), ( *(int*)data->buffer ) );
 				break;
-			case DLG_COMBO_INT: {
-				GList *lst = GTK_LIST( GTK_COMBO( data->object )->list )->children;
-				char *entry = NULL;
-
-				if ( *(int*)data->buffer != -1 ) {
-					lst = g_list_nth( lst, *(int*)data->buffer );
-					if ( lst != NULL ) {
-						gtk_label_get( GTK_LABEL( GTK_BIN( lst->data )->child ), &entry );
-					}
-				}
-				if ( entry ) {
-					gtk_entry_set_text( GTK_ENTRY( GTK_COMBO( data->object )->entry ), entry );
-				}
-				else{
-					gtk_entry_set_text( GTK_ENTRY( GTK_COMBO( data->object )->entry ), "" );
-				}
-			}
-			break;
 			case DLG_COMBO_BOX_INT: {
 				gtk_combo_box_set_active( GTK_COMBO_BOX( data->object ), *(int*)data->buffer );
 			}

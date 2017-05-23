@@ -32,12 +32,7 @@
    - Make sure the interface is not dependent on gtk.
  */
 
-#ifdef _WIN32
-//#include <gdk/win32/gdkwin32.h>
-#include <gdk/gdkwin32.h>
-#endif
 #if defined ( __linux__ ) || defined ( __APPLE__ )
-#include <gdk/gdkx.h>
 #include <dirent.h>
 #endif
 #include <gtk/gtk.h>
@@ -50,7 +45,6 @@
 #include "texmanip.h"
 
 #define TYP_MIPTEX  68
-static unsigned tex_palette[256];
 
 #define FONT_HEIGHT 10
 
@@ -180,14 +174,6 @@ void Texture_InitPalette( byte *pal ){
 		g = gammatable[pal[1]];
 		b = gammatable[pal[2]];
 		pal += 3;
-
-		//v = (r<<24) + (g<<16) + (b<<8) + 255;
-		//v = BigLong (v);
-
-		//tex_palette[i] = v;
-		tex_palette[i * 3 + 0] = r;
-		tex_palette[i * 3 + 1] = g;
-		tex_palette[i * 3 + 2] = b;
 	}
 }
 
@@ -549,37 +535,20 @@ void ClearGSList( GSList* lst ){
 	GSList *p = lst;
 	while ( p )
 	{
-		free( p->data );
+		g_free( p->data );
 		p = g_slist_remove( p, p->data );
 	}
 }
 
-void FillTextureMenu( GSList** pArray ){
-	GtkWidget *menu, *sep, *item; // point to the Textures GtkMenu and to the last separator
-	GList *lst;
-	GSList *texdirs = NULL;
-	GSList *texdirs_tmp = NULL;
+void FillTextureList( GSList** pArray )
+{
 	GSList *p;
 	char dirRoot[NAME_MAX];
+	int texture_num;
+	GSList *texdirs = NULL;
+	GSList *texdirs_tmp = NULL;
 
-	// delete everything
-	menu = GTK_WIDGET( g_object_get_data( G_OBJECT( g_qeglobals_gui.d_main_window ), "menu_textures" ) );
-	sep = GTK_WIDGET( g_object_get_data( G_OBJECT( g_qeglobals_gui.d_main_window ), "menu_textures_separator" ) );
-	lst = g_list_find( gtk_container_children( GTK_CONTAINER( menu ) ), sep );
-	while ( lst->next )
-	{
-		// these delete functions are recursive, it's gonna free all submenus
-		gtk_widget_destroy( GTK_WIDGET( lst->next->data ) );
-		// lst is no longer relevant, need to get it again
-		lst = g_list_find( gtk_container_children( GTK_CONTAINER( menu ) ), sep );
-	}
-
-	texture_nummenus = 0;
-
-	// add everything
-	if ( !g_qeglobals.d_project_entity ) {
-		return;
-	}
+	texture_num = 0;
 
 	// scan texture dirs and pak files only if not restricting to shaderlist
 	if ( !g_PrefsDlg.m_bTexturesShaderlistOnly ) {
@@ -589,7 +558,7 @@ void FillTextureMenu( GSList** pArray ){
 			// Hydra: erm, this didn't used to do anything except leak memory...
 			// For Halflife support this is required to work however.
 			// g_slist_append(texdirs, p->data);
-			texdirs = g_slist_append( texdirs, strdup( (char *)p->data ) );
+			texdirs = g_slist_append( texdirs, g_strdup( (char *)p->data ) );
 		}
 		vfsClearFileDirList( &texdirs_tmp );
 	}
@@ -601,11 +570,19 @@ void FillTextureMenu( GSList** pArray ){
 	while ( l_shaderfiles != NULL )
 	{
 		char shaderfile[PATH_MAX];
+		char *colon;
 		gboolean found = FALSE;
 
 		ExtractFileName( (char*)l_shaderfiles->data, shaderfile, sizeof( shaderfile ) );
 		StripExtension( shaderfile );
 		strlwr( shaderfile );
+
+		//support for shaderlist.txt tags, forward
+		colon = strstr( (char*)l_shaderfiles->data, ":" );
+		if( colon )
+		{
+			strncat( shaderfile, colon, sizeof( shaderfile ) );
+		}
 
 		for ( GSList *tmp = texdirs; tmp; tmp = g_slist_next( tmp ) )
 			if ( !strcasecmp( (char*)tmp->data, shaderfile ) ) {
@@ -614,7 +591,7 @@ void FillTextureMenu( GSList** pArray ){
 			}
 
 		if ( !found ) {
-			texdirs = g_slist_prepend( texdirs, strdup( shaderfile ) );
+			texdirs = g_slist_prepend( texdirs, g_strdup( shaderfile ) );
 		}
 
 		free( l_shaderfiles->data );
@@ -623,6 +600,69 @@ void FillTextureMenu( GSList** pArray ){
 
 	// sort the list
 	texdirs = g_slist_sort( texdirs, (GCompareFunc)strcmp );
+
+	GSList *temp = texdirs;
+	while ( temp )
+	{
+		char* ptr = strchr( (char*)temp->data, '_' );
+
+		// do we shrink the menus?
+		if ( ptr != NULL ) {
+			// extract the root
+			strcpy( dirRoot, (char*)temp->data );
+			dirRoot[ptr - (char*)temp->data + 1] = 0;
+
+			// we shrink only if we have at least two things to shrink :-)
+			if ( temp->next && ( strstr( (char*)temp->next->data, dirRoot ) == (char*)temp->next->data ) ) {
+				do
+				{
+					if ( pArray ) {
+						*pArray = g_slist_append( *pArray, g_strdup( (char*)temp->data ) );
+					}
+					if ( ++texture_num == MAX_TEXTUREDIRS ) {
+						Sys_FPrintf( SYS_WRN, "WARNING: max texture directories count has been reached!\n" );
+						ClearGSList( texdirs );
+						return;
+					}
+					temp = temp->next;
+				}
+				while ( temp && ( strstr( (char*)temp->data, dirRoot ) == temp->data ) );
+
+				ptr = strchr( dirRoot, '_' );
+				*ptr = 0;
+				continue;
+			}
+		}
+		if ( pArray ) {
+			*pArray = g_slist_append( *pArray, g_strdup( (char*)temp->data ) );
+		}
+		if ( ++texture_num == MAX_TEXTUREDIRS ) {
+			Sys_FPrintf( SYS_WRN, "WARNING: max texture directories count has been reached!\n" );
+			ClearGSList( texdirs );
+			return;
+		}
+
+		temp = temp->next;
+	}
+	ClearGSList( texdirs );
+}
+
+void FillTextureMenu( GSList *texdirs )
+{
+	GtkWidget *menu, *item;
+	GList *children, *lst;
+	char dirRoot[NAME_MAX];
+
+	// delete everything
+	menu = GTK_WIDGET( g_object_get_data( G_OBJECT( g_qeglobals_gui.d_main_window ), "menu_texture_dirs" ) );
+	children = gtk_container_get_children( GTK_CONTAINER( menu ) );
+	if( children ) {
+		for ( lst = g_list_first( children ); lst != NULL; lst = g_list_next( lst ) )
+		{
+			gtk_widget_destroy( GTK_WIDGET( lst->data ) );
+		}
+		g_list_free( children );
+	}
 
 	GSList *temp = texdirs;
 	while ( temp )
@@ -646,16 +686,14 @@ void FillTextureMenu( GSList** pArray ){
 					gtk_widget_show( item );
 					CheckMenuSplitting( pSubMenu );
 					gtk_container_add( GTK_CONTAINER( pSubMenu ), item );
-					gtk_signal_connect( GTK_OBJECT( item ), "activate", GTK_SIGNAL_FUNC( HandleCommand ),
+					g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 										GINT_TO_POINTER( CMD_TEXTUREWAD + texture_nummenus ) );
 
 					strcpy( texture_menunames[texture_nummenus], (char*)temp->data );
 					strcat( texture_menunames[texture_nummenus], "/" );
-					if ( pArray ) {
-						*pArray = g_slist_append( *pArray, strdup( (char*)temp->data ) );
-					}
+
 					if ( ++texture_nummenus == MAX_TEXTUREDIRS ) {
-						Sys_Printf( "WARNING: max texture directories count has been reached!\n" );
+						Sys_FPrintf( SYS_WRN, "WARNING: max texture directories count has been reached!\n" );
 						// push submenu and get out
 						item = gtk_menu_item_new_with_label( dirRoot );
 						gtk_widget_show( item );
@@ -683,23 +721,50 @@ void FillTextureMenu( GSList** pArray ){
 		gtk_widget_show( item );
 		CheckMenuSplitting( menu );
 		gtk_container_add( GTK_CONTAINER( menu ), item );
-		gtk_signal_connect( GTK_OBJECT( item ), "activate", GTK_SIGNAL_FUNC( HandleCommand ),
+		g_signal_connect( G_OBJECT( item ), "activate", G_CALLBACK( HandleCommand ),
 							GINT_TO_POINTER( CMD_TEXTUREWAD + texture_nummenus ) );
 
 		strcpy( texture_menunames[texture_nummenus], (char*)temp->data );
 		strcat( texture_menunames[texture_nummenus], "/" );
-		if ( pArray ) {
-			*pArray = g_slist_append( *pArray, strdup( (char*)temp->data ) );
-		}
+
 		if ( ++texture_nummenus == MAX_TEXTUREDIRS ) {
-			Sys_Printf( "WARNING: max texture directories count has been reached!\n" );
+			Sys_FPrintf( SYS_WRN, "WARNING: max texture directories count has been reached!\n" );
 			ClearGSList( texdirs );
 			return;
 		}
 
 		temp = temp->next;
 	}
-	ClearGSList( texdirs );
+}
+
+void FillTextureDirListWidget( GSList *texdirs )
+{
+	GtkWidget* treeview;
+	GtkTreeModel* model;
+	GtkListStore* store;
+	GtkTreeIter iter;
+	GSList *dir;
+
+	treeview = GTK_WIDGET( g_object_get_data( G_OBJECT( g_qeglobals_gui.d_main_window ), "dirlist_treeview" ) );
+	if( treeview == NULL ) {
+		return;
+	}
+	model = gtk_tree_view_get_model( GTK_TREE_VIEW( treeview ) );
+	store = GTK_LIST_STORE( model );
+
+	gtk_list_store_clear( store );
+
+	for( dir = texdirs; dir != NULL; dir = g_slist_next( dir ) )
+	{
+		gtk_list_store_append( store, &iter );
+		gtk_list_store_set( store, &iter, 0, (gchar*)dir->data, -1 );
+	}
+}
+
+void Texture_ShowDirectory_by_path( const char* pPath )
+{
+	snprintf( texture_directory, sizeof( texture_directory ), "%s%s", pPath, "/" );
+	Texture_ShowDirectory();
 }
 
 /*
@@ -780,7 +845,11 @@ void Texture_ShowDirectory(){
 				g_str_has_suffix( name, "_h" ) ||
 				g_str_has_suffix( name, "_local" ) ||
 				g_str_has_suffix( name, "_nm" ) ||
-				g_str_has_suffix( name, "_s" )) {
+				g_str_has_suffix( name, "_s" ) ||
+				g_str_has_suffix( name, "_bump" ) ||
+				g_str_has_suffix( name, "_gloss" ) ||
+				g_str_has_suffix( name, "_luma" ) ||
+				g_str_has_suffix( name, "_norm" ) ) {
 			continue;
 		}
 
@@ -905,7 +974,7 @@ void Texture_ShowAll(){
 
 #ifdef _DEBUG
 	if ( g_bShowAllShaders ) {
-		Sys_Printf( "WARNING: already showing all shaders\n" );
+		Sys_FPrintf( SYS_WRN, "WARNING: already showing all shaders\n" );
 	}
 #endif
 	QERApp_ActiveShaders_SetDisplayed( true );
@@ -1093,7 +1162,7 @@ IShader* Texture_NextPos( int *x, int *y ){
 		q = current_texture;
 
 		if ( !q ) {
-			Sys_Printf( "WARNING: found an IShader without qtexture_t in Texture_NextPos\n" );
+			Sys_FPrintf( SYS_WRN, "WARNING: found an IShader without qtexture_t in Texture_NextPos\n" );
 			return NULL;
 		}
 
@@ -1667,7 +1736,7 @@ void TexWnd::OnCreate(){
 	g_nTextureOffset = 0;
 
 	GtkAdjustment *vadjustment = gtk_range_get_adjustment( GTK_RANGE( g_qeglobals_gui.d_texture_scroll ) );
-	gtk_signal_connect( GTK_OBJECT( vadjustment ), "value_changed", GTK_SIGNAL_FUNC( vertical_scroll ), this );
+	g_signal_connect( G_OBJECT( vadjustment ), "value-changed", G_CALLBACK( vertical_scroll ), this );
 
 	if ( g_PrefsDlg.m_bTextureScrollbar ) {
 		gtk_widget_show( g_qeglobals_gui.d_texture_scroll );
@@ -1676,7 +1745,7 @@ void TexWnd::OnCreate(){
 	}
 	m_bNeedRange = true;
 
-	gtk_signal_connect( GTK_OBJECT( m_pFilter ), "changed", GTK_SIGNAL_FUNC( filter_changed ), this );
+	g_signal_connect( G_OBJECT( m_pFilter ), "changed", G_CALLBACK( filter_changed ), this );
 	if ( g_PrefsDlg.m_bTextureWindow ) {
 		gtk_widget_show( m_pFilter );
 	}
@@ -1714,14 +1783,14 @@ void TexWnd::OnExpose() {
 	if ( g_PrefsDlg.m_bTextureScrollbar && ( m_bNeedRange || g_qeglobals.d_texturewin.m_nTotalHeight != nOld ) ) {
 		GtkAdjustment *vadjustment = gtk_range_get_adjustment( GTK_RANGE( g_qeglobals_gui.d_texture_scroll ) );
 
-		vadjustment->value = -g_qeglobals.d_texturewin.originy;
-		vadjustment->page_size = m_pWidget->allocation.height;
-		vadjustment->page_increment = m_pWidget->allocation.height / 2;
-		vadjustment->step_increment = 20;
-		vadjustment->lower = 0;
-		vadjustment->upper = g_qeglobals.d_texturewin.m_nTotalHeight;
+		gtk_adjustment_set_value( vadjustment, -g_qeglobals.d_texturewin.originy );
+		gtk_adjustment_set_page_size( vadjustment, m_pWidget->allocation.height );
+		gtk_adjustment_set_page_increment( vadjustment, m_pWidget->allocation.height / 2 );
+		gtk_adjustment_set_step_increment( vadjustment, 20 );
+		gtk_adjustment_set_lower( vadjustment, 0 );
+		gtk_adjustment_set_upper( vadjustment, g_qeglobals.d_texturewin.m_nTotalHeight );
 
-		gtk_signal_emit_by_name( GTK_OBJECT( vadjustment ), "changed" );
+		g_signal_emit_by_name( G_OBJECT( vadjustment ), "changed" );
 
 		m_bNeedRange = false;
 	}
@@ -1766,7 +1835,7 @@ void TexWnd::OnMouseMove( guint32 flags, int pointx, int pointy ){
 void TexWnd::OnVScroll(){
 	GtkAdjustment *vadjustment = gtk_range_get_adjustment( GTK_RANGE( g_qeglobals_gui.d_texture_scroll ) );
 
-	g_qeglobals.d_texturewin.originy = -(int)vadjustment->value;
+	g_qeglobals.d_texturewin.originy = -(int)gtk_adjustment_get_value( vadjustment );
 	RedrawWindow();
 }
 
@@ -1789,7 +1858,7 @@ void TexWnd::UpdatePrefs(){
 }
 
 void TexWnd::FocusEdit() {
-	if ( GTK_WIDGET_VISIBLE( m_pFilter ) ) {
+	if ( gtk_widget_get_visible( m_pFilter ) ) {
           gtk_window_set_focus( GTK_WINDOW( g_pParentWnd->m_pWidget ), m_pFilter );
 	}
 }
@@ -1856,7 +1925,7 @@ void TexWnd::DragDropTexture( guint32 flags, int pointx, int pointy ){
 	m_ptXcheck = m_ptX;
 	m_ptYcheck = m_ptY;
 
-	if ( g_pParentWnd->GetCamWnd()->GetWidget()->window != gdk_window_at_pointer( &m_ptXcheck, &m_ptYcheck ) ) {
+	if ( gtk_widget_get_window( g_pParentWnd->GetCamWnd()->GetWidget() ) != gdk_window_at_pointer( &m_ptXcheck, &m_ptYcheck ) ) {
 		return;
 	}
 
