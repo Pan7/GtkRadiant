@@ -191,6 +191,7 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 
 	switch (gameId) {
 		case GAME_Q1:
+			hasPath = getInstalledSteamGamePath("2310", gamePath, gamePathSize);
 			break;
 		case GAME_Q2:
 			hasPath = getInstalledSteamGamePath("2320", gamePath, gamePathSize);
@@ -207,6 +208,7 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 		case GAME_WARSOW:
 			break;
 		case GAME_NEXUIZ:
+			hasPath = getInstalledSteamGamePath("96800", gamePath, gamePathSize);
 			break;
 		case GAME_TREMULOUS:
 			break;
@@ -259,6 +261,7 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 		case GAME_NEXUIZ:
 			break;
 		case GAME_TREMULOUS:
+			hasPath = getAppRegistryStringValue("Software\\Tremulous", "InstallDir", gamePath, gamePathSizeD);
 			break;
 		case GAME_JA:
 			hasPath = getAppRegistryStringValue("Software\\LucasArts\\Star Wars Jedi Knight Jedi Academy\\1.0", "Install Path", gamePath, gamePathSizeD);
@@ -266,11 +269,12 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 		case GAME_REACTION:
 			break;
 		case GAME_ET:
+			hasPath = getAppRegistryStringValue("Software\\Activision\\Wolfenstein - Enemy Territory", "InstallPath", gamePath, gamePathSizeD);
 			break;
 		case GAME_QL:
 			break;
 		case GAME_STVEF:
-			hasPath = getAppRegistryStringValue("Software\\Activision\\Star Trek: Voyager - Elite Force\v1.0", "INSTALLPATH", gamePath, gamePathSizeD);
+			hasPath = getAppRegistryStringValue("Software\\Activision\\Star Trek: Voyager - Elite Force\\v1.0", "INSTALLPATH", gamePath, gamePathSizeD);
 			break;
 		case GAME_WOLF:
 			hasPath = getAppRegistryStringValue("Software\\Activision\\Return to Castle Wolfenstein", "InstallPath", gamePath, gamePathSizeD);
