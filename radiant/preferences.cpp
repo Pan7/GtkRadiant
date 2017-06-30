@@ -38,6 +38,7 @@
 #endif
 #include "missing.h"
 #include "gtkmisc.h"
+#include "gamepath.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -3288,6 +3289,16 @@ void CGameInstall::OnGameSelectChanged( GtkWidget *widget, gpointer data ) {
 		gtk_widget_hide( label );
 		gtk_widget_hide( entry );
 		gtk_widget_hide( button );
+	}
+
+	char gamePath[PATH_MAX];
+	unsigned int gamePathSize = sizeof(gamePath);
+	bool hasPath;
+	hasPath = getInstalledGamePath(game_id, gamePath, gamePathSize);
+	if (hasPath) {
+		i->UpdateData( TRUE );
+		i->m_strEngine = gamePath;
+		i->UpdateData( FALSE );
 	}
 }
 

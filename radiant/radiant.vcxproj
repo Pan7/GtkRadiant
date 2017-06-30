@@ -171,6 +171,7 @@
     <ClCompile Include="file.cpp" />
     <ClCompile Include="filters.cpp" />
     <ClCompile Include="findtexturedialog.cpp" />
+    <ClCompile Include="gamepath.cpp" />
     <ClCompile Include="glinterface.cpp" />
     <ClCompile Include="glwidget.cpp" />
     <ClCompile Include="glwindow.cpp" />
