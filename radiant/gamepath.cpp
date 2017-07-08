@@ -251,8 +251,13 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 			hasPath = getAppRegistryStringValue("Software\\Id\\Quake III Arena", "INSTALLPATH", gamePath, gamePathSizeD);
 			break;
 		case GAME_URT:
+			hasPath = getAppRegistryStringValue("Software\\ioUrbanTerror", "InstallDir", gamePath, gamePathSizeD);
+			if (!hasPath) {
+				hasPath = getAppRegistryStringValue("Software\\Id\\Quake III Arena", "INSTALLPATH", gamePath, gamePathSizeD);
+			}
 			break;
 		case GAME_UFOAI:
+			hasPath = getAppRegistryStringValue("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths", "ufo.exe", gamePath, gamePathSizeD);
 			break;
 		case GAME_QUETOO:
 			break;
@@ -278,11 +283,12 @@ bool getInstalledGamePath(int gameId, char * gamePath, unsigned int & gamePathSi
 			break;
 		case GAME_WOLF:
 			hasPath = getAppRegistryStringValue("Software\\Activision\\Return to Castle Wolfenstein", "InstallPath", gamePath, gamePathSizeD);
-			if (hasPath) {
-				gamePathSize = static_cast<unsigned int>(gamePathSizeD);
-				return true;
+			if (!hasPath) {
+				hasPath = getAppRegistryStringValue("Software\\Activision\\Return to Castle Wolfenstein - Game of The Year Edition", "InstallPath", gamePath, gamePathSizeD);
+				if (!hasPath) {
+					hasPath = getAppRegistryStringValue("Software\\Activision\\Return to Castle Wolfenstein - Platinum Edition", "InstallPath", gamePath, gamePathSizeD);
+				}
 			}
-			hasPath = getAppRegistryStringValue("Software\\Activision\\Return to Castle Wolfenstein - Game of The Year Edition", "InstallPath", gamePath, gamePathSizeD);
 			break;
 //		case GAME_JK2: //Jedi Knight II - Jedi Outcast
 //			hasPath = getAppRegistryStringValue("Software\\LucasArts Entertainment Company LLC\\Star Wars JK II Jedi Outcast\\1.0", "Install Path", gamePath, gamePathSizeD);
