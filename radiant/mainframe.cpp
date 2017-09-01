@@ -5947,6 +5947,7 @@ void MainFrame::OnTexturesReloadshaders(){
 	FillTextureList( &texdirs );
 	FillTextureMenu( texdirs );
 	FillTextureDirListWidget( texdirs );
+	Sys_FPrintf( SYS_VRB, "Texture directory count: %u\n", g_slist_length( texdirs ) );
 	ClearGSList( texdirs );
 }
 
