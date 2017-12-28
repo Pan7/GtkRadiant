@@ -92,3 +92,73 @@ int BSPInfoMain( int count, char **fileNames ){
 	/* return count */
 	return i;
 }
+
+int BSPInfoExt( int count, char **fileNames )
+{
+	int			i, s;
+	char		source[ 1024 ], ext[ 64 ];
+	int			size;
+	FILE		*f;
+	const char		*classname;
+	
+	Sys_Printf( "BSPInfoExt-----------------------\n" );
+
+	/* dummy check */
+	if( count < 1 )
+	{
+		Sys_Printf( "No files to dump info for.\n");
+		return -1;
+	}
+	
+	/* enable info mode */
+	infoMode = qtrue;
+	
+	/* walk file list */
+	for( i = 0; i < count; i++ )
+	{
+		Sys_Printf( "---------------------------------\n" );
+		
+		/* mangle filename and get size */
+		strcpy( source, fileNames[ i ] );
+		ExtractFileExtension( source, ext );
+		if( !Q_stricmp( ext, "map" ) )
+			StripExtension( source );
+		DefaultExtension( source, ".bsp" );
+		f = fopen( source, "rb" );
+		if( f )
+		{
+			size = Q_filelength (f);
+			fclose( f );
+		}
+		else
+			size = 0;
+		
+		/* load the bsp file and print lump sizes */
+		Sys_Printf( "%s\n", source );
+		LoadBSPFile( source );		
+
+		if( numEntities <= 0 )
+			ParseEntities();
+
+		Sys_Printf( "shadercount: %9d\n",	numBSPShaders );
+		Sys_Printf( "entitycount: %9d\n",	numEntities );
+		if( numBSPLightBytes <= 0 && numBSPGridPoints <= 0 )
+			Sys_Printf( "nolightmaps: 0\n" );
+
+		for( s = 0; s < numBSPShaders; s++ )
+		{
+			Sys_Printf( "bspshader: %i %i %s\n", bspShaders[ s ].surfaceFlags,  bspShaders[ s ].contentFlags, bspShaders[ s ].shader );
+		}
+		for( s = 0; s < numEntities; s++ )
+		{	
+			classname = ValueForKey( &entities[ s ], "classname" );
+			//Sys_Printf( "bspEntData: %s\n", bspEntData[ s ] );
+			Sys_Printf( "classname: %s\n", classname );
+		}
+		Sys_Printf( "---------------------------------\n" );
+
+	}
+	
+	/* return count */
+	return i;
+}

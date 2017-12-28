@@ -1487,6 +1487,10 @@ int                         AnalyzeBSPMain( int argc, char **argv );
 int                         BSPInfoMain( int argc, char **argv );
 
 
+/* bsp_info.c */
+int                         BSPInfoExt( int count, char **fileNames );
+
+
 /* bsp_scale.c */
 int                         ScaleBSPMain( int argc, char **argv );
 

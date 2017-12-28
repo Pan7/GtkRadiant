@@ -206,6 +206,11 @@ int main( int argc, char **argv ){
 		r = BSPInfoMain( argc - 2, argv + 2 );
 	}
 
+	/* infoext */
+	else if( !strcmp( argv[ 1 ], "-infoext" ) ) {
+		r = BSPInfoExt( argc - 2, argv + 2 );
+	}
+
 	/* vis */
 	else if ( !strcmp( argv[ 1 ], "-vis" ) ) {
 		r = VisMain( argc - 1, argv + 1 );
