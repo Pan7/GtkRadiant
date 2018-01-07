@@ -129,18 +129,24 @@ void SetDrawSurfaces( int n ){
 	memset( bspDrawSurfaces, 0, numBSPDrawSurfacesBuffer * sizeof( bspDrawSurface_t ) );
 }
 
-void BSPFilesCleanup(){
-	if ( bspDrawVerts != 0 ) {
-		free( bspDrawVerts );
+void BSPFilesCleanup() {
+	if (bspDrawVerts != 0) {
+		free(bspDrawVerts);
 	}
-	if ( bspDrawSurfaces != 0 ) {
-		free( bspDrawSurfaces );
+	if (bspDrawSurfaces != 0) {
+		free(bspDrawSurfaces);
 	}
-	if ( bspLightBytes != 0 ) {
-		free( bspLightBytes );
+	if (bspLightBytes != 0) {
+		free(bspLightBytes);
 	}
-	if ( bspGridPoints != 0 ) {
-		free( bspGridPoints );
+	if (bspGridPoints != 0) {
+		free(bspGridPoints);
+	}
+	if (bspEntData != 0) {
+		free(bspEntData);
+	}
+	if (bspVisBytes != 0) {
+		free(bspVisBytes);
 	}
 }
 

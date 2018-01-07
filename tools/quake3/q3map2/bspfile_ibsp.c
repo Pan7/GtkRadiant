@@ -497,13 +497,17 @@ void LoadIBSPFile( const char *filename ){
 
 	numBSPDrawIndexes = CopyLump( (bspHeader_t*) header, LUMP_DRAWINDEXES, bspDrawIndexes, sizeof( bspDrawIndexes[ 0 ] ) );
 
-	numBSPVisBytes = CopyLump( (bspHeader_t*) header, LUMP_VISIBILITY, bspVisBytes, 1 );
+	numBSPVisBytes = GetLumpElements( (bspHeader_t*)header, LUMP_VISIBILITY, 1 );
+	bspVisBytes = safe_malloc( numBSPVisBytes );
+	CopyLump( (bspHeader_t*) header, LUMP_VISIBILITY, bspVisBytes, 1 );
 
 	numBSPLightBytes = GetLumpElements( (bspHeader_t*) header, LUMP_LIGHTMAPS, 1 );
 	bspLightBytes = safe_malloc( numBSPLightBytes );
 	CopyLump( (bspHeader_t*) header, LUMP_LIGHTMAPS, bspLightBytes, 1 );
 
-	bspEntDataSize = CopyLump( (bspHeader_t*) header, LUMP_ENTITIES, bspEntData, 1 );
+	bspEntDataSize = GetLumpElements( (bspHeader_t*) header, LUMP_ENTITIES, 1 );
+	bspEntData = safe_malloc( bspEntDataSize );
+	CopyLump( (bspHeader_t*)header, LUMP_ENTITIES, bspEntData, 1 );
 
 	CopyLightGridLumps( header );
 

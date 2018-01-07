@@ -2356,7 +2356,7 @@ Q_EXTERN int numBSPShaders Q_ASSIGN( 0 );
 Q_EXTERN bspShader_t bspShaders[ MAX_MAP_MODELS ];
 
 Q_EXTERN int bspEntDataSize Q_ASSIGN( 0 );
-Q_EXTERN char bspEntData[ MAX_MAP_ENTSTRING ];
+Q_EXTERN char *bspEntData Q_ASSIGN(0);
 
 Q_EXTERN int numBSPLeafs Q_ASSIGN( 0 );
 Q_EXTERN bspLeaf_t bspLeafs[ MAX_MAP_LEAFS ];
@@ -2389,7 +2389,7 @@ Q_EXTERN int numBSPGridPoints Q_ASSIGN( 0 );
 Q_EXTERN bspGridPoint_t     *bspGridPoints Q_ASSIGN( NULL );
 
 Q_EXTERN int numBSPVisBytes Q_ASSIGN( 0 );
-Q_EXTERN byte bspVisBytes[ MAX_MAP_VISIBILITY ];
+Q_EXTERN byte				*bspVisBytes Q_ASSIGN(NULL);
 
 Q_EXTERN int numBSPDrawVerts Q_ASSIGN( 0 );
 Q_EXTERN bspDrawVert_t      *bspDrawVerts Q_ASSIGN( NULL );
